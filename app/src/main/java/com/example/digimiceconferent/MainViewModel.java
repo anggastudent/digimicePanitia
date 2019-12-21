@@ -21,7 +21,6 @@ import java.util.ArrayList;
 public class MainViewModel extends ViewModel {
     private MutableLiveData<ArrayList<EventPanitia>> listEventPanitia = new MutableLiveData<>();
     private MutableLiveData<ArrayList<EventSessionPanitia>> listEventSessionPanitia = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<EventAgendaPanitia>> listEventAgendaPanitia = new MutableLiveData<>();
     private Context context;
 
     public MainViewModel() {
@@ -29,7 +28,7 @@ public class MainViewModel extends ViewModel {
 
     public void setEventPanitia(RequestQueue queue, final Context context) {
         final ArrayList<EventPanitia> listItemEventPanitia = new ArrayList<>();
-        String url = "http://192.168.55.10/myAPI/public/event";
+        String url = "http://192.168.55.7/myAPI/public/event";
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -63,7 +62,7 @@ public class MainViewModel extends ViewModel {
     public void setListEventSessionPanitia(final RequestQueue queue, final Context context, String event_session) {
         final ArrayList<EventSessionPanitia> listItemEventSession = new ArrayList<>();
 
-        String url = "http://192.168.55.10/myAPI/public/session-agenda/?id_event_session="+event_session;
+        String url = "http://192.168.55.7/myAPI/public/session-agenda/?id_event_session="+event_session;
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -99,7 +98,7 @@ public class MainViewModel extends ViewModel {
 
     public ArrayList<EventAgendaPanitia> setEventAgendaPanitia(RequestQueue queue, final Context context) {
         final ArrayList<EventAgendaPanitia> listItemAgenda = new ArrayList<>();
-        String url = "http://192.168.55.10/myAPI/public/event-agenda?id_event_session=1&id_event=1";
+        String url = "http://192.168.55.7/myAPI/public/event-agenda?id_event_session=1&id_event=1";
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -113,8 +112,6 @@ public class MainViewModel extends ViewModel {
                         eventAgendaPanitia.setJam(data.getString("start"));
                         listItemAgenda.add(eventAgendaPanitia);
                     }
-                    listEventAgendaPanitia.postValue(listItemAgenda);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

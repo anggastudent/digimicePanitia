@@ -18,6 +18,7 @@
             android:id="@+id/img_item"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:src="@drawable/foto"
             tools:background="@color/colorPrimaryDark"/>
         <TextView
             android:id="@+id/status_item"

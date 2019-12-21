@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class RecyclerViewListEventPanitiaAdapter extends RecyclerView.Adapter<RecyclerViewListEventPanitiaAdapter.CardViewViewHolder> {
+public class RecyclerViewListEventPanitiaAdapter extends RecyclerView.Adapter<RecyclerViewListEventPanitiaAdapter.EventPanitiaViewHolder> {
     ArrayList<EventPanitia> listEvent = new ArrayList<>();
 
     public void sendEventPanitia(ArrayList<EventPanitia> eventPanitias) {
@@ -26,13 +26,13 @@ public class RecyclerViewListEventPanitiaAdapter extends RecyclerView.Adapter<Re
 
     @NonNull
     @Override
-    public CardViewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public EventPanitiaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event_panitia, parent, false);
-        return new CardViewViewHolder(view);
+        return new EventPanitiaViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final CardViewViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final EventPanitiaViewHolder holder, int position) {
         final EventPanitia eventPanitia = listEvent.get(position);
 
         holder.judul.setText(eventPanitia.getJudul());
@@ -53,13 +53,13 @@ public class RecyclerViewListEventPanitiaAdapter extends RecyclerView.Adapter<Re
         return listEvent.size();
     }
 
-    public class CardViewViewHolder extends RecyclerView.ViewHolder {
+    public class EventPanitiaViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
         TextView judul;
         Button btnDetail;
 
-        public CardViewViewHolder(@NonNull View itemView) {
+        public EventPanitiaViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.img_item);

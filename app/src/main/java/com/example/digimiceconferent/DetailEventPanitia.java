@@ -55,7 +55,7 @@ public class DetailEventPanitia extends AppCompatActivity {
         showLoading(true);
 
         mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setListEventSessionPanitia(queue,this,"1");
+        mainViewModel.setListEventSessionPanitia(queue,this,"2");
         mainViewModel.getEventSessionPanitia().observe(this, new Observer<ArrayList<EventSessionPanitia>>() {
             @Override
             public void onChanged(ArrayList<EventSessionPanitia> eventSessionPanitias) {

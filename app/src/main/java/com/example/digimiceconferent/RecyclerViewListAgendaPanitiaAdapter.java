@@ -11,24 +11,25 @@ import com.github.vipulasri.timelineview.TimelineView;
 
 import java.util.ArrayList;
 
-public class RecyclerViewListAgendaPanitiaAdapter extends RecyclerView.Adapter<RecyclerViewListAgendaPanitiaAdapter.CardViewViewHolder> {
+public class RecyclerViewListAgendaPanitiaAdapter extends RecyclerView.Adapter<RecyclerViewListAgendaPanitiaAdapter.AgendaPanitiaViewHolder> {
     ArrayList<EventAgendaPanitia> listAgenda = new ArrayList<>();
 
 
-    public void sendEventAgendaPanitia(ArrayList<EventAgendaPanitia> eventAgendaPanitias) {
+    public void sendDataAgenda(ArrayList<EventAgendaPanitia> agendaPanitias) {
         listAgenda.clear();
-        listAgenda.addAll(eventAgendaPanitias);
+        listAgenda.addAll(agendaPanitias);
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
-    public CardViewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AgendaPanitiaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event_agenda, parent, false);
-        return new CardViewViewHolder(view,viewType);
+        return new AgendaPanitiaViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CardViewViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AgendaPanitiaViewHolder holder, int position) {
         EventAgendaPanitia eventAgendaPanitia = listAgenda.get(position);
         holder.judul.setText(eventAgendaPanitia.getJudul());
         holder.jam.setText(eventAgendaPanitia.getJam());
@@ -41,24 +42,16 @@ public class RecyclerViewListAgendaPanitiaAdapter extends RecyclerView.Adapter<R
         return listAgenda.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return TimelineView.getTimeLineViewType(position, getItemCount());
 
-    }
-
-
-    public class CardViewViewHolder extends RecyclerView.ViewHolder {
-        TimelineView timelineView;
+    public class AgendaPanitiaViewHolder extends RecyclerView.ViewHolder {
         TextView judul,jam;
 
-
-        public CardViewViewHolder(@NonNull View itemView, int viewType) {
+        public AgendaPanitiaViewHolder(@NonNull View itemView) {
             super(itemView);
             judul = itemView.findViewById(R.id.judulAgendaPanitia);
             jam = itemView.findViewById(R.id.timeAgendaPanitia);
-            timelineView = itemView.findViewById(R.id.timelineAgendaPanitia);
-            timelineView.initLine(viewType);
+
+
 
 
         }
