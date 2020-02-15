@@ -1,4 +1,4 @@
-package com.example.digimiceconferent;
+package com.example.digimiceconferent.Model;
 
 public class EventAgendaPanitia {
 

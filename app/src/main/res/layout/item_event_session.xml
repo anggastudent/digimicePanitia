@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -13,6 +13,7 @@
         android:padding="8dp"
         android:textStyle="bold"
         tools:text="Session"/>
+
     <TextView
         android:id="@+id/item_date"
         android:layout_width="match_parent"
@@ -20,10 +21,22 @@
         android:padding="8dp"
         tools:text="date"/>
 
+    <Button
+        android:id="@+id/buttonScanQRPanitia"
+        android:layout_width="200dp"
+        android:text="Scan QR"
+        android:layout_marginEnd="16sp"
+        android:layout_gravity="right"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimaryDark"
+        android:layout_marginBottom="16dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_eventAgendaPanitia"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/item_event_agenda"/>
+
     </LinearLayout>
 

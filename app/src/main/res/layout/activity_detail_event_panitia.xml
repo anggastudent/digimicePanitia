@@ -1,41 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".DetailEventPanitia">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/judulDetail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="28sp"
-        tools:text="Judul"/>
-    <TextView
-        android:id="@+id/startDetail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="start"/>
-    <TextView
-        android:id="@+id/endDetail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="end"/>
-
-    <ProgressBar
-        android:id="@+id/loadingSessionPanitia"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:visibility="gone"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_eventSessionPanitia"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_event_session"/>
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".Activity.DetailEventPanitia">
 
+        <TextView
+            android:id="@+id/judulDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="28sp"
+            tools:text="Judul"/>
+        <TextView
+            android:id="@+id/startDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="start"/>
+        <TextView
+            android:id="@+id/endDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="end"/>
 
-</LinearLayout>
+        <ProgressBar
+            android:id="@+id/loadingSessionPanitia"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_eventSessionPanitia"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_event_session"/>
+
+    </LinearLayout>
+</ScrollView>

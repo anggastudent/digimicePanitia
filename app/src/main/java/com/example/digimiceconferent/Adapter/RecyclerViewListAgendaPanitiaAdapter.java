@@ -1,4 +1,4 @@
-package com.example.digimiceconferent;
+package com.example.digimiceconferent.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.digimiceconferent.Model.EventAgendaPanitia;
+import com.example.digimiceconferent.R;
 import com.github.vipulasri.timelineview.TimelineView;
 
 import java.util.ArrayList;
@@ -25,7 +28,7 @@ public class RecyclerViewListAgendaPanitiaAdapter extends RecyclerView.Adapter<R
     @Override
     public AgendaPanitiaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event_agenda, parent, false);
-        return new AgendaPanitiaViewHolder(view);
+        return new AgendaPanitiaViewHolder(view, viewType);
     }
 
     @Override
@@ -42,14 +45,21 @@ public class RecyclerViewListAgendaPanitiaAdapter extends RecyclerView.Adapter<R
         return listAgenda.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return TimelineView.getTimeLineViewType(position,getItemCount());
+    }
 
     public class AgendaPanitiaViewHolder extends RecyclerView.ViewHolder {
         TextView judul,jam;
+        TimelineView timelineView;
 
-        public AgendaPanitiaViewHolder(@NonNull View itemView) {
+        public AgendaPanitiaViewHolder(@NonNull View itemView, int viewType) {
             super(itemView);
             judul = itemView.findViewById(R.id.judulAgendaPanitia);
             jam = itemView.findViewById(R.id.timeAgendaPanitia);
+            timelineView = itemView.findViewById(R.id.timeline);
+            timelineView.initLine(viewType);
 
 
 

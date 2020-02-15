@@ -1,4 +1,4 @@
-package com.example.digimiceconferent;
+package com.example.digimiceconferent.Adapter;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -11,7 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.example.digimiceconferent.Activity.DetailEventPanitia;
+import com.example.digimiceconferent.Model.EventPanitia;
+import com.example.digimiceconferent.R;
 
 import java.util.ArrayList;
 
