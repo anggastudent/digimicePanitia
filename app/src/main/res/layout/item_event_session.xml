@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -15,14 +15,12 @@
         tools:text="Session"/>
 
     <TextView
-        android:id="@+id/item_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
         tools:text="date"/>
 
     <Button
-        android:id="@+id/buttonScanQRPanitia"
         android:layout_width="200dp"
         android:text="Scan QR"
         android:layout_marginEnd="16sp"
@@ -31,6 +29,12 @@
         android:textColor="@android:color/white"
         android:background="@color/colorPrimaryDark"
         android:layout_marginBottom="16dp"/>
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="48dp"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_eventAgendaPanitia"

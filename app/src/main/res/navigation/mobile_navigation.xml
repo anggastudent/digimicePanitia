@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_panitia">
+
+    <fragment
+        android:id="@+id/navigation_event"
+        android:name="com.example.digimiceconferent.Fragment.EventFragment"
+        android:label="Event"/>
+
+    <fragment
+        android:id="@+id/navigation_panitia"
+        android:name="com.example.digimiceconferent.Fragment.PanitiaFragment"
+        android:label="Panitia"/>
+
+    <fragment
+        android:id="@+id/navigation_peserta"
+        android:name="com.example.digimiceconferent.Fragment.PesertaFragment"
+        android:label="Peserta"/>
+
+    <fragment
+        android:id="@+id/navigation_pembayaran"
+        android:name="com.example.digimiceconferent.Fragment.PembayaranFragment"
+        android:label="Pembayaran"/>
+
+    <fragment
+        android:id="@+id/navigation_akun"
+        android:name="com.example.digimiceconferent.Fragment.AkunFragment"
+        android:label="Akun"/>
+
+</navigation>

@@ -15,17 +15,17 @@
             android:paddingRight="16dp"
             tools:text="08.30 WIB"/>
 
-    <com.github.vipulasri.timelineview.TimelineView
-        android:id="@+id/timeline"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        app:lineOrientation="vertical"
-        app:markerSize="16dp"
-        app:markerInCenter="false"
-        app:lineWidth="5dp"
-        app:lineStyle="normal"
-        app:startLineColor="@color/colorPrimary"
-        app:endLineColor="@color/colorPrimary"/>
+        <com.github.vipulasri.timelineview.TimelineView
+            android:id="@+id/timeline"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            app:lineOrientation="vertical"
+            app:markerSize="16dp"
+            app:markerInCenter="false"
+            app:lineWidth="5dp"
+            app:lineStyle="normal"
+            app:startLineColor="@color/colorPrimary"
+            app:endLineColor="@color/colorPrimary"/>
 
         <TextView
             android:id="@+id/judulAgendaPanitia"

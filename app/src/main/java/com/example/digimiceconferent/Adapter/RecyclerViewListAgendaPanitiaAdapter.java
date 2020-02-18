@@ -61,9 +61,6 @@ public class RecyclerViewListAgendaPanitiaAdapter extends RecyclerView.Adapter<R
             timelineView = itemView.findViewById(R.id.timeline);
             timelineView.initLine(viewType);
 
-
-
-
         }
 
     }

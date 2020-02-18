@@ -1,70 +1,30 @@
 package com.example.digimiceconferent.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-import com.example.digimiceconferent.Model.EventPanitia;
-import com.example.digimiceconferent.MainViewModel;
 import com.example.digimiceconferent.R;
-import com.example.digimiceconferent.Adapter.RecyclerViewListEventPanitiaAdapter;
-
-import java.util.ArrayList;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomePanitia extends AppCompatActivity {
-    private RecyclerView rvMovies;
-    private ProgressBar progressBarMovie;
-    private RecyclerViewListEventPanitiaAdapter adapterMovie;
-    private MainViewModel mainViewModel;
-    private RequestQueue queue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_panitia);
 
-        queue = Volley.newRequestQueue(this);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
 
-        rvMovies = findViewById(R.id.rv_eventPanitia);
-        rvMovies.setLayoutManager(new LinearLayoutManager(this));
-        adapterMovie = new RecyclerViewListEventPanitiaAdapter();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
-        progressBarMovie = findViewById(R.id.loadingEventPanitia);
-
-        showLoading(true);
-
-        mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setEventPanitia(queue, this);
-        mainViewModel.getEventPanitia().observe(this, new Observer<ArrayList<EventPanitia>>() {
-            @Override
-            public void onChanged(ArrayList<EventPanitia> eventPanitias) {
-                if (eventPanitias!= null) {
-                    adapterMovie.sendEventPanitia(eventPanitias);
-                    showLoading(false);
-                }
-            }
-        });
-
-        rvMovies.setAdapter(adapterMovie);
-        rvMovies.setHasFixedSize(true);
-        adapterMovie.notifyDataSetChanged();
-
-
-    }
-
-    private void showLoading(Boolean state) {
-        if (state) {
-            progressBarMovie.setVisibility(View.VISIBLE);
-        } else {
-            progressBarMovie.setVisibility(View.GONE);
-        }
-
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_event, R.id.navigation_panitia,
+                R.id.navigation_peserta, R.id.navigation_pembayaran, R.id.navigation_akun).build();
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
     }
 }

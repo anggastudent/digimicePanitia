@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_event"
+        android:icon="@color/cardview_dark_background"
+        android:title="Kelola Event"/>
+
+    <item
+        android:id="@+id/navigation_panitia"
+        android:icon="@color/cardview_dark_background"
+        android:title="Kelola Panitia"/>
+
+    <item
+        android:id="@+id/navigation_peserta"
+        android:icon="@color/cardview_dark_background"
+        android:title="Kelola Peserta"/>
+
+    <item
+        android:id="@+id/navigation_pembayaran"
+        android:icon="@color/cardview_dark_background"
+        android:title="Pembayaran"/>
+
+    <item
+        android:id="@+id/navigation_akun"
+        android:icon="@color/cardview_dark_background"
+        android:title="Akun"/>
+</menu>

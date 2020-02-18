@@ -1,5 +1,6 @@
 package com.example.digimiceconferent.Adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,17 +35,11 @@ public class RecyclerViewListSessionPanitiaAdapter extends RecyclerView.Adapter<
     public void onBindViewHolder(@NonNull SessionPanitiaViewHolder holder, int position) {
         EventSessionPanitia eventSessionPanitia = listSession.get(position);
         holder.nameSession.setText(eventSessionPanitia.getJudul());
-
-        holder.layoutManager= new LinearLayoutManager(holder.itemView.getContext(),
-                LinearLayoutManager.VERTICAL, false);
-        holder.rvagenda.setLayoutManager(holder.layoutManager);
-
-        if(eventSessionPanitia.getListAgenda() != null) {
-            agendaPanitiaAdapter.sendDataAgenda(eventSessionPanitia.getListAgenda());
-            holder.rvagenda.setAdapter(agendaPanitiaAdapter);
-            holder.rvagenda.setHasFixedSize(true);
-        }
-
+        agendaPanitiaAdapter.sendDataAgenda(eventSessionPanitia.getListAgenda());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.VERTICAL, false);
+        holder.rvagenda.setAdapter(agendaPanitiaAdapter);
+        holder.rvagenda.setHasFixedSize(true);
+        holder.rvagenda.setLayoutManager(linearLayoutManager);
     }
 
     @Override
@@ -55,7 +50,6 @@ public class RecyclerViewListSessionPanitiaAdapter extends RecyclerView.Adapter<
     public class SessionPanitiaViewHolder extends RecyclerView.ViewHolder {
         TextView nameSession;
         RecyclerView rvagenda;
-        LinearLayoutManager layoutManager;
 
 
         public SessionPanitiaViewHolder(@NonNull View itemView) {
@@ -63,11 +57,7 @@ public class RecyclerViewListSessionPanitiaAdapter extends RecyclerView.Adapter<
 
             nameSession = itemView.findViewById(R.id.item_session);
             rvagenda = itemView.findViewById(R.id.rv_eventAgendaPanitia);
-
-
-
         }
-
 
     }
 }
