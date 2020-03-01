@@ -2,26 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_event"
-        android:icon="@color/cardview_dark_background"
+        android:icon="@drawable/ic_event_black_24dp"
         android:title="Kelola Event"/>
 
     <item
         android:id="@+id/navigation_panitia"
-        android:icon="@color/cardview_dark_background"
+        android:icon="@drawable/ic_card_travel_black_24dp"
         android:title="Kelola Panitia"/>
 
     <item
         android:id="@+id/navigation_peserta"
-        android:icon="@color/cardview_dark_background"
+        android:icon="@drawable/ic_credit_card_black_24dp"
         android:title="Kelola Peserta"/>
 
     <item
         android:id="@+id/navigation_pembayaran"
-        android:icon="@color/cardview_dark_background"
+        android:icon="@drawable/ic_assignment_ind_black_24dp"
         android:title="Pembayaran"/>
 
     <item
         android:id="@+id/navigation_akun"
-        android:icon="@color/cardview_dark_background"
+        android:icon="@drawable/ic_person_black_24dp"
         android:title="Akun"/>
 </menu>
