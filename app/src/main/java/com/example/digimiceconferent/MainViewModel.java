@@ -13,7 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.digimiceconferent.Model.EventAgendaPanitia;
-import com.example.digimiceconferent.Model.EventPanitia;
+import com.example.digimiceconferent.Model.EventPresensi;
 import com.example.digimiceconferent.Model.EventSessionPanitia;
 
 import org.json.JSONArray;
@@ -22,7 +22,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MainViewModel extends ViewModel {
-    private MutableLiveData<ArrayList<EventPanitia>> listEventPanitia = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<EventPresensi>> listEventPanitia = new MutableLiveData<>();
     private MutableLiveData<ArrayList<EventSessionPanitia>> listEventSessionPanitia = new MutableLiveData<>();
     private Context context;
 
@@ -30,8 +30,8 @@ public class MainViewModel extends ViewModel {
     }
 
     public void setEventPanitia(RequestQueue queue, final Context context) {
-        final ArrayList<EventPanitia> listItemEventPanitia = new ArrayList<>();
-        String url = "http://192.168.55.88/myAPI/public/event";
+        final ArrayList<EventPresensi> listItemEventPresensi = new ArrayList<>();
+        String url = "http://192.168.43.192/myAPI/public/event";
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -39,14 +39,14 @@ public class MainViewModel extends ViewModel {
                 try{
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject data = response.getJSONObject(i);
-                        EventPanitia eventPanitia = new EventPanitia();
-                        eventPanitia.setJudul(data.getString("name"));
-                        eventPanitia.setStart(data.getString("start"));
-                        eventPanitia.setEnd(data.getString("end"));
-                        listItemEventPanitia.add(eventPanitia);
+                        EventPresensi eventPresensi = new EventPresensi();
+                        eventPresensi.setJudul(data.getString("name"));
+                        eventPresensi.setStart(data.getString("start"));
+                        eventPresensi.setEnd(data.getString("end"));
+                        listItemEventPresensi.add(eventPresensi);
                     }
 
-                    listEventPanitia.postValue(listItemEventPanitia);
+                    listEventPanitia.postValue(listItemEventPresensi);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -65,7 +65,7 @@ public class MainViewModel extends ViewModel {
     public void setListEventSessionPanitia(final RequestQueue queue, final Context context, String event_session) {
         final ArrayList<EventSessionPanitia> listItemEventSession = new ArrayList<>();
 
-        String url = "http://192.168.55.88/myAPI/public/session-agenda/?id_event_session="+event_session;
+        String url = "http://192.168.43.192/myAPI/public/session-agenda/?id_event_session="+event_session;
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -101,7 +101,7 @@ public class MainViewModel extends ViewModel {
 
     public ArrayList<EventAgendaPanitia> setEventAgendaPanitia(RequestQueue queue, final Context context) {
         final ArrayList<EventAgendaPanitia> listItemAgenda = new ArrayList<>();
-        String url = "http://192.168.55.88/myAPI/public/event-agenda?id_event_session=1&id_event=1";
+        String url = "http://192.168.43.192/myAPI/public/event-agenda?id_event_session=1&id_event=1";
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -131,7 +131,7 @@ public class MainViewModel extends ViewModel {
         return listItemAgenda;
     }
 
-    public LiveData<ArrayList<EventPanitia>> getEventPanitia() {
+    public LiveData<ArrayList<EventPresensi>> getEventPanitia() {
         return listEventPanitia;
     }
 

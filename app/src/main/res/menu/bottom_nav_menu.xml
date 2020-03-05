@@ -8,16 +8,16 @@
     <item
         android:id="@+id/navigation_panitia"
         android:icon="@drawable/ic_card_travel_black_24dp"
-        android:title="Kelola Panitia"/>
+        android:title="Kelola Panitia" />
 
     <item
         android:id="@+id/navigation_peserta"
-        android:icon="@drawable/ic_credit_card_black_24dp"
+        android:icon="@drawable/ic_assignment_ind_black_24dp"
         android:title="Kelola Peserta"/>
 
     <item
         android:id="@+id/navigation_pembayaran"
-        android:icon="@drawable/ic_assignment_ind_black_24dp"
+        android:icon="@drawable/ic_credit_card_black_24dp"
         android:title="Pembayaran"/>
 
     <item

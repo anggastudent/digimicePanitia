@@ -7,22 +7,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.digimiceconferent.Activity.DetailEventPanitia;
-import com.example.digimiceconferent.Model.EventPanitia;
+import com.example.digimiceconferent.Model.EventPresensi;
 import com.example.digimiceconferent.R;
 
 import java.util.ArrayList;
 
-public class RecyclerViewListEventPanitiaAdapter extends RecyclerView.Adapter<RecyclerViewListEventPanitiaAdapter.EventPanitiaViewHolder> {
-    ArrayList<EventPanitia> listEvent = new ArrayList<>();
+public class RecyclerViewEventPresensiAdapter extends RecyclerView.Adapter<RecyclerViewEventPresensiAdapter.EventPanitiaViewHolder> {
 
-    public void sendEventPanitia(ArrayList<EventPanitia> eventPanitias) {
+    ArrayList<EventPresensi> listEvent = new ArrayList<>();
+
+    public void sendEventPanitia(ArrayList<EventPresensi> eventPresensis) {
         listEvent.clear();
-        listEvent.addAll(eventPanitias);
+        listEvent.addAll(eventPresensis);
         notifyDataSetChanged();
     }
 
@@ -35,16 +34,14 @@ public class RecyclerViewListEventPanitiaAdapter extends RecyclerView.Adapter<Re
 
     @Override
     public void onBindViewHolder(@NonNull final EventPanitiaViewHolder holder, int position) {
-        final EventPanitia eventPanitia = listEvent.get(position);
-
-        holder.judul.setText(eventPanitia.getJudul());
-
+        final EventPresensi eventPresensi = listEvent.get(position);
+        holder.judul.setText(eventPresensi.getJudul());
         holder.btnDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventPanitia eventPanitia = listEvent.get(holder.getAdapterPosition());
+                EventPresensi eventPresensi = listEvent.get(holder.getAdapterPosition());
                 Intent intent = new Intent(holder.itemView.getContext(), DetailEventPanitia.class);
-                intent.putExtra(DetailEventPanitia.EXTRA_EVENT_PANITIA, eventPanitia);
+                intent.putExtra(DetailEventPanitia.EXTRA_EVENT_PANITIA, eventPresensi);
                 holder.itemView.getContext().startActivity(intent);
             }
         });
@@ -56,14 +53,12 @@ public class RecyclerViewListEventPanitiaAdapter extends RecyclerView.Adapter<Re
     }
 
     public class EventPanitiaViewHolder extends RecyclerView.ViewHolder {
-
         ImageView imageView;
         TextView judul;
         Button btnDetail;
 
         public EventPanitiaViewHolder(@NonNull View itemView) {
             super(itemView);
-
             imageView = itemView.findViewById(R.id.img_item);
             judul = itemView.findViewById(R.id.judul_item);
             btnDetail = itemView.findViewById(R.id.bt_detail_item);

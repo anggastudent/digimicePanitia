@@ -7,6 +7,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.digimiceconferent.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,5 +28,10 @@ public class HomePanitia extends AppCompatActivity {
                 R.id.navigation_peserta, R.id.navigation_pembayaran, R.id.navigation_akun).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+        TextView largeTextView = bottomNavigationView.findViewById(R.id.bottom_nav).findViewById(com.google.android.material.R.id.largeLabel);
+        TextView smallTextView = bottomNavigationView.findViewById(R.id.bottom_nav).findViewById(com.google.android.material.R.id.smallLabel);
+        largeTextView.setVisibility(View.GONE);
+        smallTextView.setVisibility(View.VISIBLE);
     }
 }

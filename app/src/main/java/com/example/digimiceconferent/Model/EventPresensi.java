@@ -3,16 +3,16 @@ package com.example.digimiceconferent.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class EventPanitia implements Parcelable {
+public class EventPresensi implements Parcelable {
 
     String judul;
     String start;
     String end;
 
-    public EventPanitia() {
+    public EventPresensi() {
     }
 
-    protected EventPanitia(Parcel in) {
+    protected EventPresensi(Parcel in) {
         judul = in.readString();
         start = in.readString();
         end = in.readString();
@@ -30,15 +30,15 @@ public class EventPanitia implements Parcelable {
         return 0;
     }
 
-    public static final Creator<EventPanitia> CREATOR = new Creator<EventPanitia>() {
+    public static final Creator<EventPresensi> CREATOR = new Creator<EventPresensi>() {
         @Override
-        public EventPanitia createFromParcel(Parcel in) {
-            return new EventPanitia(in);
+        public EventPresensi createFromParcel(Parcel in) {
+            return new EventPresensi(in);
         }
 
         @Override
-        public EventPanitia[] newArray(int size) {
-            return new EventPanitia[size];
+        public EventPresensi[] newArray(int size) {
+            return new EventPresensi[size];
         }
     };
 
