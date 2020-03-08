@@ -91,7 +91,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/border_radius"
             android:backgroundTint="#3c3491"
-            android:text="register"
+            android:text="@string/reset"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/textView"

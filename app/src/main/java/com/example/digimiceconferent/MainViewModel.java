@@ -31,7 +31,7 @@ public class MainViewModel extends ViewModel {
 
     public void setEventPanitia(RequestQueue queue, final Context context) {
         final ArrayList<EventPresensi> listItemEventPresensi = new ArrayList<>();
-        String url = "http://192.168.43.192/myAPI/public/event";
+        String url = "http://192.168.0.37/myAPI/public/event";
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -65,7 +65,7 @@ public class MainViewModel extends ViewModel {
     public void setListEventSessionPanitia(final RequestQueue queue, final Context context, String event_session) {
         final ArrayList<EventSessionPanitia> listItemEventSession = new ArrayList<>();
 
-        String url = "http://192.168.43.192/myAPI/public/session-agenda/?id_event_session="+event_session;
+        String url = "http://192.168.0.37/myAPI/public/session-agenda/?id_event_session="+event_session;
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -101,7 +101,7 @@ public class MainViewModel extends ViewModel {
 
     public ArrayList<EventAgendaPanitia> setEventAgendaPanitia(RequestQueue queue, final Context context) {
         final ArrayList<EventAgendaPanitia> listItemAgenda = new ArrayList<>();
-        String url = "http://192.168.43.192/myAPI/public/event-agenda?id_event_session=1&id_event=1";
+        String url = "http://192.168.0.37/myAPI/public/event-agenda?id_event_session=1&id_event=1";
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
