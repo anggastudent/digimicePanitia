@@ -8,17 +8,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.digimiceconferent.Model.EventAgendaPanitia;
+import com.example.digimiceconferent.Model.EventAgenda;
 import com.example.digimiceconferent.R;
 import com.github.vipulasri.timelineview.TimelineView;
 
 import java.util.ArrayList;
 
-public class RecyclerViewListAgendaPanitiaAdapter extends RecyclerView.Adapter<RecyclerViewListAgendaPanitiaAdapter.AgendaPanitiaViewHolder> {
-    ArrayList<EventAgendaPanitia> listAgenda = new ArrayList<>();
+public class RecyclerViewEventAgendaAdapter extends RecyclerView.Adapter<RecyclerViewEventAgendaAdapter.AgendaPanitiaViewHolder> {
+    ArrayList<EventAgenda> listAgenda = new ArrayList<>();
 
 
-    public void sendDataAgenda(ArrayList<EventAgendaPanitia> agendaPanitias) {
+    public void sendDataAgenda(ArrayList<EventAgenda> agendaPanitias) {
         listAgenda.clear();
         listAgenda.addAll(agendaPanitias);
         notifyDataSetChanged();
@@ -33,9 +33,9 @@ public class RecyclerViewListAgendaPanitiaAdapter extends RecyclerView.Adapter<R
 
     @Override
     public void onBindViewHolder(@NonNull AgendaPanitiaViewHolder holder, int position) {
-        EventAgendaPanitia eventAgendaPanitia = listAgenda.get(position);
-        holder.judul.setText(eventAgendaPanitia.getJudul());
-        holder.jam.setText(eventAgendaPanitia.getJam());
+        EventAgenda eventAgenda = listAgenda.get(position);
+        holder.judul.setText(eventAgenda.getJudul());
+        holder.jam.setText(eventAgenda.getJam());
 
 
     }

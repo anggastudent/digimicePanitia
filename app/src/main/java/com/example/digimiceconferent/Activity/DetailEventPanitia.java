@@ -14,10 +14,10 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Model.EventPresensi;
-import com.example.digimiceconferent.Model.EventSessionPanitia;
+import com.example.digimiceconferent.Model.EventSession;
 import com.example.digimiceconferent.MainViewModel;
 import com.example.digimiceconferent.R;
-import com.example.digimiceconferent.Adapter.RecyclerViewListSessionPanitiaAdapter;
+import com.example.digimiceconferent.Adapter.RecyclerViewEventSessionAdapter;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ public class DetailEventPanitia extends AppCompatActivity {
     TextView tvJudul,tvStart,tvEnd;
     RecyclerView rvSession;
     ProgressBar loadingSession;
-    RecyclerViewListSessionPanitiaAdapter adapter;
+    RecyclerViewEventSessionAdapter adapter;
     MainViewModel mainViewModel;
     RequestQueue queue;
 
@@ -55,17 +55,17 @@ public class DetailEventPanitia extends AppCompatActivity {
         rvSession = findViewById(R.id.rv_eventSessionPanitia);
         rvSession.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new RecyclerViewListSessionPanitiaAdapter();
+        adapter = new RecyclerViewEventSessionAdapter();
         loadingSession = findViewById(R.id.loadingSessionPanitia);
         showLoading(true);
 
         mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         mainViewModel.setListEventSessionPanitia(queue,this,"2");
-        mainViewModel.getEventSessionPanitia().observe(this, new Observer<ArrayList<EventSessionPanitia>>() {
+        mainViewModel.getEventSessionPanitia().observe(this, new Observer<ArrayList<EventSession>>() {
             @Override
-            public void onChanged(ArrayList<EventSessionPanitia> eventSessionPanitias) {
-                if (eventSessionPanitias != null) {
-                    adapter.sendEventSessionPanitia(eventSessionPanitias);
+            public void onChanged(ArrayList<EventSession> eventSessions) {
+                if (eventSessions != null) {
+                    adapter.sendEventSessionPanitia(eventSessions);
                     showLoading(false);
                 }
             }

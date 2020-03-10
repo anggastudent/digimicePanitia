@@ -5,35 +5,35 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-public class EventSessionPanitia implements Parcelable {
+public class EventSession implements Parcelable {
 
     private String judul;
-    private ArrayList<EventAgendaPanitia> listAgenda;
+    private ArrayList<EventAgenda> listAgenda;
 
-    public ArrayList<EventAgendaPanitia> getListAgenda() {
+    public ArrayList<EventAgenda> getListAgenda() {
         return listAgenda;
     }
 
-    public void setListAgenda(ArrayList<EventAgendaPanitia> listAgenda) {
+    public void setListAgenda(ArrayList<EventAgenda> listAgenda) {
         this.listAgenda = listAgenda;
     }
 
-    public EventSessionPanitia() {
+    public EventSession() {
     }
 
-    protected EventSessionPanitia(Parcel in) {
+    protected EventSession(Parcel in) {
         judul = in.readString();
     }
 
-    public static final Creator<EventSessionPanitia> CREATOR = new Creator<EventSessionPanitia>() {
+    public static final Creator<EventSession> CREATOR = new Creator<EventSession>() {
         @Override
-        public EventSessionPanitia createFromParcel(Parcel in) {
-            return new EventSessionPanitia(in);
+        public EventSession createFromParcel(Parcel in) {
+            return new EventSession(in);
         }
 
         @Override
-        public EventSessionPanitia[] newArray(int size) {
-            return new EventSessionPanitia[size];
+        public EventSession[] newArray(int size) {
+            return new EventSession[size];
         }
     };
 

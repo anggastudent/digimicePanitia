@@ -20,12 +20,12 @@
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             app:lineOrientation="vertical"
-            app:markerSize="16dp"
+            app:marker="@drawable/icon_marker"
             app:markerInCenter="false"
             app:lineWidth="5dp"
             app:lineStyle="normal"
-            app:startLineColor="@color/colorPrimary"
-            app:endLineColor="@color/colorPrimary"/>
+            app:startLineColor="@color/colorBabyBlue"
+            app:endLineColor="@color/colorBabyBlue"/>
 
         <TextView
             android:id="@+id/judulAgendaPanitia"

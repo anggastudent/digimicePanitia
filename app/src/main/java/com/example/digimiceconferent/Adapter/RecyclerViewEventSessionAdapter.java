@@ -1,6 +1,5 @@
 package com.example.digimiceconferent.Adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.digimiceconferent.Model.EventSessionPanitia;
+import com.example.digimiceconferent.Model.EventSession;
 import com.example.digimiceconferent.R;
 
 import java.util.ArrayList;
 
-public class RecyclerViewListSessionPanitiaAdapter extends RecyclerView.Adapter<RecyclerViewListSessionPanitiaAdapter.SessionPanitiaViewHolder> {
-    ArrayList<EventSessionPanitia> listSession = new ArrayList<>();
-    RecyclerViewListAgendaPanitiaAdapter agendaPanitiaAdapter = new RecyclerViewListAgendaPanitiaAdapter();
+public class RecyclerViewEventSessionAdapter extends RecyclerView.Adapter<RecyclerViewEventSessionAdapter.SessionPanitiaViewHolder> {
+    ArrayList<EventSession> listSession = new ArrayList<>();
+    RecyclerViewEventAgendaAdapter agendaPanitiaAdapter = new RecyclerViewEventAgendaAdapter();
 
-    public void sendEventSessionPanitia(ArrayList<EventSessionPanitia> eventSessionPanitias) {
+    public void sendEventSessionPanitia(ArrayList<EventSession> eventSessions) {
         listSession.clear();
-        listSession.addAll(eventSessionPanitias);
+        listSession.addAll(eventSessions);
         notifyDataSetChanged();
     }
     @NonNull
@@ -33,9 +32,9 @@ public class RecyclerViewListSessionPanitiaAdapter extends RecyclerView.Adapter<
 
     @Override
     public void onBindViewHolder(@NonNull SessionPanitiaViewHolder holder, int position) {
-        EventSessionPanitia eventSessionPanitia = listSession.get(position);
-        holder.nameSession.setText(eventSessionPanitia.getJudul());
-        agendaPanitiaAdapter.sendDataAgenda(eventSessionPanitia.getListAgenda());
+        EventSession eventSession = listSession.get(position);
+        holder.nameSession.setText(eventSession.getJudul());
+        agendaPanitiaAdapter.sendDataAgenda(eventSession.getListAgenda());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.VERTICAL, false);
         holder.rvagenda.setAdapter(agendaPanitiaAdapter);
         holder.rvagenda.setHasFixedSize(true);

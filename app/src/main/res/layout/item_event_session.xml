@@ -27,7 +27,7 @@
         android:layout_gravity="right"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorButton"
         android:layout_marginBottom="16dp"/>
 
     <ProgressBar

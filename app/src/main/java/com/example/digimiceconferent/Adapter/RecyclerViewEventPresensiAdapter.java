@@ -53,6 +53,7 @@ public class RecyclerViewEventPresensiAdapter extends RecyclerView.Adapter<Recyc
     }
 
     public class EventPanitiaViewHolder extends RecyclerView.ViewHolder {
+
         ImageView imageView;
         TextView judul;
         Button btnDetail;

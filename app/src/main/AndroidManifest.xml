@@ -12,8 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:screenOrientation="portrait" android:name=".Activity.HomePanitia"></activity>
-        <activity android:screenOrientation="portrait" android:name=".Activity.DetailEventPanitia" />
+        <activity android:name=".Activity.HomeAnggota"></activity>
+        <activity
+            android:name=".Activity.HomePanitia"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.DetailEventPanitia"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.Login"
             android:screenOrientation="portrait"

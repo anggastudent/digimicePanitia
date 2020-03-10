@@ -5,16 +5,15 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
 import com.example.digimiceconferent.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomePanitia extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +31,7 @@ public class HomePanitia extends AppCompatActivity {
         TextView smallTextView = bottomNavigationView.findViewById(R.id.bottom_nav).findViewById(com.google.android.material.R.id.smallLabel);
         largeTextView.setVisibility(View.GONE);
         smallTextView.setVisibility(View.VISIBLE);
+
 
     }
 

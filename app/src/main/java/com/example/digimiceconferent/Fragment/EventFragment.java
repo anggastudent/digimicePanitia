@@ -43,8 +43,6 @@ public class EventFragment extends Fragment {
     ProgressBar loadingEvent;
     RecyclerViewEventPresensiAdapter adapter;
     RequestQueue queue;
-    ArrayList<EventPresensi> listData;
-
 
     public EventFragment() {
         // Required empty public constructor
@@ -61,12 +59,12 @@ public class EventFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        listData = new ArrayList<>();
         queue = Volley.newRequestQueue(getContext());
         rvEvent = view.findViewById(R.id.rv_event_presensi);
         rvEvent.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new RecyclerViewEventPresensiAdapter();
         loadingEvent = view.findViewById(R.id.loading_event_presensi);
+        showLoading(true);
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         mainViewModel.setEventPanitia(queue, getContext());
         mainViewModel.getEventPanitia().observe(this, new Observer<ArrayList<EventPresensi>>() {
@@ -78,8 +76,7 @@ public class EventFragment extends Fragment {
                 }
             }
         });
-        showLoading(true);
-        adapter.sendEventPanitia(listData);
+
         rvEvent.setAdapter(adapter);
         rvEvent.setHasFixedSize(true);
         adapter.notifyDataSetChanged();
