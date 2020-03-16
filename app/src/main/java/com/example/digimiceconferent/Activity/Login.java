@@ -1,10 +1,7 @@
 package com.example.digimiceconferent.Activity;
 
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -61,7 +58,7 @@ public class Login extends AppCompatActivity {
 
     private void login() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.0.26/myAPI/public/login";
+        String url = "http://192.168.4.105/myAPI/public/login";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -74,14 +71,18 @@ public class Login extends AppCompatActivity {
                     sharedPrefManager.saveSPString(sharedPrefManager.SP_TOKEN, getData.getString("token"));
                     sharedPrefManager.saveSPBoolean(sharedPrefManager.SP_BOOLEAN, true);
                     String role_team = getData.getString("role_team");
+                    String id_user = getData.getString("user_id");
+
                     if(role_team.equals("lead eo")) {
                         sharedPrefManager.saveSPString(sharedPrefManager.SP_ROLE, role_team);
+                        sharedPrefManager.saveSPString(sharedPrefManager.SP_ID_USER, id_user);
                         Intent intent = new Intent(Login.this, HomePanitia.class);
                         startActivity(intent);
                         finish();
                         Toast.makeText(getApplicationContext(), "Login Berhasil", Toast.LENGTH_SHORT).show();
                     } else if (role_team.equals("eo")) {
                         sharedPrefManager.saveSPString(sharedPrefManager.SP_ROLE, role_team);
+                        sharedPrefManager.saveSPString(sharedPrefManager.SP_ID_USER, id_user);
                         Intent intent = new Intent(Login.this, HomeAnggota.class);
                         startActivity(intent);
                         finish();

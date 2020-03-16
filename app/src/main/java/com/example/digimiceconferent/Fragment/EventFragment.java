@@ -1,7 +1,6 @@
 package com.example.digimiceconferent.Fragment;
 
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,21 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.digimiceconferent.Adapter.RecyclerViewEventPresensiAdapter;
+import com.example.digimiceconferent.Adapter.RecyclerViewEventAdapter;
 import com.example.digimiceconferent.MainViewModel;
-import com.example.digimiceconferent.Model.EventPresensi;
+import com.example.digimiceconferent.Model.Event;
 import com.example.digimiceconferent.R;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.example.digimiceconferent.SharedPrefManager;
 
 import java.util.ArrayList;
 
@@ -41,8 +33,9 @@ public class EventFragment extends Fragment {
 
     RecyclerView rvEvent;
     ProgressBar loadingEvent;
-    RecyclerViewEventPresensiAdapter adapter;
+    RecyclerViewEventAdapter adapter;
     RequestQueue queue;
+    SharedPrefManager sharedPrefManager;
 
     public EventFragment() {
         // Required empty public constructor
@@ -62,16 +55,18 @@ public class EventFragment extends Fragment {
         queue = Volley.newRequestQueue(getContext());
         rvEvent = view.findViewById(R.id.rv_event_presensi);
         rvEvent.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new RecyclerViewEventPresensiAdapter();
+        adapter = new RecyclerViewEventAdapter();
+        sharedPrefManager = new SharedPrefManager(getContext());
         loadingEvent = view.findViewById(R.id.loading_event_presensi);
+        String user_id = sharedPrefManager.getSPIdUser();
         showLoading(true);
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setEventPanitia(queue, getContext());
-        mainViewModel.getEventPanitia().observe(this, new Observer<ArrayList<EventPresensi>>() {
+        mainViewModel.setEventPanitia(queue, getContext(),user_id);
+        mainViewModel.getEventPanitia().observe(this, new Observer<ArrayList<Event>>() {
             @Override
-            public void onChanged(ArrayList<EventPresensi> eventPresensis) {
-                if (eventPresensis != null) {
-                    adapter.sendEventPanitia(eventPresensis);
+            public void onChanged(ArrayList<Event> events) {
+                if (events != null) {
+                    adapter.sendEventPanitia(events);
                     showLoading(false);
                 }
             }

@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.example.digimiceconferent.Model.EventPresensi;
+import com.example.digimiceconferent.Model.Event;
 import com.example.digimiceconferent.Model.EventSession;
 import com.example.digimiceconferent.MainViewModel;
 import com.example.digimiceconferent.R;
@@ -43,11 +43,11 @@ public class DetailEventPanitia extends AppCompatActivity {
         tvStart = findViewById(R.id.startDetail);
         tvEnd = findViewById(R.id.endDetail);
 
-        final EventPresensi eventPresensi = getIntent().getParcelableExtra(EXTRA_EVENT_PANITIA);
-        if (eventPresensi != null) {
-            tvJudul.setText(eventPresensi.getJudul());
-            tvStart.setText(eventPresensi.getStart());
-            tvEnd.setText(eventPresensi.getEnd());
+        final Event event = getIntent().getParcelableExtra(EXTRA_EVENT_PANITIA);
+        if (event != null) {
+            tvJudul.setText(event.getJudul());
+            tvStart.setText(event.getStart());
+            tvEnd.setText(event.getEnd());
         }
 
         queue = Volley.newRequestQueue(this);

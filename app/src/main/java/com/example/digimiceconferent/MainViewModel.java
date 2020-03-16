@@ -12,43 +12,41 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.example.digimiceconferent.Model.Event;
 import com.example.digimiceconferent.Model.EventAgenda;
 import com.example.digimiceconferent.Model.EventPacket;
-import com.example.digimiceconferent.Model.EventPresensi;
 import com.example.digimiceconferent.Model.EventSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainViewModel extends ViewModel {
-    private MutableLiveData<ArrayList<EventPresensi>> listEventPanitia = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Event>> listEventPanitia = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<String>> listEventAddPanitia = new MutableLiveData<>();
     private MutableLiveData<ArrayList<EventSession>> listEventSessionPanitia = new MutableLiveData<>();
     private MutableLiveData<ArrayList<EventPacket>> listPacket = new MutableLiveData<>();
+    private SharedPrefManager sharedPrefManager;
 
     public MainViewModel() {
     }
 
-    public void setEventPanitia(RequestQueue queue, final Context context) {
-        final ArrayList<EventPresensi> listItemEventPresensi = new ArrayList<>();
-        String url = "http://192.168.0.26/myAPI/public/event";
-
+    public void setListEventAddPanitia(RequestQueue queue, final Context context, String user_id) {
+        final ArrayList<String> list = new ArrayList<>();
+        String url = "http://192.168.4.105/myAPI/public/event?user_id="+user_id;
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                try{
-                    for (int i = 0; i < response.length(); i++) {
+                try {
+                    for (int i=0; i < response.length(); i++){
                         JSONObject data = response.getJSONObject(i);
-                        EventPresensi eventPresensi = new EventPresensi();
-                        eventPresensi.setJudul(data.getString("name"));
-                        eventPresensi.setStart(data.getString("start"));
-                        eventPresensi.setEnd(data.getString("end"));
-                        listItemEventPresensi.add(eventPresensi);
+                        list.add(data.getString("id"));
                     }
-
-                    listEventPanitia.postValue(listItemEventPresensi);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -56,9 +54,39 @@ public class MainViewModel extends ViewModel {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context,error.toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        queue.add(arrayRequest);
+    }
+    public void setEventPanitia(RequestQueue queue, final Context context, String user_id) {
+        final ArrayList<Event> listItemEvent = new ArrayList<>();
+
+        String url = "http://192.168.4.105/myAPI/public/event?user_id="+user_id;
+       JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+           @Override
+           public void onResponse(JSONArray response) {
+               try {
+                   for (int i = 0; i < response.length(); i++) {
+                       JSONObject data = response.getJSONObject(i);
+                       Event event = new Event();
+                       event.setJudul(data.getString("name"));
+                       event.setStart(data.getString("start"));
+                       event.setEnd(data.getString("end"));
+                       listItemEvent.add(event);
+                   }
+                   listEventPanitia.postValue(listItemEvent);
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+           }
+       }, new Response.ErrorListener() {
+           @Override
+           public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+           }
+       });
 
         queue.add(arrayRequest);
     }
@@ -66,7 +94,7 @@ public class MainViewModel extends ViewModel {
     public void setListEventSessionPanitia(final RequestQueue queue, final Context context, String event_session) {
         final ArrayList<EventSession> listItemEventSession = new ArrayList<>();
 
-        String url = "http://192.168.0.26/myAPI/public/session-agenda/?id_event_session="+event_session;
+        String url = "http://192.168.4.105/myAPI/public/session-agenda/?id_event_session="+event_session;
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -102,7 +130,7 @@ public class MainViewModel extends ViewModel {
 
     public ArrayList<EventAgenda> setEventAgendaPanitia(RequestQueue queue, final Context context) {
         final ArrayList<EventAgenda> listItemAgenda = new ArrayList<>();
-        String url = "http://192.168.0.26/myAPI/public/event-agenda?id_event_session=1&id_event=1";
+        String url = "http://192.168.4.105/myAPI/public/event-agenda?id_event_session=1&id_event=1";
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -136,7 +164,7 @@ public class MainViewModel extends ViewModel {
 
     public void setListPacket(RequestQueue queue, final Context context) {
         final ArrayList<EventPacket> list = new ArrayList<>();
-        String url = "http://192.168.0.26/myAPI/public/paket";
+        String url = "http://192.168.4.105/myAPI/public/paket";
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -170,7 +198,7 @@ public class MainViewModel extends ViewModel {
         return listPacket;
     }
 
-    public LiveData<ArrayList<EventPresensi>> getEventPanitia() {
+    public LiveData<ArrayList<Event>> getEventPanitia() {
         return listEventPanitia;
     }
 

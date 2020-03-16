@@ -4,37 +4,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="16dp"
+    android:padding="32dp"
     tools:context=".Fragment.AddPanitiaFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="email" />
+        android:text="@string/email" />
 
     <EditText
+        android:id="@+id/email_add_panitia"
         android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/border_form"
-        android:layout_height="30dp"
-        android:padding="16dp"
-        android:layout_marginBottom="8dp"/>
+        android:paddingLeft="16dp"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:textSize="16sp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nama Event"/>
+        android:text="@string/nama_event"/>
+
     <Spinner
         android:id="@+id/spinner_event"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:padding="16dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/border_form"
-        android:layout_marginBottom="8dp"/>
+        android:dropDownWidth="wrap_content"
+        android:padding="8dp"
+        android:spinnerMode="dropdown" />
 
     <Button
+        android:id="@+id/bt_add_panitia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tambah anggota"
+        android:text="@string/tambah_anggota"
         android:background="@drawable/border_radius"
         android:textColor="@android:color/white"
         android:backgroundTint="@color/colorButton"/>
