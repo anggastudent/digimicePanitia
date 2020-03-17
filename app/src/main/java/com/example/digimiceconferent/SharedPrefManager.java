@@ -9,6 +9,9 @@ public class SharedPrefManager {
     public static final String SP_BOOLEAN = "boolean";
     public static final String SP_ROLE = "role_team";
     public static final String SP_ID_USER = "id_user";
+    public static final String SP_EMAIL = "email";
+    public static final String SP_NAME = "name_user";
+    public static final String SP_NAME_TEAM = "name_team";
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -42,5 +45,17 @@ public class SharedPrefManager {
 
     public String getSPIdUser() {
         return sharedPreferences.getString(SP_ID_USER, "");
+    }
+
+    public String getSpEmail() {
+        return sharedPreferences.getString(SP_EMAIL, "");
+    }
+
+    public String getSpName() {
+        return sharedPreferences.getString(SP_NAME, "");
+    }
+
+    public String getSpNameTeam() {
+        return sharedPreferences.getString(SP_NAME_TEAM, "");
     }
 }

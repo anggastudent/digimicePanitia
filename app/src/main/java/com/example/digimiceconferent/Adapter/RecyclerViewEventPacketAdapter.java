@@ -1,5 +1,6 @@
 package com.example.digimiceconferent.Adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.digimiceconferent.Activity.DetailPacket;
 import com.example.digimiceconferent.Model.EventPacket;
 import com.example.digimiceconferent.R;
 
@@ -29,11 +31,20 @@ public class RecyclerViewEventPacketAdapter extends RecyclerView.Adapter<Recycle
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EventPacketHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final EventPacketHolder holder, int position) {
         EventPacket eventPacket = listPacket.get(position);
         holder.name_packet.setText(eventPacket.getName_packet());
         holder.max_participant.setText(eventPacket.getMax_participant());
         holder.price.setText(eventPacket.getPrice());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventPacket eventPacket = listPacket.get(holder.getAdapterPosition());
+                Intent intent = new Intent(holder.itemView.getContext(), DetailPacket.class);
+                intent.putExtra(DetailPacket.EXTRA_EVENT_PACKET, eventPacket);
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
