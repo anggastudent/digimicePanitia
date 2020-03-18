@@ -173,6 +173,7 @@ public class MainViewModel extends ViewModel {
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject data = response.getJSONObject(i);
                         EventPacket eventPacket = new EventPacket();
+                        eventPacket.setId(data.getString("id"));
                         eventPacket.setName_packet(data.getString("name"));
                         eventPacket.setMax_participant(data.getString("max_participant")+" Maksimal Peserta");
                         eventPacket.setPrice("Rp. "+data.getString("price"));

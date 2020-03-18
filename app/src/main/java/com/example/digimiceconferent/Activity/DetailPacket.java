@@ -2,7 +2,9 @@ package com.example.digimiceconferent.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -21,7 +23,8 @@ public class DetailPacket extends AppCompatActivity {
         setContentView(R.layout.activity_detail_packet);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Detail Packet");
+            getSupportActionBar().setTitle("Detail Paket");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         tvEmail = findViewById(R.id.email_user_detail_packet);
@@ -42,5 +45,13 @@ public class DetailPacket extends AppCompatActivity {
             tvMaxParticipant.setText(eventPacket.getMax_participant());
             tvPricePacket.setText(eventPacket.getPrice());
         }
+
+        btKelolaPaket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailPacket.this, KelolaPacket.class);
+                startActivity(intent);
+            }
+        });
     }
 }

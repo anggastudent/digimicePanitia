@@ -12,17 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.DetailPacket"></activity>
+        <activity
+            android:name=".Activity.KelolaPacket"></activity>
+        <activity
+            android:name=".Activity.DetailPacket"
+            android:parentActivityName=".Activity.HomePanitia" />
         <activity android:name=".Activity.HomeAnggota" />
         <activity
             android:name=".Activity.HomePanitia"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="fullSensor" />
         <activity
             android:name=".Activity.DetailEventPanitia"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="fullSensor" />
         <activity
             android:name=".Activity.Login"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

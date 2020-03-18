@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.KelolaPacket">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:padding="16dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="21sp"
+                android:text="@string/name_packet"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@android:color/white"
+                android:layout_height="wrap_content"
+                android:text="@string/max_participant"/>
+            <TextView
+                android:textColor="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/price"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/nama_event"/>
+
+            <EditText
+                android:id="@+id/name_event_kelola"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:paddingLeft="16dp"
+                android:hint="@string/nama_event"
+                android:inputType="text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/deskripsi"/>
+
+            <EditText
+                android:id="@+id/deskripsi_kelola"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:hint="@string/deskripsi"
+                android:inputType="textMultiLine"
+                android:paddingLeft="16dp"
+                android:scrollbars="vertical"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/tempat"/>
+
+            <EditText
+                android:id="@+id/tempat_event_kelola"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:paddingLeft="16dp"
+                android:hint="@string/tempat"
+                android:inputType="text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/alamat"/>
+
+            <EditText
+                android:id="@+id/alamat_event_kelola"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:paddingLeft="16dp"
+                android:hint="@string/alamat"
+                android:inputType="text"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:paddingRight="8dp"
+                    android:text="@string/start_event"/>
+                <Button
+                    android:id="@+id/bt_start_date"
+                    android:background="@drawable/ic_date_range_black_24dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"/>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/start_event_kelola"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:paddingLeft="16dp"
+                android:hint="@string/start_event"
+                android:inputType="text"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:paddingRight="8dp"
+                    android:text="@string/time"/>
+                <Button
+                    android:id="@+id/bt_start_time"
+                    android:background="@drawable/ic_access_alarm_black_24dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"/>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/start_time_event_kelola"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:paddingLeft="16dp"
+                android:hint="@string/time"
+                android:inputType="text"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:paddingRight="8dp"
+                    android:text="@string/end_event"/>
+                <Button
+                    android:id="@+id/bt_end_date"
+                    android:background="@drawable/ic_date_range_black_24dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"/>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/end_event_kelola"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:paddingLeft="16dp"
+                android:hint="@string/start_event"
+                android:inputType="text"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:paddingRight="8dp"
+                    android:text="@string/time"/>
+                <Button
+                    android:id="@+id/bt_end_time"
+                    android:background="@drawable/ic_access_alarm_black_24dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"/>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/end_time_event_kelola"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:paddingLeft="16dp"
+                android:hint="@string/time"
+                android:inputType="text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/jenis_absensi"/>
+
+            <Spinner
+                android:id="@+id/spinner_presensi"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:dropDownWidth="wrap_content"
+                android:padding="8dp"
+                android:entries="@array/presensi"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/banner"/>
+
+            <ImageButton
+                android:id="@+id/add_img_banner_event"
+                android:layout_width="wrap_content"
+                android:src="@drawable/ic_image_black_24dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/max_participant"/>
+
+            <TextView
+                android:id="@+id/max_participant_kelola"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:paddingRight="8dp"
+                android:textSize="21sp"
+                android:text="@string/max_participant"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/price"/>
+
+            <EditText
+                android:id="@+id/price_event_kelola"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:paddingLeft="16dp"
+                android:hint="@string/price"
+                android:inputType="text"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/bt_pilih_paket"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_radius"
+                android:backgroundTint="@color/colorButton"
+                android:textColor="@android:color/white"
+                android:text="@string/choose_packet"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

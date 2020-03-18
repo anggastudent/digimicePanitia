@@ -4,17 +4,31 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class EventPacket implements Parcelable {
+    String id;
     String name_packet;
     String max_participant;
     String price;
 
-    public EventPacket() {
-    }
+
 
     protected EventPacket(Parcel in) {
+        id = in.readString();
         name_packet = in.readString();
         max_participant = in.readString();
         price = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name_packet);
+        dest.writeString(max_participant);
+        dest.writeString(price);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<EventPacket> CREATOR = new Creator<EventPacket>() {
@@ -28,6 +42,17 @@ public class EventPacket implements Parcelable {
             return new EventPacket[size];
         }
     };
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public EventPacket() {
+    }
 
     public String getName_packet() {
         return name_packet;
@@ -53,15 +78,4 @@ public class EventPacket implements Parcelable {
         this.price = price;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name_packet);
-        dest.writeString(max_participant);
-        dest.writeString(price);
-    }
 }
