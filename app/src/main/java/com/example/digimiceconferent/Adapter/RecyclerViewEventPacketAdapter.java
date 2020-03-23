@@ -35,7 +35,7 @@ public class RecyclerViewEventPacketAdapter extends RecyclerView.Adapter<Recycle
         EventPacket eventPacket = listPacket.get(position);
         holder.name_packet.setText(eventPacket.getName_packet());
         holder.max_participant.setText(eventPacket.getMax_participant());
-        holder.price.setText(eventPacket.getPrice());
+        holder.price.setText("Rp. "+eventPacket.getPrice());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

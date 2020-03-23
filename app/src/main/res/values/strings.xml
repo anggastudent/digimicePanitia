@@ -34,6 +34,7 @@
     <string name="banner">Banner</string>
     <string name="choose_packet">Pilih Paket</string>
     <string name="upload">Upload</string>
+    <string name="harga_tiket">Harga Tiket</string>
 
     <string-array name="presensi">
         <item>Bebas</item>

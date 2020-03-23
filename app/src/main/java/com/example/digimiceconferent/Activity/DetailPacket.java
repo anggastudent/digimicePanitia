@@ -36,20 +36,21 @@ public class DetailPacket extends AppCompatActivity {
         btKelolaPaket = findViewById(R.id.bt_kelola_paket);
         sharedPrefManager = new SharedPrefManager(this);
 
-        EventPacket eventPacket = getIntent().getParcelableExtra(EXTRA_EVENT_PACKET);
+        final EventPacket eventPacket = getIntent().getParcelableExtra(EXTRA_EVENT_PACKET);
         if (eventPacket != null) {
             tvEmail.setText(sharedPrefManager.getSpEmail());
             tvTeam.setText("("+sharedPrefManager.getSpNameTeam()+")");
             tvNamePanitia.setText(sharedPrefManager.getSpName());
             tvNamePacket.setText(eventPacket.getName_packet());
             tvMaxParticipant.setText(eventPacket.getMax_participant());
-            tvPricePacket.setText(eventPacket.getPrice());
+            tvPricePacket.setText("Rp. "+eventPacket.getPrice());
         }
 
         btKelolaPaket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetailPacket.this, KelolaPacket.class);
+                intent.putExtra(KelolaPacket.EXTRA_INTENT, eventPacket);
                 startActivity(intent);
             }
         });

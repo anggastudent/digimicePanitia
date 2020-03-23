@@ -38,7 +38,7 @@ public class MainViewModel extends ViewModel {
 
     public void setListEventAddPanitia(RequestQueue queue, final Context context, String user_id) {
         final ArrayList<String> list = new ArrayList<>();
-        String url = "http://192.168.4.105/myAPI/public/event?user_id="+user_id;
+        String url = "http://192.168.4.107/myAPI/public/event?user_id="+user_id;
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -63,7 +63,7 @@ public class MainViewModel extends ViewModel {
     public void setEventPanitia(RequestQueue queue, final Context context, String user_id) {
         final ArrayList<Event> listItemEvent = new ArrayList<>();
 
-        String url = "http://192.168.4.105/myAPI/public/event?user_id="+user_id;
+        String url = "http://192.168.4.107/myAPI/public/event?user_id="+user_id;
        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
            @Override
            public void onResponse(JSONArray response) {
@@ -94,7 +94,7 @@ public class MainViewModel extends ViewModel {
     public void setListEventSessionPanitia(final RequestQueue queue, final Context context, String event_session) {
         final ArrayList<EventSession> listItemEventSession = new ArrayList<>();
 
-        String url = "http://192.168.4.105/myAPI/public/session-agenda/?id_event_session="+event_session;
+        String url = "http://192.168.4.107/myAPI/public/session-agenda/?id_event_session="+event_session;
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -130,7 +130,7 @@ public class MainViewModel extends ViewModel {
 
     public ArrayList<EventAgenda> setEventAgendaPanitia(RequestQueue queue, final Context context) {
         final ArrayList<EventAgenda> listItemAgenda = new ArrayList<>();
-        String url = "http://192.168.4.105/myAPI/public/event-agenda?id_event_session=1&id_event=1";
+        String url = "http://192.168.4.107/myAPI/public/event-agenda?id_event_session=1&id_event=1";
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -164,7 +164,8 @@ public class MainViewModel extends ViewModel {
 
     public void setListPacket(RequestQueue queue, final Context context) {
         final ArrayList<EventPacket> list = new ArrayList<>();
-        String url = "http://192.168.4.105/myAPI/public/paket";
+        String url = "http://192.168.4.107/myAPI/public/paket";
+
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -176,7 +177,7 @@ public class MainViewModel extends ViewModel {
                         eventPacket.setId(data.getString("id"));
                         eventPacket.setName_packet(data.getString("name"));
                         eventPacket.setMax_participant(data.getString("max_participant")+" Maksimal Peserta");
-                        eventPacket.setPrice("Rp. "+data.getString("price"));
+                        eventPacket.setPrice(data.getString("price"));
                         list.add(eventPacket);
 
                     }

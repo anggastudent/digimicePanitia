@@ -19,6 +19,7 @@
             android:padding="16dp"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/name_paket_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
@@ -26,11 +27,13 @@
                 android:text="@string/name_packet"/>
 
             <TextView
+                android:id="@+id/max_participant_title"
                 android:layout_width="match_parent"
                 android:textColor="@android:color/white"
                 android:layout_height="wrap_content"
                 android:text="@string/max_participant"/>
             <TextView
+                android:id="@+id/price_title"
                 android:textColor="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -151,36 +154,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:paddingRight="8dp"
-                    android:text="@string/time"/>
-                <Button
-                    android:id="@+id/bt_start_time"
-                    android:background="@drawable/ic_access_alarm_black_24dp"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"/>
-
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/start_time_event_kelola"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/border_form"
-                android:paddingLeft="16dp"
-                android:hint="@string/time"
-                android:inputType="text"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:paddingRight="8dp"
                     android:text="@string/end_event"/>
                 <Button
                     android:id="@+id/bt_end_date"
@@ -197,37 +170,7 @@
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/border_form"
                 android:paddingLeft="16dp"
-                android:hint="@string/start_event"
-                android:inputType="text"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:paddingRight="8dp"
-                    android:text="@string/time"/>
-                <Button
-                    android:id="@+id/bt_end_time"
-                    android:background="@drawable/ic_access_alarm_black_24dp"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"/>
-
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/end_time_event_kelola"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/border_form"
-                android:paddingLeft="16dp"
-                android:hint="@string/time"
+                android:hint="@string/end_event"
                 android:inputType="text"
                 android:textSize="16sp" />
 
@@ -255,6 +198,7 @@
                 android:layout_marginBottom="8dp"
                 android:paddingRight="8dp"
                 android:text="@string/banner"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -279,26 +223,10 @@
             </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:paddingRight="8dp"
-                android:text="@string/max_participant"/>
-
-            <TextView
-                android:id="@+id/max_participant_kelola"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:paddingRight="8dp"
-                android:textSize="21sp"
-                android:text="@string/max_participant"/>
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="@string/price"/>
+                android:text="@string/harga_tiket"/>
 
             <EditText
                 android:id="@+id/price_event_kelola"
@@ -307,7 +235,7 @@
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/border_form"
                 android:paddingLeft="16dp"
-                android:hint="@string/price"
+                android:hint="@string/harga_tiket"
                 android:inputType="text"
                 android:textSize="16sp" />
 
