@@ -12,6 +12,7 @@ public class SharedPrefManager {
     public static final String SP_EMAIL = "email";
     public static final String SP_NAME = "name_user";
     public static final String SP_NAME_TEAM = "name_team";
+    public static final String SP_ID_EVENT = "id_event";
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -57,5 +58,9 @@ public class SharedPrefManager {
 
     public String getSpNameTeam() {
         return sharedPreferences.getString(SP_NAME_TEAM, "");
+    }
+
+    public String getSpIdEvent() {
+        return sharedPreferences.getString(SP_ID_EVENT, "");
     }
 }

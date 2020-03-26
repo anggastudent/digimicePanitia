@@ -62,7 +62,6 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
     int price;
     int PICK_IMAGE_REQUEST = 111;
     Bitmap bitmap;
-    ProgressDialog loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

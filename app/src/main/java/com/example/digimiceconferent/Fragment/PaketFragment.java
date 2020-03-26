@@ -38,6 +38,11 @@ public class PaketFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static PaketFragment newInstance() {
+        PaketFragment fragment = new PaketFragment();
+        return fragment;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

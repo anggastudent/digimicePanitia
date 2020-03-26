@@ -71,9 +71,13 @@ public class MainViewModel extends ViewModel {
                    for (int i = 0; i < response.length(); i++) {
                        JSONObject data = response.getJSONObject(i);
                        Event event = new Event();
+                       event.setId(data.getString("id"));
                        event.setJudul(data.getString("name"));
                        event.setStart(data.getString("start"));
                        event.setEnd(data.getString("end"));
+                       event.setPlace(data.getString("place"));
+                       event.setAddress(data.getString("address"));
+                       event.setBanner(data.getString("banner"));
                        listItemEvent.add(event);
                    }
                    listEventPanitia.postValue(listItemEvent);

@@ -8,16 +8,16 @@ public class Event implements Parcelable {
     String judul;
     String start;
     String end;
+    String place;
+    String address;
+    String banner;
 
-    public String getId() {
-        return id;
+    public String getBanner() {
+        return banner;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Event() {
+    public void setBanner(String banner) {
+        this.banner = banner;
     }
 
     protected Event(Parcel in) {
@@ -25,6 +25,9 @@ public class Event implements Parcelable {
         judul = in.readString();
         start = in.readString();
         end = in.readString();
+        place = in.readString();
+        address = in.readString();
+        banner = in.readString();
     }
 
     @Override
@@ -33,6 +36,9 @@ public class Event implements Parcelable {
         dest.writeString(judul);
         dest.writeString(start);
         dest.writeString(end);
+        dest.writeString(place);
+        dest.writeString(address);
+        dest.writeString(banner);
     }
 
     @Override
@@ -51,6 +57,33 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Event() {
+    }
 
     public String getJudul() {
         return judul;

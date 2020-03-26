@@ -22,6 +22,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         if (context != null) {
             listener = (DialogDateListener) context;
         }
+
     }
 
     @Override

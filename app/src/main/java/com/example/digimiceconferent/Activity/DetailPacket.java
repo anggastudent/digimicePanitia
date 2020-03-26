@@ -36,6 +36,7 @@ public class DetailPacket extends AppCompatActivity {
         btKelolaPaket = findViewById(R.id.bt_kelola_paket);
         sharedPrefManager = new SharedPrefManager(this);
 
+
         final EventPacket eventPacket = getIntent().getParcelableExtra(EXTRA_EVENT_PACKET);
         if (eventPacket != null) {
             tvEmail.setText(sharedPrefManager.getSpEmail());

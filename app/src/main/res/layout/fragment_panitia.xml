@@ -19,6 +19,7 @@
         app:tabIndicatorFullWidth="true"
         app:tabMode="scrollable"
         app:tabGravity="center"/>
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager_panitia"
         android:layout_width="match_parent"
