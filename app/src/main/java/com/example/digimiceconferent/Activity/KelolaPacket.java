@@ -32,6 +32,7 @@ import com.example.digimiceconferent.Fragment.DatePickerFragment;
 import com.example.digimiceconferent.Fragment.TimePickerFragment;
 import com.example.digimiceconferent.Model.EventPacket;
 import com.example.digimiceconferent.R;
+import com.example.digimiceconferent.SharedPrefManager;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -62,6 +63,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
     int price;
     int PICK_IMAGE_REQUEST = 111;
     Bitmap bitmap;
+    SharedPrefManager sharedPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +105,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-
+        sharedPrefManager = new SharedPrefManager(this);
 
         EventPacket eventPacket = getIntent().getParcelableExtra(EXTRA_INTENT);
         if (eventPacket != null) {
@@ -233,6 +235,9 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                 data.put("presence_type", spPresensi.getSelectedItem().toString());
                 data.put("event_paket_id", paket_id);
                 data.put("event_ticket_price", etPriceEvent.getText().toString());
+                data.put("user_id", sharedPrefManager.getSPIdUser());
+                data.put("team_role", sharedPrefManager.getSPRole());
+                data.put("name_team", sharedPrefManager.getSpNameTeam());
                 return data;
             }
         };

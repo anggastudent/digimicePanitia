@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.example.digimiceconferent.Model.Agenda;
 import com.example.digimiceconferent.Model.Event;
 import com.example.digimiceconferent.Model.EventAgenda;
 import com.example.digimiceconferent.Model.EventPacket;
@@ -31,6 +32,7 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<ArrayList<String>> listEventAddPanitia = new MutableLiveData<>();
     private MutableLiveData<ArrayList<EventSession>> listEventSessionPanitia = new MutableLiveData<>();
     private MutableLiveData<ArrayList<EventPacket>> listPacket = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Agenda>> listAgenda = new MutableLiveData<>();
     private SharedPrefManager sharedPrefManager;
 
     public MainViewModel() {
@@ -200,6 +202,41 @@ public class MainViewModel extends ViewModel {
         queue.add(arrayRequest);
     }
 
+    public void setListAgenda(RequestQueue queue, final Context context, String id_event) {
+
+        final ArrayList<Agenda> list = new ArrayList<>();
+        String url = "http://192.168.4.107/myAPI/public/agenda?event_id="+id_event;
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject data = response.getJSONObject(i);
+                        Agenda agenda = new Agenda();
+                        agenda.setNamaAgenda(data.getString("name"));
+                        agenda.setDescAgenda(data.getString("description"));
+                        agenda.setStartAgenda(data.getString("start"));
+                        agenda.setEndAgenda(data.getString("end"));
+                        agenda.setSessionAgenda(data.getString("session"));
+                        list.add(agenda);
+                    }
+
+                    listAgenda.postValue(list);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        queue.add(arrayRequest);
+    }
     public LiveData<ArrayList<EventPacket>> getEventPacket() {
         return listPacket;
     }
@@ -210,6 +247,10 @@ public class MainViewModel extends ViewModel {
 
     public LiveData<ArrayList<EventSession>> getEventSessionPanitia() {
         return listEventSessionPanitia;
+    }
+
+    public LiveData<ArrayList<Agenda>> getAgenda() {
+        return listAgenda;
     }
 
 
