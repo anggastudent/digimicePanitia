@@ -37,11 +37,11 @@ public class RecyclerViewAgendaAdapter extends RecyclerView.Adapter<RecyclerView
         holder.tvSessionAgenda.setText(agenda.getSessionAgenda());
         holder.tvNameAgenda.setText(agenda.getNamaAgenda());
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date dateStart = dateFormat.parse(agenda.getStartAgenda());
             Date dateEnd = dateFormat.parse(agenda.getEndAgenda());
-            SimpleDateFormat dateFormatNew = new SimpleDateFormat("dd MMMM yyyy");
+            SimpleDateFormat dateFormatNew = new SimpleDateFormat("dd MMMM yyyy HH:mm");
             holder.tvWaktuAgenda.setText(dateFormatNew.format(dateStart)+" - "+dateFormatNew.format(dateEnd));
 
         } catch (ParseException e) {

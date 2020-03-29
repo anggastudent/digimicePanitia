@@ -38,6 +38,12 @@
     <string name="upload">Upload</string>
     <string name="harga_tiket">Harga Tiket</string>
     <string name="edit_paket">Edit Paket</string>
+    <string name="session">Sesi</string>
+    <string name="nama_sesi">Nama Sesi</string>
+    <string name="start_agenda">Start Agenda</string>
+    <string name="end_agenda">End Agenda</string>
+    <string name="add_agenda">Tambah Agenda</string>
+    <string name="nama_agenda">Nama Agenda</string>
 
     <string-array name="presensi">
         <item>Bebas</item>

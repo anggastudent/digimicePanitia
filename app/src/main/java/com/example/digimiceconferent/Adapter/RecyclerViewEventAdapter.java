@@ -16,6 +16,7 @@ import com.example.digimiceconferent.Activity.KelolaEvent;
 import com.example.digimiceconferent.Activity.KelolaPacket;
 import com.example.digimiceconferent.Model.Event;
 import com.example.digimiceconferent.R;
+import com.example.digimiceconferent.SharedPrefManager;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -27,6 +28,7 @@ import java.util.Locale;
 public class RecyclerViewEventAdapter extends RecyclerView.Adapter<RecyclerViewEventAdapter.EventPanitiaViewHolder> {
 
     ArrayList<Event> listEvent = new ArrayList<>();
+    SharedPrefManager sharedPrefManager;
 
     public void sendEventPanitia(ArrayList<Event> events) {
         listEvent.clear();
@@ -44,13 +46,16 @@ public class RecyclerViewEventAdapter extends RecyclerView.Adapter<RecyclerViewE
     @Override
     public void onBindViewHolder(@NonNull final EventPanitiaViewHolder holder, int position) {
         final Event event = listEvent.get(position);
+        sharedPrefManager = new SharedPrefManager(holder.itemView.getContext());
+
         holder.judul.setText(event.getJudul());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            Date date = dateFormat.parse(event.getStart());
-            SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd MMMM yyyy");
-            holder.start.setText(dateFormat1.format(date));
+            Date dateStart = dateFormat.parse(event.getStart());
+            SimpleDateFormat dateFormatNew = new SimpleDateFormat("dd MMMM yyyy");
+            holder.start.setText(dateFormatNew.format(dateStart));
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -60,13 +65,31 @@ public class RecyclerViewEventAdapter extends RecyclerView.Adapter<RecyclerViewE
                 .apply(new RequestOptions().override(100, 100))
                 .into(holder.imageView);
 
+
+
         holder.btnDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Event event = listEvent.get(holder.getAdapterPosition());
+
+                sharedPrefManager.saveSPString(sharedPrefManager.SP_ID_EVENT, event.getId());
+                sharedPrefManager.saveSPString(sharedPrefManager.SP_NAME_EVENT, event.getJudul());
+                sharedPrefManager.saveSPString(sharedPrefManager.SP_PLACE_EVENT, event.getPlace());
+                sharedPrefManager.saveSPString(sharedPrefManager.SP_ADDRESS_EVENT, event.getAddress());
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    Date dateStart = dateFormat.parse(event.getStart());
+                    Date dateEnd = dateFormat.parse(event.getEnd());
+                    SimpleDateFormat dateFormatNew = new SimpleDateFormat("dd MMMM yyyy");
+                    sharedPrefManager.saveSPString(sharedPrefManager.SP_WAKTU_EVENT, dateFormatNew.format(dateStart)+" - "+dateFormatNew.format(dateEnd));
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 Intent intent = new Intent(holder.itemView.getContext(), KelolaEvent.class);
-                intent.putExtra(KelolaEvent.EXTRA_INTENT, event);
                 holder.itemView.getContext().startActivity(intent);
+
             }
         });
     }

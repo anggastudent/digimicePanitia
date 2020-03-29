@@ -29,8 +29,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Fragment.DatePickerFragment;
-import com.example.digimiceconferent.Fragment.TimePickerFragment;
-import com.example.digimiceconferent.Model.EventPacket;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 
@@ -41,22 +39,18 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class KelolaPacket extends AppCompatActivity implements View.OnClickListener, DatePickerFragment.DialogDateListener, TimePickerFragment.DialogTimeListener {
+public class KelolaPacket extends AppCompatActivity implements View.OnClickListener, DatePickerFragment.DialogDateListener{
 
     EditText etNameEvent,etDescEvent, etPlaceEvent, etAddressEvent, etStartDateEvent,
             etStartTimeEvent, etEndDateEvent, etEndTimeEvent, etPriceEvent;
-    Button btStartDate, btStartTime, btEndDate, btEndTime,btPilihPaket, btaddImg;
+    Button btStartDate, btEndDate,btPilihPaket, btaddImg;
     TextView tvNamePaket, tvMaxParticipant, tvPrice;
     ImageView imgBanner;
     RequestQueue queue;
     Spinner spPresensi;
 
     final String START_DATE_PICKER = "start date picker";
-    final String START_TIME_PICKER = "start time picker";
     final String END_DATE_PICKER = "end date picker";
-    final String END_TIME_PICKER = "end time picker";
-
-    public static String EXTRA_INTENT = "extra intent";
 
     String paket_id;
     String imageString;
@@ -72,6 +66,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Kelola Paket");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         tvNamePaket = findViewById(R.id.name_paket_title);
@@ -106,19 +101,17 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
         });
 
         sharedPrefManager = new SharedPrefManager(this);
+        tvNamePaket.setText(sharedPrefManager.getSpNamePacket());
+        tvMaxParticipant.setText(sharedPrefManager.getSpMaxParticipant()+" Maksimal Peserta");
+        tvPrice.setText("Rp. "+sharedPrefManager.getSpPricePacket());
+        paket_id = sharedPrefManager.getSpIdPacket();
+        price = Integer.parseInt(sharedPrefManager.getSpPricePacket());
 
-        EventPacket eventPacket = getIntent().getParcelableExtra(EXTRA_INTENT);
-        if (eventPacket != null) {
-            tvNamePaket.setText(eventPacket.getName_packet());
-            tvMaxParticipant.setText(eventPacket.getMax_participant());
-            tvPrice.setText("Rp. "+eventPacket.getPrice());
-            paket_id = eventPacket.getId();
-            price = Integer.parseInt(eventPacket.getPrice());
-            if (price == 0) {
-                etPriceEvent.setEnabled(false);
-                etPriceEvent.setText("0");
-            }
+        if (price == 0) {
+            etPriceEvent.setEnabled(false);
+            etPriceEvent.setText("0");
         }
+
     }
 
     @Override
@@ -140,7 +133,6 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                 intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(Intent.createChooser(intent, "Select Image"),PICK_IMAGE_REQUEST);
                 break;
-
         }
     }
 
@@ -162,23 +154,6 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @Override
-    public void onDialogTimeSet(String tag, int hourDay, int minute) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hourDay);
-        calendar.set(Calendar.MINUTE, minute);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-
-        switch (tag) {
-            case START_TIME_PICKER:
-                etStartTimeEvent.setText(dateFormat.format(calendar.getTime()));
-                break;
-            case END_TIME_PICKER:
-                etEndTimeEvent.setText(dateFormat.format(calendar.getTime()));
-            default:
-                break;
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

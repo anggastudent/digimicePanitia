@@ -13,7 +13,7 @@ import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 
 public class DetailPacket extends AppCompatActivity {
-    public static final String EXTRA_EVENT_PACKET = "packet_event";
+
     TextView tvNamePanitia, tvEmail, tvNamePacket, tvMaxParticipant, tvPricePacket, tvTeam;
     Button btKelolaPaket;
     SharedPrefManager sharedPrefManager;
@@ -36,22 +36,17 @@ public class DetailPacket extends AppCompatActivity {
         btKelolaPaket = findViewById(R.id.bt_kelola_paket);
         sharedPrefManager = new SharedPrefManager(this);
 
-
-        final EventPacket eventPacket = getIntent().getParcelableExtra(EXTRA_EVENT_PACKET);
-        if (eventPacket != null) {
-            tvEmail.setText(sharedPrefManager.getSpEmail());
-            tvTeam.setText("("+sharedPrefManager.getSpNameTeam()+")");
-            tvNamePanitia.setText(sharedPrefManager.getSpName());
-            tvNamePacket.setText(eventPacket.getName_packet());
-            tvMaxParticipant.setText(eventPacket.getMax_participant());
-            tvPricePacket.setText("Rp. "+eventPacket.getPrice());
-        }
+        tvEmail.setText(sharedPrefManager.getSpEmail());
+        tvTeam.setText("("+sharedPrefManager.getSpNameTeam()+")");
+        tvNamePanitia.setText(sharedPrefManager.getSpName());
+        tvNamePacket.setText(sharedPrefManager.getSpNamePacket());
+        tvMaxParticipant.setText(sharedPrefManager.getSpMaxParticipant()+" Maksimal Peserta");
+        tvPricePacket.setText("Rp. "+sharedPrefManager.getSpPricePacket());
 
         btKelolaPaket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetailPacket.this, KelolaPacket.class);
-                intent.putExtra(KelolaPacket.EXTRA_INTENT, eventPacket);
                 startActivity(intent);
             }
         });

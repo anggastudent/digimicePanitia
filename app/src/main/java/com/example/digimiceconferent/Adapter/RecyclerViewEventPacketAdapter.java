@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.digimiceconferent.Activity.DetailPacket;
 import com.example.digimiceconferent.Model.EventPacket;
 import com.example.digimiceconferent.R;
+import com.example.digimiceconferent.SharedPrefManager;
 
 import java.util.ArrayList;
 
@@ -32,16 +33,21 @@ public class RecyclerViewEventPacketAdapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public void onBindViewHolder(@NonNull final EventPacketHolder holder, int position) {
-        EventPacket eventPacket = listPacket.get(position);
+        final EventPacket eventPacket = listPacket.get(position);
         holder.name_packet.setText(eventPacket.getName_packet());
-        holder.max_participant.setText(eventPacket.getMax_participant());
+        holder.max_participant.setText(eventPacket.getMax_participant()+" Maksimal Preserta");
         holder.price.setText("Rp. "+eventPacket.getPrice());
+
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventPacket eventPacket = listPacket.get(holder.getAdapterPosition());
+                SharedPrefManager sharedPrefManager = new SharedPrefManager(holder.itemView.getContext());
+                sharedPrefManager.saveSPString(sharedPrefManager.SP_NAME_PACKET, eventPacket.getName_packet());
+                sharedPrefManager.saveSPString(sharedPrefManager.SP_MAX_PARTICIPANT, eventPacket.getMax_participant());
+                sharedPrefManager.saveSPString(sharedPrefManager.SP_PRICE_PACKET, eventPacket.getPrice());
+                sharedPrefManager.saveSPString(sharedPrefManager.SP_ID_PACKET, eventPacket.getId());
                 Intent intent = new Intent(holder.itemView.getContext(), DetailPacket.class);
-                intent.putExtra(DetailPacket.EXTRA_EVENT_PACKET, eventPacket);
                 holder.itemView.getContext().startActivity(intent);
             }
         });

@@ -19,7 +19,6 @@ import java.util.Locale;
 
 public class KelolaEvent extends AppCompatActivity {
 
-    public static String EXTRA_INTENT = "extra intent";
     TextView namaEvent, tempatEvent, alamatEvent, waktuEvent;
     SharedPrefManager sharedPrefManager;
 
@@ -46,22 +45,10 @@ public class KelolaEvent extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        Event event = getIntent().getParcelableExtra(EXTRA_INTENT);
-        if (event != null) {
-            sharedPrefManager.saveSPString(sharedPrefManager.SP_ID_EVENT, event.getId());
-            namaEvent.setText(event.getJudul());
-            tempatEvent.setText(event.getPlace());
-            alamatEvent.setText(event.getAddress());
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                Date dateStart = dateFormat.parse(event.getStart());
-                Date dateEnd = dateFormat.parse(event.getEnd());
-                SimpleDateFormat dateFormatNew = new SimpleDateFormat("dd MMMM yyyy");
-                waktuEvent.setText(dateFormatNew.format(dateStart)+" - "+dateFormatNew.format(dateEnd));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        namaEvent.setText(sharedPrefManager.getSpNameEvent());
+        tempatEvent.setText(sharedPrefManager.getSpPlaceEvent());
+        alamatEvent.setText(sharedPrefManager.getSpAddressEvent());
+        waktuEvent.setText(sharedPrefManager.getSpWaktuEvent());
 
-        }
     }
 }

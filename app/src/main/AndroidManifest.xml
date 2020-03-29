@@ -13,13 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.AddAgenda"></activity>
+        <activity android:name=".Activity.AddAgenda"
+            android:parentActivityName=".Activity.KelolaEvent"></activity>
         <activity
             android:name=".Activity.KelolaEvent"
             android:parentActivityName=".Activity.HomePanitia"
             android:screenOrientation="fullSensor"></activity>
         <activity
             android:name=".Activity.KelolaPacket"
+            android:parentActivityName=".Activity.DetailPacket"
             android:screenOrientation="fullSensor" />
         <activity
             android:name=".Activity.DetailPacket"

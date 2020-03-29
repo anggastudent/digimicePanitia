@@ -59,17 +59,7 @@ public class DetailEventPanitia extends AppCompatActivity {
         loadingSession = findViewById(R.id.loadingSessionPanitia);
         showLoading(true);
 
-        mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setListEventSessionPanitia(queue,this,"2");
-        mainViewModel.getEventSessionPanitia().observe(this, new Observer<ArrayList<EventSession>>() {
-            @Override
-            public void onChanged(ArrayList<EventSession> eventSessions) {
-                if (eventSessions != null) {
-                    adapter.sendEventSessionPanitia(eventSessions);
-                    showLoading(false);
-                }
-            }
-        });
+
 
         rvSession.setAdapter(adapter);
         rvSession.setHasFixedSize(true);

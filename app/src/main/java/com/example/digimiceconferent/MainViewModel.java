@@ -33,7 +33,6 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<ArrayList<EventSession>> listEventSessionPanitia = new MutableLiveData<>();
     private MutableLiveData<ArrayList<EventPacket>> listPacket = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Agenda>> listAgenda = new MutableLiveData<>();
-    private SharedPrefManager sharedPrefManager;
 
     public MainViewModel() {
     }
@@ -97,10 +96,10 @@ public class MainViewModel extends ViewModel {
         queue.add(arrayRequest);
     }
 
-    public void setListEventSessionPanitia(final RequestQueue queue, final Context context, String event_session) {
+    public void setListEventSessionPanitia(final RequestQueue queue, final Context context) {
         final ArrayList<EventSession> listItemEventSession = new ArrayList<>();
 
-        String url = "http://192.168.4.107/myAPI/public/session-agenda/?id_event_session="+event_session;
+        String url = "http://192.168.4.107/myAPI/public/session";
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -111,8 +110,8 @@ public class MainViewModel extends ViewModel {
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject data = response.getJSONObject(i);
                         EventSession eventSession = new EventSession();
+                        eventSession.setId(data.getString("id"));
                         eventSession.setJudul(data.getString("name"));
-                        eventSession.setListAgenda(setEventAgendaPanitia(queue,context));
                         listItemEventSession.add(eventSession);
                     }
 
@@ -182,7 +181,7 @@ public class MainViewModel extends ViewModel {
                         EventPacket eventPacket = new EventPacket();
                         eventPacket.setId(data.getString("id"));
                         eventPacket.setName_packet(data.getString("name"));
-                        eventPacket.setMax_participant(data.getString("max_participant")+" Maksimal Peserta");
+                        eventPacket.setMax_participant(data.getString("max_participant"));
                         eventPacket.setPrice(data.getString("price"));
                         list.add(eventPacket);
 
