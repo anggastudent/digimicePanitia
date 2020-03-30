@@ -104,4 +104,5 @@ public class SharedPrefManager {
     public String getSpIdPacket() {
         return sharedPreferences.getString(SP_ID_PACKET, "");
     }
+
 }

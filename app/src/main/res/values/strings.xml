@@ -44,6 +44,7 @@
     <string name="end_agenda">End Agenda</string>
     <string name="add_agenda">Tambah Agenda</string>
     <string name="nama_agenda">Nama Agenda</string>
+    <string name="edit_agenda">Edit Agenda</string>
 
     <string-array name="presensi">
         <item>Bebas</item>

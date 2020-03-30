@@ -4,16 +4,36 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Agenda implements Parcelable {
+    String id;
+    String idSession;
     String sessionAgenda;
     String namaAgenda;
     String startAgenda;
     String endAgenda;
     String descAgenda;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getIdSession() {
+        return idSession;
+    }
+
+    public void setIdSession(String idSession) {
+        this.idSession = idSession;
+    }
+
     public Agenda() {
     }
 
     protected Agenda(Parcel in) {
+        id = in.readString();
+        idSession = in.readString();
         sessionAgenda = in.readString();
         namaAgenda = in.readString();
         startAgenda = in.readString();
@@ -23,27 +43,13 @@ public class Agenda implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(idSession);
         dest.writeString(sessionAgenda);
         dest.writeString(namaAgenda);
         dest.writeString(startAgenda);
         dest.writeString(endAgenda);
         dest.writeString(descAgenda);
-    }
-
-    public String getStartAgenda() {
-        return startAgenda;
-    }
-
-    public void setStartAgenda(String startAgenda) {
-        this.startAgenda = startAgenda;
-    }
-
-    public String getEndAgenda() {
-        return endAgenda;
-    }
-
-    public void setEndAgenda(String endAgenda) {
-        this.endAgenda = endAgenda;
     }
 
     @Override
@@ -62,6 +68,22 @@ public class Agenda implements Parcelable {
             return new Agenda[size];
         }
     };
+
+    public String getStartAgenda() {
+        return startAgenda;
+    }
+
+    public void setStartAgenda(String startAgenda) {
+        this.startAgenda = startAgenda;
+    }
+
+    public String getEndAgenda() {
+        return endAgenda;
+    }
+
+    public void setEndAgenda(String endAgenda) {
+        this.endAgenda = endAgenda;
+    }
 
     public String getSessionAgenda() {
         return sessionAgenda;

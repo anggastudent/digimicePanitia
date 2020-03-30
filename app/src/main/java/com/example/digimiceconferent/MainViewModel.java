@@ -213,6 +213,8 @@ public class MainViewModel extends ViewModel {
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject data = response.getJSONObject(i);
                         Agenda agenda = new Agenda();
+                        agenda.setId(data.getString("id"));
+                        agenda.setIdSession(data.getString("session_id"));
                         agenda.setNamaAgenda(data.getString("name"));
                         agenda.setDescAgenda(data.getString("description"));
                         agenda.setStartAgenda(data.getString("start"));

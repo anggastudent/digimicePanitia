@@ -1,5 +1,6 @@
 package com.example.digimiceconferent.Adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.digimiceconferent.Activity.EditAgenda;
 import com.example.digimiceconferent.Model.Agenda;
 import com.example.digimiceconferent.R;
 
@@ -32,7 +34,7 @@ public class RecyclerViewAgendaAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AgendaHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final AgendaHolder holder, int position) {
         Agenda agenda = list.get(position);
         holder.tvSessionAgenda.setText(agenda.getSessionAgenda());
         holder.tvNameAgenda.setText(agenda.getNamaAgenda());
@@ -49,6 +51,16 @@ public class RecyclerViewAgendaAdapter extends RecyclerView.Adapter<RecyclerView
         }
 
         holder.tvDescAgenda.setText(agenda.getDescAgenda());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Agenda agenda = list.get(holder.getAdapterPosition());
+                Intent intent = new Intent(holder.itemView.getContext(), EditAgenda.class);
+                intent.putExtra(EditAgenda.EXTRA_EDIT_AGENDA, agenda);
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
