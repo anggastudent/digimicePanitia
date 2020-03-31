@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -33,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -49,8 +51,11 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
     final String END_DATE_PICKER = "end date picker";
     final String END_TIME_PICKER = "end time picker";
 
+    String start;
+    String end;
     int index = 0;
     String id_session;
+    String id_agenda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +102,7 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
             etNameAgenda.setText(agenda.getNamaAgenda());
             etDescAgenda.setText(agenda.getDescAgenda());
             id_session = agenda.getIdSession();
+            id_agenda = agenda.getId();
 
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -175,7 +181,7 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
                 timePickerFragment1.show(getSupportFragmentManager(), END_TIME_PICKER);
                 break;
             case R.id.bt_edit_agenda:
-                //editAgenda();
+                editAgenda();
                 break;
         }
     }
@@ -217,23 +223,33 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
 
     public void editAgenda() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.4.107/myAPI/public/update-agenda/"+id_session;
+        String url = "http://192.168.4.107/myAPI/public/update-agenda/"+id_agenda;
 
         StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
+                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                return super.getParams();
+                Map<String, String> data = new HashMap<String, String>();
+                data.put("name", etNameAgenda.getText().toString());
+                data.put("description", etDescAgenda.getText().toString());
+                data.put("event_session_id", id_session);
+                start = etStartDateAgenda.getText().toString() + " " + etStartTimeAgenda.getText().toString();
+                end = etEndDateAgenda.getText().toString() + " " + etEndTimeAgenda.getText().toString();
+                data.put("start", start);
+                data.put("end", end);
+                return data;
             }
         };
+
+        queue.add(request);
     }
 }
