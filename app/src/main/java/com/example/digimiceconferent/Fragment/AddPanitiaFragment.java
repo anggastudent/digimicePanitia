@@ -18,7 +18,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.MainViewModel;
 import com.example.digimiceconferent.Model.Event;
@@ -26,6 +31,8 @@ import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +44,8 @@ public class AddPanitiaFragment extends Fragment {
     EditText etEmail;
     MainViewModel mainViewModel;
     SharedPrefManager sharedPrefManager;
+
+    String eventId;
 
     public AddPanitiaFragment() {
         // Required empty public constructor
@@ -53,9 +62,11 @@ public class AddPanitiaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         spEvent = view.findViewById(R.id.spinner_event);
         btAddPanitia = view.findViewById(R.id.bt_add_panitia);
         etEmail = view.findViewById(R.id.email_add_panitia);
+
         sharedPrefManager = new SharedPrefManager(getContext());
         String user_id = sharedPrefManager.getSPIdUser();
 
@@ -66,7 +77,6 @@ public class AddPanitiaFragment extends Fragment {
             @Override
             public void onChanged(final ArrayList<Event> events) {
                 ArrayList<String> list = new ArrayList<>();
-
                 for (int i=0; i<events.size();i++) {
                     Event dataEvent = events.get(i);
                     list.add(dataEvent.getJudul());
@@ -79,7 +89,7 @@ public class AddPanitiaFragment extends Fragment {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             Event event = events.get(position);
-                            Toast.makeText(getContext(), "Selected"+ event.getJudul(),Toast.LENGTH_SHORT).show();
+                            eventId = event.getId();
                         }
 
                         @Override
@@ -90,6 +100,42 @@ public class AddPanitiaFragment extends Fragment {
                 }
             }
         });
+
+        btAddPanitia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPanitia();
+            }
+        });
+
+
+    }
+
+    public void addPanitia(){
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        String url = "http://192.168.4.107/myAPI/public/add-panitia";
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "Gagal", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> data = new HashMap<String, String>();
+                data.put("email", etEmail.getText().toString());
+                data.put("event_id", eventId);
+                data.put("name_team", sharedPrefManager.getSpNameTeam());
+                return data;
+            }
+        };
+
+        queue.add(request);
 
     }
 
