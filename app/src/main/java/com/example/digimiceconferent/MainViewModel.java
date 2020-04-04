@@ -14,11 +14,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Model.Agenda;
 import com.example.digimiceconferent.Model.Event;
 import com.example.digimiceconferent.Model.EventAgenda;
 import com.example.digimiceconferent.Model.EventPacket;
 import com.example.digimiceconferent.Model.EventSession;
+import com.example.digimiceconferent.Model.Materi;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,6 +35,7 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<ArrayList<EventSession>> listEventSessionPanitia = new MutableLiveData<>();
     private MutableLiveData<ArrayList<EventPacket>> listPacket = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Agenda>> listAgenda = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Materi>> listMateri = new MutableLiveData<>();
 
     public MainViewModel() {
     }
@@ -238,6 +241,35 @@ public class MainViewModel extends ViewModel {
 
         queue.add(arrayRequest);
     }
+
+    public void setListMateri(RequestQueue queue, final Context context, String idAgenda) {
+        final ArrayList<Materi> list = new ArrayList<>();
+        String url = "http://192.168.4.107/myAPI/public/materi/"+idAgenda;
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject data = response.getJSONObject(i);
+                        Materi materi = new Materi();
+                        materi.setNamaMateri(data.getString("name"));
+                        list.add(materi);
+                    }
+
+                    listMateri.postValue(list);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(arrayRequest);
+    }
     public LiveData<ArrayList<EventPacket>> getEventPacket() {
         return listPacket;
     }
@@ -254,6 +286,9 @@ public class MainViewModel extends ViewModel {
         return listAgenda;
     }
 
+    public LiveData<ArrayList<Materi>> getMateri() {
+        return listMateri;
+    }
 
 
 

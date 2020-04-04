@@ -13,8 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.EditAgenda"
-            android:parentActivityName=".Activity.KelolaEvent"></activity>
+        <activity android:name=".Activity.DetailUploadMateri"
+            android:parentActivityName=".Activity.UploadMateri"></activity>
+        <activity android:name=".Activity.UploadMateri"
+            android:parentActivityName=".Activity.HomePanitia"/>
+        <activity
+            android:name=".Activity.EditAgenda"
+            android:parentActivityName=".Activity.KelolaEvent" />
         <activity
             android:name=".Activity.AddAgenda"
             android:parentActivityName=".Activity.KelolaEvent" />
