@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".Fragment.UploadMateriDialogFragment">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/nama_file"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/nama_upload_materi"
+        android:layout_width="match_parent"
+        android:background="@drawable/border_form"
+        android:hint="@string/nama_file"
+        android:padding="16dp"
+        android:inputType="text"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="30dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt_upload_materi"
+            android:layout_width="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textSize="11sp"
+            android:layout_height="wrap_content"
+            android:text="@string/upload_materi"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorButton"
+            android:background="@drawable/border_radius"/>
+
+        <Button
+            android:id="@+id/bt_cancel_materi"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="16dp"
+            android:textSize="11sp"
+            android:layout_height="wrap_content"
+            android:text="@string/batal"
+            android:background="@drawable/border_radius"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
