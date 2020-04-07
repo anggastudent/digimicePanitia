@@ -1,6 +1,6 @@
 package com.example.digimiceconferent.Model;
 
-public class EventAgenda {
+public class SessionAgenda {
 
     String judul;
     String jam;

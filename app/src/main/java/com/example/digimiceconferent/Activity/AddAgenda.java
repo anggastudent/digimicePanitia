@@ -98,7 +98,7 @@ public class AddAgenda extends AppCompatActivity implements View.OnClickListener
 
         RequestQueue queue = Volley.newRequestQueue(this);
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setListEventSessionPanitia(queue, this);
+        mainViewModel.setListEventSessionPanitia(queue, this, sharedPrefManager.getSpIdEvent());
         mainViewModel.getEventSessionPanitia().observe(this, new Observer<ArrayList<EventSession>>() {
             @Override
             public void onChanged(final ArrayList<EventSession> eventSessions) {

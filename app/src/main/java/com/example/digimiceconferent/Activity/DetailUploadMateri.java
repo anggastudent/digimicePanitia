@@ -33,8 +33,6 @@ import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import net.gotev.uploadservice.data.UploadNotificationConfig;
-import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest;
 
 import java.io.BufferedInputStream;
 import java.io.File;

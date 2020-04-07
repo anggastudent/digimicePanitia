@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.PesertaFragment">
+    android:orientation="vertical"
+    tools:context=".Fragment.PresensiPesertaFragment">
 
+<!-- TODO: Update blank fragment layout -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_event_presensi"
+        android:id="@+id/rv_session"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_presensi"/>
-
+        tools:listitem="@layout/item_event_session"/>
 
 </LinearLayout>

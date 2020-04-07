@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class RecyclerViewEventSessionAdapter extends RecyclerView.Adapter<RecyclerViewEventSessionAdapter.SessionPanitiaViewHolder> {
     ArrayList<EventSession> listSession = new ArrayList<>();
-    RecyclerViewEventAgendaAdapter agendaPanitiaAdapter = new RecyclerViewEventAgendaAdapter();
+    RecyclerViewSessionAgendaAdapter agendaPanitiaAdapter = new RecyclerViewSessionAgendaAdapter();
 
     public void sendEventSessionPanitia(ArrayList<EventSession> eventSessions) {
         listSession.clear();
@@ -39,6 +39,7 @@ public class RecyclerViewEventSessionAdapter extends RecyclerView.Adapter<Recycl
         holder.rvagenda.setAdapter(agendaPanitiaAdapter);
         holder.rvagenda.setHasFixedSize(true);
         holder.rvagenda.setLayoutManager(linearLayoutManager);
+        agendaPanitiaAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -47,15 +48,16 @@ public class RecyclerViewEventSessionAdapter extends RecyclerView.Adapter<Recycl
     }
 
     public class SessionPanitiaViewHolder extends RecyclerView.ViewHolder {
-        TextView nameSession;
+        TextView nameSession, dateSession;
         RecyclerView rvagenda;
 
 
         public SessionPanitiaViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            nameSession = itemView.findViewById(R.id.item_session);
-            rvagenda = itemView.findViewById(R.id.rv_eventAgendaPanitia);
+            nameSession = itemView.findViewById(R.id.item_name_session);
+            dateSession = itemView.findViewById(R.id.item_date_session);
+            rvagenda = itemView.findViewById(R.id.rv_session_agenda);
         }
 
     }

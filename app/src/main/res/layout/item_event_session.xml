@@ -4,10 +4,11 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:paddingBottom="16dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
-        android:id="@+id/item_session"
+        android:id="@+id/item_name_session"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
@@ -15,6 +16,7 @@
         tools:text="Session"/>
 
     <TextView
+        android:id="@+id/item_date_session"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
@@ -25,22 +27,18 @@
         android:text="Scan QR"
         android:layout_marginEnd="16sp"
         android:layout_gravity="right"
+        android:backgroundTint="@color/colorButton"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
-        android:background="@color/colorButton"
+        android:background="@drawable/border_radius"
         android:layout_marginBottom="16dp"/>
 
-    <ProgressBar
-        android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:layout_height="48dp"
-        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_eventAgendaPanitia"
+        android:id="@+id/rv_session_agenda"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_event_agenda"/>
+        tools:listitem="@layout/item_session_agenda"/>
 
     </LinearLayout>
 

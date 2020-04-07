@@ -17,7 +17,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/name_kelola_event_paket"
+                android:id="@+id/name_kelola_event"
                 android:layout_width="match_parent"
                 android:textColor="@android:color/white"
                 android:text="@string/nama_event"
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/tempat_kelola_event_paket"
+                android:id="@+id/tempat_kelola_event"
                 android:layout_width="match_parent"
                 android:textColor="@android:color/white"
                 android:textSize="18dp"
@@ -39,14 +39,14 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/alamat_kelola_event_paket"
+                android:id="@+id/alamat_kelola_event"
                 android:layout_width="match_parent"
                 android:textColor="@android:color/white"
                 android:text="@string/alamat"
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/tanggal_kelola_event_paket"
+                android:id="@+id/tanggal_kelola_event"
                 android:layout_width="match_parent"
                 android:textColor="@android:color/white"
                 android:text="@string/start"

@@ -9,7 +9,7 @@ public class EventSession implements Parcelable {
 
     private String judul;
     private String id;
-    private ArrayList<EventAgenda> listAgenda;
+    private ArrayList<SessionAgenda> listAgenda;
 
     protected EventSession(Parcel in) {
         judul = in.readString();
@@ -47,11 +47,11 @@ public class EventSession implements Parcelable {
         }
     };
 
-    public ArrayList<EventAgenda> getListAgenda() {
+    public ArrayList<SessionAgenda> getListAgenda() {
         return listAgenda;
     }
 
-    public void setListAgenda(ArrayList<EventAgenda> listAgenda) {
+    public void setListAgenda(ArrayList<SessionAgenda> listAgenda) {
         this.listAgenda = listAgenda;
     }
 

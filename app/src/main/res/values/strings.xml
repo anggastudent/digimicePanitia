@@ -13,6 +13,8 @@
     <string name="tab_4">Tambah Pemateri</string>
     <string name="tab_1_event">Edit Event</string>
     <string name="tab_2_event">Daftar Agenda</string>
+    <string name="tab_1_peserta">Presensi Peserta</string>
+    <string name="tab_2_peserta">Peserta</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -48,6 +50,7 @@
     <string name="upload_materi">Upload Materi</string>
     <string name="nama_file">Nama File</string>
     <string name="batal">Batal</string>
+    <string name="presensi">Presensi</string>
 
     <string-array name="presensi">
         <item>Bebas</item>

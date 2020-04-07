@@ -9,7 +9,7 @@
     <!-- TODO: Update blank fragment layout -->
 
     <ProgressBar
-        android:id="@+id/loading_event_presensi"
+        android:id="@+id/loading_event"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:visibility="gone"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_event_presensi"
+        android:id="@+id/rv_event"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

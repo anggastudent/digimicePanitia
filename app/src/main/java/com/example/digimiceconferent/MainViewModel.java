@@ -12,12 +12,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Model.Agenda;
 import com.example.digimiceconferent.Model.Event;
-import com.example.digimiceconferent.Model.EventAgenda;
+import com.example.digimiceconferent.Model.SessionAgenda;
 import com.example.digimiceconferent.Model.EventPacket;
 import com.example.digimiceconferent.Model.EventSession;
 import com.example.digimiceconferent.Model.Materi;
@@ -26,8 +23,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Event>> listEventPanitia = new MutableLiveData<>();
@@ -99,10 +94,11 @@ public class MainViewModel extends ViewModel {
         queue.add(arrayRequest);
     }
 
-    public void setListEventSessionPanitia(final RequestQueue queue, final Context context) {
+    public void setListEventSessionPanitia(final RequestQueue queue, final Context context, String eventId) {
         final ArrayList<EventSession> listItemEventSession = new ArrayList<>();
+        final ArrayList<SessionAgenda> listAgenda = new ArrayList<>();
 
-        String url = "http://192.168.4.107/myAPI/public/session";
+        String url = "http://192.168.4.107/myAPI/public/session/"+eventId;
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -115,6 +111,18 @@ public class MainViewModel extends ViewModel {
                         EventSession eventSession = new EventSession();
                         eventSession.setId(data.getString("id"));
                         eventSession.setJudul(data.getString("name"));
+
+                        JSONArray dataAgenda = data.getJSONArray("agenda");
+
+                        for (int j = 0; j < dataAgenda.length(); j++) {
+                            JSONObject data2 = dataAgenda.getJSONObject(i);
+                            SessionAgenda agenda = new SessionAgenda();
+
+                            agenda.setJudul(data2.getString("name"));
+                            agenda.setJam(data2.getString("start"));
+                            listAgenda.add(agenda);
+                        }
+                        eventSession.setListAgenda(listAgenda);
                         listItemEventSession.add(eventSession);
                     }
 
@@ -136,8 +144,8 @@ public class MainViewModel extends ViewModel {
         queue.add(arrayRequest);
     }
 
-    public ArrayList<EventAgenda> setEventAgendaPanitia(RequestQueue queue, final Context context) {
-        final ArrayList<EventAgenda> listItemAgenda = new ArrayList<>();
+    public ArrayList<SessionAgenda> setEventAgendaPanitia(RequestQueue queue, final Context context) {
+        final ArrayList<SessionAgenda> listItemAgenda = new ArrayList<>();
         String url = "http://192.168.4.107/myAPI/public/event-agenda?id_event_session=1&id_event=1";
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -147,10 +155,10 @@ public class MainViewModel extends ViewModel {
                 try {
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject data = response.getJSONObject(i);
-                        EventAgenda eventAgenda = new EventAgenda();
-                        eventAgenda.setJudul(data.getString("name"));
-                        eventAgenda.setJam(data.getString("start"));
-                        listItemAgenda.add(eventAgenda);
+                        SessionAgenda sessionAgenda = new SessionAgenda();
+                        sessionAgenda.setJudul(data.getString("name"));
+                        sessionAgenda.setJam(data.getString("start"));
+                        listItemAgenda.add(sessionAgenda);
                     }
 
 

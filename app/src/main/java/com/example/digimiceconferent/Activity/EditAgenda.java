@@ -45,7 +45,7 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
             etEndTimeAgenda;
     Spinner spSesi;
     Button btStartDateAgenda, btStartTimeAgenda, btEndDateAgenda, btEndTimeAgenda, btEditAgenda;
-
+    SharedPrefManager sharedPrefManager;
     final String START_DATE_PICKER = "start date picker";
     final String START_TIME_PICKER = "start time picker";
     final String END_DATE_PICKER = "end date picker";
@@ -67,7 +67,7 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
             getSupportActionBar().setTitle("Edit Agenda");
         }
 
-
+        sharedPrefManager = new SharedPrefManager(this);
         namaSession = findViewById(R.id.session_event_edit_agenda);
         namaAgenda = findViewById(R.id.name_event_edit_agenda);
         waktuAgenda = findViewById(R.id.tanggal_event_edit_agenda);
@@ -125,7 +125,7 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
         }
         RequestQueue queue = Volley.newRequestQueue(this);
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setListEventSessionPanitia(queue, this);
+        mainViewModel.setListEventSessionPanitia(queue, this, sharedPrefManager.getSpIdEvent());
         mainViewModel.getEventSessionPanitia().observe(this, new Observer<ArrayList<EventSession>>() {
             @Override
             public void onChanged(final ArrayList<EventSession> eventSessions) {
