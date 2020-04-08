@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.digimiceconferent.Fragment.AgendaFragment;
 import com.example.digimiceconferent.Fragment.EditEventFragment;
+import com.example.digimiceconferent.Fragment.UploadMateriFragment;
 
 public class SectionPagerEventAdapter extends FragmentPagerAdapter {
     private Context context;
@@ -22,7 +23,8 @@ public class SectionPagerEventAdapter extends FragmentPagerAdapter {
     @StringRes
     private int[] TAB_TITLES = new int[]{
             R.string.tab_1_event,
-            R.string.tab_2_event
+            R.string.tab_2_event,
+            R.string.tab_3
     };
 
     @NonNull
@@ -36,6 +38,9 @@ public class SectionPagerEventAdapter extends FragmentPagerAdapter {
                 break;
             case 1:
                 fragment = new AgendaFragment();
+                break;
+            case 2:
+                fragment = new UploadMateriFragment();
                 break;
         }
         return fragment;

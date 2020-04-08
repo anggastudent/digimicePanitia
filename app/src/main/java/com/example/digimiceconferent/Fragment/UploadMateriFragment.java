@@ -13,11 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.digimiceconferent.Adapter.RecyclerViewAgendaMateriAdapter;
 import com.example.digimiceconferent.Adapter.RecyclerViewEventMateriAdapter;
 import com.example.digimiceconferent.MainViewModel;
+import com.example.digimiceconferent.Model.Agenda;
 import com.example.digimiceconferent.Model.Event;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
@@ -28,10 +31,11 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class UploadMateriFragment extends Fragment {
-    RecyclerView rvEventMateri;
+    TextView namaEvent, tempatEvent, alamatEvent, waktuEvent;
     SharedPrefManager sharedPrefManager;
+    RecyclerView rvAgendaMateri;
     RequestQueue queue;
-    RecyclerViewEventMateriAdapter adapter;
+    RecyclerViewAgendaMateriAdapter adapter;
 
     public UploadMateriFragment() {
         // Required empty public constructor
@@ -48,23 +52,22 @@ public class UploadMateriFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rvEventMateri = view.findViewById(R.id.rv_event_materi);
-        rvEventMateri.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new RecyclerViewEventMateriAdapter();
-        queue = Volley.newRequestQueue(getContext());
         sharedPrefManager = new SharedPrefManager(getContext());
+        rvAgendaMateri = view.findViewById(R.id.rv_agenda_materi);
+        queue = Volley.newRequestQueue(getContext());
+        adapter = new RecyclerViewAgendaMateriAdapter();
 
+        rvAgendaMateri.setLayoutManager(new LinearLayoutManager(getContext()));
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setEventPanitia(queue, getContext(), sharedPrefManager.getSPIdUser());
-        mainViewModel.getEventPanitia().observe(this, new Observer<ArrayList<Event>>() {
+        mainViewModel.setListAgenda(queue, getContext(), sharedPrefManager.getSpIdEvent());
+        mainViewModel.getAgenda().observe(this, new Observer<ArrayList<Agenda>>() {
             @Override
-            public void onChanged(ArrayList<Event> events) {
-                adapter.sendData(events);
+            public void onChanged(ArrayList<Agenda> agenda) {
+                adapter.sendData(agenda);
             }
         });
-
-        rvEventMateri.setAdapter(adapter);
-        rvEventMateri.setHasFixedSize(true);
+        rvAgendaMateri.setAdapter(adapter);
+        rvAgendaMateri.setHasFixedSize(true);
         adapter.notifyDataSetChanged();
     }
 }
