@@ -4,6 +4,15 @@ public class SessionAgenda {
 
     String judul;
     String jam;
+    String desc;
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
     public String getJudul() {
         return judul;

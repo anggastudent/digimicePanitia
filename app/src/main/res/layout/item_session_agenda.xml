@@ -1,38 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-        <TextView
-            android:paddingLeft="16dp"
-            android:id="@+id/timeAgendaPanitia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="16dp"
-            tools:text="08.30 WIB"/>
+    <TextView
+        android:id="@+id/timeAgendaPanitia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="08.30 WIB" />
 
-        <com.github.vipulasri.timelineview.TimelineView
-            android:id="@+id/timeline"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            app:lineOrientation="vertical"
-            app:marker="@drawable/icon_marker"
-            app:markerInCenter="false"
-            app:lineWidth="5dp"
-            app:lineStyle="normal"
-            app:startLineColor="@color/colorBabyBlue"
-            app:endLineColor="@color/colorBabyBlue"/>
+    <TextView
+        android:id="@+id/judulAgendaPanitia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/descAgendaPanitia"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/timeline"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="judul" />
 
-        <TextView
-            android:id="@+id/judulAgendaPanitia"
-            android:paddingRight="16dp"
-            android:paddingLeft="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="judul"/>
+    <TextView
+        android:id="@+id/descAgendaPanitia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/judulAgendaPanitia"
+        app:layout_constraintStart_toEndOf="@+id/timeline"
+        app:layout_constraintTop_toBottomOf="@+id/judulAgendaPanitia"
+        tools:text="desc" />
 
-    </LinearLayout>
+    <com.github.vipulasri.timelineview.TimelineView
+        android:id="@+id/timeline"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        app:endLineColor="@color/colorBabyBlue"
+        app:layout_constraintBottom_toBottomOf="@+id/descAgendaPanitia"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/timeAgendaPanitia"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lineOrientation="vertical"
+        app:lineStyle="normal"
+        app:lineWidth="5dp"
+        app:marker="@drawable/icon_marker"
+        app:markerInCenter="false"
+        app:startLineColor="@color/colorBabyBlue">
+
+
+    </com.github.vipulasri.timelineview.TimelineView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

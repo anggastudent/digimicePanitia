@@ -96,7 +96,7 @@ public class MainViewModel extends ViewModel {
 
     public void setListEventSessionPanitia(final RequestQueue queue, final Context context, String eventId) {
         final ArrayList<EventSession> listItemEventSession = new ArrayList<>();
-        final ArrayList<SessionAgenda> listAgenda = new ArrayList<>();
+        
 
         String url = "http://192.168.4.107/myAPI/public/session/"+eventId;
 
@@ -105,23 +105,24 @@ public class MainViewModel extends ViewModel {
             public void onResponse(JSONArray response) {
 
                 try {
-
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject data = response.getJSONObject(i);
                         EventSession eventSession = new EventSession();
                         eventSession.setId(data.getString("id"));
                         eventSession.setJudul(data.getString("name"));
 
+
                         JSONArray dataAgenda = data.getJSONArray("agenda");
-
+                        ArrayList<SessionAgenda> listAgenda = new ArrayList<>();
                         for (int j = 0; j < dataAgenda.length(); j++) {
-                            JSONObject data2 = dataAgenda.getJSONObject(i);
                             SessionAgenda agenda = new SessionAgenda();
-
+                            JSONObject data2 = dataAgenda.getJSONObject(j);
                             agenda.setJudul(data2.getString("name"));
                             agenda.setJam(data2.getString("start"));
+                            agenda.setDesc(data2.getString("description"));
                             listAgenda.add(agenda);
                         }
+
                         eventSession.setListAgenda(listAgenda);
                         listItemEventSession.add(eventSession);
                     }
