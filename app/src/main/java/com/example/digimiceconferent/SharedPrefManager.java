@@ -22,6 +22,7 @@ public class SharedPrefManager {
     public static final String SP_ID_EVENT = "id_event";
     public static final String SP_ID_PACKET = "id_packet";
     public static final String SP_ID_AGENDA = "id_agenda";
+    public static final String SP_PRESENCE_TYPE = "presence_type";
 
 
     SharedPreferences sharedPreferences;
@@ -108,5 +109,9 @@ public class SharedPrefManager {
 
     public String getSpIdAgenda() {
         return sharedPreferences.getString(SP_ID_AGENDA, "");
+    }
+
+    public String getSpPresenceType() {
+        return sharedPreferences.getString(SP_PRESENCE_TYPE, "");
     }
 }

@@ -17,11 +17,11 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/name_materi"
+            android:id="@+id/name_session"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="24sp"
-            tools:text="Nama Paket"/>
+            tools:text="Nama Sesi"/>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

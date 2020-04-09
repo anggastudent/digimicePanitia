@@ -260,7 +260,11 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                 data.put("address", etAddressEvent.getText().toString());
                 data.put("start", etStartDateEvent.getText().toString());
                 data.put("end", etEndDateEvent.getText().toString());
-                data.put("banner", imageString);
+                if (imageString != null) {
+                    data.put("banner", imageString);
+                } else {
+                    data.put("banner", "null");
+                }
                 data.put("event_ticket_price", etPriceEvent.getText().toString());
                 return data;
             }

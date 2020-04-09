@@ -75,6 +75,7 @@ public class RecyclerViewEventAdapter extends RecyclerView.Adapter<RecyclerViewE
                 sharedPrefManager.saveSPString(sharedPrefManager.SP_NAME_EVENT, event.getJudul());
                 sharedPrefManager.saveSPString(sharedPrefManager.SP_PLACE_EVENT, event.getPlace());
                 sharedPrefManager.saveSPString(sharedPrefManager.SP_ADDRESS_EVENT, event.getAddress());
+                sharedPrefManager.saveSPString(sharedPrefManager.SP_PRESENCE_TYPE, event.getPresenceType());
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 try {

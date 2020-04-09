@@ -13,25 +13,28 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.KelolaPeserta"
-            android:parentActivityName=".Activity.HomePanitia"
+        <activity android:name=".Activity.EditSession"
+            android:parentActivityName=".Activity.KelolaEvent"
             android:screenOrientation="locked"></activity>
+        <activity android:name=".Activity.AddSession"
+            android:parentActivityName=".Activity.KelolaEvent"
+            android:screenOrientation="locked"/>
+        <activity
+            android:name=".Activity.KelolaPeserta"
+            android:parentActivityName=".Activity.HomePanitia"
+            android:screenOrientation="locked" />
         <activity
             android:name=".Activity.DetailUploadMateri"
-            android:parentActivityName=".Activity.UploadMateri"
-            android:screenOrientation="locked"/>
-        <activity
-            android:name=".Activity.UploadMateri"
-            android:parentActivityName=".Activity.HomePanitia"
-            android:screenOrientation="locked"/>
+            android:parentActivityName=".Activity.KelolaEvent"
+            android:screenOrientation="locked" />
         <activity
             android:name=".Activity.EditAgenda"
             android:parentActivityName=".Activity.KelolaEvent"
-            android:screenOrientation="locked"/>
+            android:screenOrientation="locked" />
         <activity
             android:name=".Activity.AddAgenda"
             android:parentActivityName=".Activity.KelolaEvent"
-            android:screenOrientation="locked"/>
+            android:screenOrientation="locked" />
         <activity
             android:name=".Activity.KelolaEvent"
             android:parentActivityName=".Activity.HomePanitia"
@@ -47,9 +50,6 @@
         <activity android:name=".Activity.HomeAnggota" />
         <activity
             android:name=".Activity.HomePanitia"
-            android:screenOrientation="locked" />
-        <activity
-            android:name=".Activity.DetailEventPanitia"
             android:screenOrientation="locked" />
         <activity
             android:name=".Activity.Login"

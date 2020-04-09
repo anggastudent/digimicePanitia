@@ -77,6 +77,7 @@ public class MainViewModel extends ViewModel {
                        event.setPlace(data.getString("place"));
                        event.setAddress(data.getString("address"));
                        event.setBanner(data.getString("banner"));
+                       event.setPresenceType(data.getString("presence_type"));
                        listItemEvent.add(event);
                    }
                    listEventPanitia.postValue(listItemEvent);
@@ -105,12 +106,13 @@ public class MainViewModel extends ViewModel {
             public void onResponse(JSONArray response) {
 
                 try {
+
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject data = response.getJSONObject(i);
                         EventSession eventSession = new EventSession();
                         eventSession.setId(data.getString("id"));
                         eventSession.setJudul(data.getString("name"));
-
+                        String start = "";
 
                         JSONArray dataAgenda = data.getJSONArray("agenda");
                         ArrayList<SessionAgenda> listAgenda = new ArrayList<>();
@@ -120,9 +122,12 @@ public class MainViewModel extends ViewModel {
                             agenda.setJudul(data2.getString("name"));
                             agenda.setJam(data2.getString("start"));
                             agenda.setDesc(data2.getString("description"));
+                            if (j == 0) {
+                                start+=data2.getString("start");
+                            }
                             listAgenda.add(agenda);
                         }
-
+                        eventSession.setStart(start);
                         eventSession.setListAgenda(listAgenda);
                         listItemEventSession.add(eventSession);
                     }
@@ -145,39 +150,6 @@ public class MainViewModel extends ViewModel {
         queue.add(arrayRequest);
     }
 
-    public ArrayList<SessionAgenda> setEventAgendaPanitia(RequestQueue queue, final Context context) {
-        final ArrayList<SessionAgenda> listItemAgenda = new ArrayList<>();
-        String url = "http://192.168.4.107/myAPI/public/event-agenda?id_event_session=1&id_event=1";
-
-        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-
-                try {
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject data = response.getJSONObject(i);
-                        SessionAgenda sessionAgenda = new SessionAgenda();
-                        sessionAgenda.setJudul(data.getString("name"));
-                        sessionAgenda.setJam(data.getString("start"));
-                        listItemAgenda.add(sessionAgenda);
-                    }
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context,error.toString(),Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        queue.add(arrayRequest);
-        return listItemAgenda;
-    }
 
     public void setListPacket(RequestQueue queue, final Context context) {
         final ArrayList<EventPacket> list = new ArrayList<>();

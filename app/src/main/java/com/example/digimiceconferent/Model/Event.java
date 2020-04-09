@@ -11,13 +11,14 @@ public class Event implements Parcelable {
     String place;
     String address;
     String banner;
+    String presenceType;
 
-    public String getBanner() {
-        return banner;
+    public String getPresenceType() {
+        return presenceType;
     }
 
-    public void setBanner(String banner) {
-        this.banner = banner;
+    public void setPresenceType(String presenceType) {
+        this.presenceType = presenceType;
     }
 
     protected Event(Parcel in) {
@@ -28,6 +29,7 @@ public class Event implements Parcelable {
         place = in.readString();
         address = in.readString();
         banner = in.readString();
+        presenceType = in.readString();
     }
 
     @Override
@@ -39,6 +41,7 @@ public class Event implements Parcelable {
         dest.writeString(place);
         dest.writeString(address);
         dest.writeString(banner);
+        dest.writeString(presenceType);
     }
 
     @Override
@@ -57,6 +60,14 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
+    public String getBanner() {
+        return banner;
+    }
+
+    public void setBanner(String banner) {
+        this.banner = banner;
+    }
 
     public String getPlace() {
         return place;

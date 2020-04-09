@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.digimiceconferent.Model.EventSession;
 import com.example.digimiceconferent.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RecyclerViewEventSessionAdapter extends RecyclerView.Adapter<RecyclerViewEventSessionAdapter.SessionPanitiaViewHolder> {
     ArrayList<EventSession> listSession = new ArrayList<>();
@@ -33,8 +36,15 @@ public class RecyclerViewEventSessionAdapter extends RecyclerView.Adapter<Recycl
     public void onBindViewHolder(@NonNull SessionPanitiaViewHolder holder, int position) {
         EventSession eventSession = listSession.get(position);
         holder.nameSession.setText(eventSession.getJudul());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            Date dateStart = dateFormat.parse(eventSession.getStart());
+            SimpleDateFormat dateFormatNew = new SimpleDateFormat("dd MMMM yyyy");
+            holder.dateSession.setText(dateFormatNew.format(dateStart));
 
-        holder.agendaPanitiaAdapter.sendDataAgenda(eventSession.getListAgenda());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }        holder.agendaPanitiaAdapter.sendDataAgenda(eventSession.getListAgenda());
 
     }
 
@@ -50,7 +60,7 @@ public class RecyclerViewEventSessionAdapter extends RecyclerView.Adapter<Recycl
 
         public SessionPanitiaViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            dateSession = itemView.findViewById(R.id.item_start_session);
             nameSession = itemView.findViewById(R.id.item_name_session);
             rvagenda = itemView.findViewById(R.id.rv_session_agenda);
             agendaPanitiaAdapter = new RecyclerViewSessionAgendaAdapter();

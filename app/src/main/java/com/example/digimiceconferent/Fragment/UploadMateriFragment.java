@@ -13,15 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Adapter.RecyclerViewAgendaMateriAdapter;
-import com.example.digimiceconferent.Adapter.RecyclerViewEventMateriAdapter;
 import com.example.digimiceconferent.MainViewModel;
 import com.example.digimiceconferent.Model.Agenda;
-import com.example.digimiceconferent.Model.Event;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 
@@ -31,7 +28,6 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class UploadMateriFragment extends Fragment {
-    TextView namaEvent, tempatEvent, alamatEvent, waktuEvent;
     SharedPrefManager sharedPrefManager;
     RecyclerView rvAgendaMateri;
     RequestQueue queue;

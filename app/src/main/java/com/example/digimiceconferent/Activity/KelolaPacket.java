@@ -42,7 +42,7 @@ import java.util.Map;
 public class KelolaPacket extends AppCompatActivity implements View.OnClickListener, DatePickerFragment.DialogDateListener{
 
     EditText etNameEvent,etDescEvent, etPlaceEvent, etAddressEvent, etStartDateEvent,
-            etStartTimeEvent, etEndDateEvent, etEndTimeEvent, etPriceEvent;
+            etEndDateEvent, etPriceEvent, etSessionEvent;
     Button btStartDate, btEndDate,btPilihPaket, btaddImg;
     TextView tvNamePaket, tvMaxParticipant, tvPrice;
     ImageView imgBanner;
@@ -83,6 +83,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
         etPriceEvent = findViewById(R.id.price_event_kelola);
         etStartDateEvent = findViewById(R.id.start_event_kelola);
         etEndDateEvent = findViewById(R.id.end_event_kelola);
+        etSessionEvent = findViewById(R.id.session_event_kelola);
 
         btPilihPaket = findViewById(R.id.bt_pilih_paket);
         btaddImg = findViewById(R.id.add_img_banner_event);
@@ -198,7 +199,11 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                 data.put("start", etStartDateEvent.getText().toString());
                 data.put("end", etEndDateEvent.getText().toString());
                 data.put("event_type_id", "3");
-                data.put("banner", imageString);
+                if (imageString != null) {
+                    data.put("banner", imageString);
+                } else {
+                    data.put("banner", "null");
+                }
                 data.put("description", etDescEvent.getText().toString());
                 data.put("place", etPlaceEvent.getText().toString());
                 data.put("address", etAddressEvent.getText().toString());
@@ -213,6 +218,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                 data.put("user_id", sharedPrefManager.getSPIdUser());
                 data.put("team_role", sharedPrefManager.getSPRole());
                 data.put("name_team", sharedPrefManager.getSpNameTeam());
+                data.put("name_session", etSessionEvent.getText().toString());
                 return data;
             }
         };

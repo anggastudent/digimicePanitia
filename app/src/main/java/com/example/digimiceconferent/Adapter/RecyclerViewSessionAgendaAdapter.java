@@ -41,7 +41,7 @@ public class RecyclerViewSessionAgendaAdapter extends RecyclerView.Adapter<Recyc
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try {
             Date dateStart = dateFormat.parse(sessionAgenda.getJam());
-            SimpleDateFormat dateFormatNew = new SimpleDateFormat("dd MMMM yyyy\nhh:mm");
+            SimpleDateFormat dateFormatNew = new SimpleDateFormat("hh:mm");
             holder.jam.setText(dateFormatNew.format(dateStart)+" WIB");
 
         } catch (ParseException e) {

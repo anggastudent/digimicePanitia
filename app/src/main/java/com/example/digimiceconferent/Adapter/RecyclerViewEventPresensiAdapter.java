@@ -36,7 +36,7 @@ public class RecyclerViewEventPresensiAdapter extends RecyclerView.Adapter<Recyc
     @NonNull
     @Override
     public EventPresensiViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_presensi, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event_panitia, parent, false);
         return new EventPresensiViewHolder(view);
     }
 
@@ -104,10 +104,10 @@ public class RecyclerViewEventPresensiAdapter extends RecyclerView.Adapter<Recyc
         public EventPresensiViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            judul = itemView.findViewById(R.id.judul_item_presensi);
-            start = itemView.findViewById(R.id.item_start_presensi);
-            btnDetail = itemView.findViewById(R.id.bt_detail_item_presensi);
-            banner = itemView.findViewById(R.id.img_item_presensi);
+            judul = itemView.findViewById(R.id.judul_item);
+            start = itemView.findViewById(R.id.item_start);
+            btnDetail = itemView.findViewById(R.id.bt_detail_item);
+            banner = itemView.findViewById(R.id.img_item);
         }
     }
 }
