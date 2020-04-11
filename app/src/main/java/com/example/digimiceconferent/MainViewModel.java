@@ -12,8 +12,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.digimiceconferent.Model.Agenda;
 import com.example.digimiceconferent.Model.Event;
+import com.example.digimiceconferent.Model.Kabupaten;
+import com.example.digimiceconferent.Model.Provinsi;
 import com.example.digimiceconferent.Model.SessionAgenda;
 import com.example.digimiceconferent.Model.EventPacket;
 import com.example.digimiceconferent.Model.EventSession;
@@ -26,11 +29,11 @@ import java.util.ArrayList;
 
 public class MainViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Event>> listEventPanitia = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<String>> listEventAddPanitia = new MutableLiveData<>();
     private MutableLiveData<ArrayList<EventSession>> listEventSessionPanitia = new MutableLiveData<>();
     private MutableLiveData<ArrayList<EventPacket>> listPacket = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Agenda>> listAgenda = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Materi>> listMateri = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Provinsi>> listProvinsi = new MutableLiveData<>();
 
     public MainViewModel() {
     }
@@ -251,6 +254,47 @@ public class MainViewModel extends ViewModel {
 
         queue.add(arrayRequest);
     }
+
+    public void setListProvinsi(RequestQueue queue, final Context context) {
+        final ArrayList<Provinsi> list = new ArrayList<>();
+        String url = "http://192.168.4.107/myAPI/public/provinsi";
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject data = response.getJSONObject(i);
+                        Provinsi provinsi = new Provinsi();
+                        provinsi.setId(data.getString("id"));
+                        provinsi.setName(data.getString("name"));
+                        JSONArray dataKabupaten = data.getJSONArray("kabupaten");
+                        ArrayList<Kabupaten> listKabupaten = new ArrayList<>();
+                        for (int j = 0; j < dataKabupaten.length(); j++) {
+                            JSONObject data2 = dataKabupaten.getJSONObject(j);
+                            Kabupaten kabupaten = new Kabupaten();
+                            kabupaten.setId(data2.getString("id"));
+                            kabupaten.setName(data2.getString("name"));
+                            listKabupaten.add(kabupaten);
+                        }
+                        provinsi.setListKabupaten(listKabupaten);
+                        list.add(provinsi);
+
+                    }
+
+                    listProvinsi.postValue(list);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(arrayRequest);
+    }
     public LiveData<ArrayList<EventPacket>> getEventPacket() {
         return listPacket;
     }
@@ -269,6 +313,10 @@ public class MainViewModel extends ViewModel {
 
     public LiveData<ArrayList<Materi>> getMateri() {
         return listMateri;
+    }
+
+    public LiveData<ArrayList<Provinsi>> getProvinsi() {
+        return listProvinsi;
     }
 
 
