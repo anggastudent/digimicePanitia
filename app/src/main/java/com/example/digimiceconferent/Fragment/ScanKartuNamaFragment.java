@@ -1,5 +1,6 @@
 package com.example.digimiceconferent.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.digimiceconferent.Activity.SetQRPeserta;
 import com.example.digimiceconferent.R;
 import com.google.zxing.Result;
 
@@ -25,6 +27,8 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class ScanKartuNamaFragment extends Fragment implements ZXingScannerView.ResultHandler {
 
     private ZXingScannerView scannerView;
+    private boolean frontCamera = true;
+    private boolean flashCamera = false;
 
     public ScanKartuNamaFragment() {
         // Required empty public constructor
@@ -45,6 +49,12 @@ public class ScanKartuNamaFragment extends Fragment implements ZXingScannerView.
         ViewGroup viewGroup = view.findViewById(R.id.camera_card);
         scannerView = new ZXingScannerView(getContext());
         viewGroup.addView(scannerView);
+
+        if (!flashCamera) {
+            flashCamera = true;
+        } else {
+            flashCamera = false;
+        }
     }
 
     @Override
@@ -70,15 +80,32 @@ public class ScanKartuNamaFragment extends Fragment implements ZXingScannerView.
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.set_qrcode_card:
                 Toast.makeText(getContext(), "Set QR", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), SetQRPeserta.class);
+                startActivity(intent);
                 break;
             case R.id.change_camera_card:
-                Toast.makeText(getContext(), "Change Camera", Toast.LENGTH_SHORT).show();
+                if (frontCamera) {
+                    scannerView.stopCamera();
+                    scannerView.startCamera(1);
+                    frontCamera = false;
+                }else{
+                    scannerView.stopCamera();
+                    scannerView.startCamera(-1);
+                    frontCamera = true;
+                }
                 break;
             case R.id.flash_camera_card:
-                Toast.makeText(getContext(), "Flash Camera", Toast.LENGTH_SHORT).show();
+                if (flashCamera) {
+                    scannerView.setFlash(true);
+                    flashCamera = false;
+                } else {
+                    scannerView.setFlash(false);
+                    flashCamera = true;
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);

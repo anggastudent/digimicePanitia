@@ -14,11 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".Activity.ScanQRPeserta"
+        <activity android:name=".Activity.SetQRPeserta"
             android:screenOrientation="locked"
-            android:parentActivityName=".Activity.KelolaPeserta">
+            android:parentActivityName=".Activity.ScanQRPeserta">
+
         </activity>
+        <activity
+            android:name=".Activity.ScanQRPeserta"
+            android:parentActivityName=".Activity.KelolaPeserta"
+            android:screenOrientation="locked"></activity>
         <activity
             android:name=".Activity.EditSession"
             android:parentActivityName=".Activity.KelolaEvent"

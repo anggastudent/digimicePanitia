@@ -3,17 +3,17 @@
     <item
         android:id="@+id/navigation_event"
         android:icon="@drawable/ic_event_black_24dp"
-        android:title="Kelola Event"/>
+        android:title="Event"/>
 
     <item
         android:id="@+id/navigation_panitia"
         android:icon="@drawable/ic_card_travel_black_24dp"
-        android:title="Kelola Panitia" />
+        android:title="Panitia" />
 
     <item
         android:id="@+id/navigation_peserta"
         android:icon="@drawable/ic_assignment_ind_black_24dp"
-        android:title="Kelola Peserta"/>
+        android:title="Peserta"/>
 
     <item
         android:id="@+id/navigation_pembayaran"

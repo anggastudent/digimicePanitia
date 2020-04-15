@@ -1,5 +1,6 @@
 package com.example.digimiceconferent.Fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -28,6 +29,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
+import com.kishan.askpermission.AskPermission;
+import com.kishan.askpermission.ErrorCallback;
+import com.kishan.askpermission.PermissionCallback;
+import com.kishan.askpermission.PermissionInterface;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -38,13 +43,14 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UploadMateriDialogFragment extends DialogFragment {
+public class UploadMateriDialogFragment extends DialogFragment implements PermissionCallback, ErrorCallback {
 
     Button btUpload, btCancel;
     EditText etNameFile;
     RequestQueue queue;
     SharedPrefManager sharedPrefManager;
     private int PICK_PDF_REQUEST = 1;
+    private int REQUEST_PERMISSIONS = 2;
     File file;
     String filePdf;
     Uri filePath;
@@ -71,7 +77,8 @@ public class UploadMateriDialogFragment extends DialogFragment {
         etNameFile = view.findViewById(R.id.nama_upload_materi);
         queue = Volley.newRequestQueue(getContext());
         sharedPrefManager = new SharedPrefManager(getContext());
-        addMateri();
+        permissions();
+
         btUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,5 +153,33 @@ public class UploadMateriDialogFragment extends DialogFragment {
         }else{
             getDialog().dismiss();
         }
+    }
+
+    @Override
+    public void onShowRationalDialog(PermissionInterface permissionInterface, int requestCode) {
+        permissionInterface.onDialogShown();
+    }
+
+    @Override
+    public void onShowSettings(PermissionInterface permissionInterface, int requestCode) {
+
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode) {
+        addMateri();
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode) {
+        getDialog().dismiss();
+    }
+
+    private void permissions() {
+        new AskPermission.Builder(this).setPermissions(
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                .setCallback(this)
+                .setErrorCallback(this)
+                .request(REQUEST_PERMISSIONS);
     }
 }
