@@ -67,6 +67,12 @@
     <string name="set_qr_code">Set QR Code</string>
     <string name="change_camera">Change Camera</string>
     <string name="flash">Flash</string>
+    <string name="akun">Akun</string>
+    <string name="logout">Logout</string>
+    <string name="password_lama">Password Lama</string>
+    <string name="password_baru">Password Baru</string>
+    <string name="verify_password_baru">Verify Password Baru</string>
+    <string name="edit_profil">Edit Profil</string>
 
 
     <string-array name="presensi">

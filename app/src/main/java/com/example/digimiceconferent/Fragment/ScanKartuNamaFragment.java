@@ -83,7 +83,6 @@ public class ScanKartuNamaFragment extends Fragment implements ZXingScannerView.
 
         switch (item.getItemId()) {
             case R.id.set_qrcode_card:
-                Toast.makeText(getContext(), "Set QR", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), SetQRPeserta.class);
                 startActivity(intent);
                 break;

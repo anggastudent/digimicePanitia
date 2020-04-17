@@ -67,8 +67,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
     static String startDate;
     static String endDate;
     String imageString;
-    int price;
-    int PICK_IMAGE_REQUEST = 111;
+    int PICK_IMAGE_REQUEST = 151;
     Bitmap bitmap;
 
 
@@ -154,7 +153,9 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
         }
+
     }
 
     public static class DatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
@@ -260,10 +261,8 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                 data.put("address", etAddressEvent.getText().toString());
                 data.put("start", etStartDateEvent.getText().toString());
                 data.put("end", etEndDateEvent.getText().toString());
-                if (imageString != null) {
+                if(imageString != null) {
                     data.put("banner", imageString);
-                } else {
-                    data.put("banner", "null");
                 }
                 data.put("event_ticket_price", etPriceEvent.getText().toString());
                 return data;
