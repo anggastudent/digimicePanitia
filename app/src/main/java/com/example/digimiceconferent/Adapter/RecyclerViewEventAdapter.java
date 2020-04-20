@@ -61,7 +61,7 @@ public class RecyclerViewEventAdapter extends RecyclerView.Adapter<RecyclerViewE
         }
 
         Glide.with(holder.itemView.getContext())
-                .load("http://192.168.4.107/myAPI/public/" + event.getBanner())
+                .load("http://192.168.4.109/myAPI/public/" + event.getBanner())
                 .apply(new RequestOptions().override(100, 100))
                 .into(holder.imageView);
 

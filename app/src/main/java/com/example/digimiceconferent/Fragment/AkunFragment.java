@@ -99,7 +99,7 @@ public class AkunFragment extends Fragment {
     private void getData() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
-        String url = "http://192.168.4.107/myAPI/public/user/" + sharedPrefManager.getSPIdUser();
+        String url = "http://192.168.4.109/myAPI/public/user/" + sharedPrefManager.getSPIdUser();
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -113,7 +113,7 @@ public class AkunFragment extends Fragment {
                         teamUser.setText(data.getString("team"));
 
                         Glide.with(getContext())
-                                .load("http://192.168.4.107/myAPI/public/" + data.getString("avatar"))
+                                .load("http://192.168.4.109/myAPI/public/" + data.getString("avatar"))
                                 .apply(new RequestOptions().override(150, 150))
                                 .into(avatar);
 

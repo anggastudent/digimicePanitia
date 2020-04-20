@@ -20,10 +20,6 @@
             android:screenOrientation="locked">
         </activity>
         <activity
-            android:name=".Activity.SetQRPeserta"
-            android:parentActivityName=".Activity.ScanQRPeserta"
-            android:screenOrientation="locked"></activity>
-        <activity
             android:name=".Activity.ScanQRPeserta"
             android:parentActivityName=".Activity.KelolaPeserta"
             android:screenOrientation="locked" />

@@ -15,8 +15,4 @@
         app:showAsAction="always"
         app:iconTint="@android:color/white"/>
 
-    <item
-        android:id="@+id/set_qrcode_card"
-        android:title="@string/set_qr_code"
-        app:showAsAction="never"/>
 </menu>

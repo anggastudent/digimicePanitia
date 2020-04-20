@@ -148,7 +148,7 @@ public class AddPemateriFragment extends Fragment {
     private void addPemateri() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
         final SharedPrefManager sharedPrefManager = new SharedPrefManager(getContext());
-        String url = "http://192.168.4.107/myAPI/public/add-pemateri";
+        String url = "http://192.168.4.109/myAPI/public/add-pemateri";
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

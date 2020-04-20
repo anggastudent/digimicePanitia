@@ -44,7 +44,7 @@ public class AddSession extends AppCompatActivity {
 
     private void addSession() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.4.107/myAPI/public/add-session";
+        String url = "http://192.168.4.109/myAPI/public/add-session";
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

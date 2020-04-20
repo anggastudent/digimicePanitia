@@ -59,17 +59,7 @@ public class ScanQRPeserta extends AppCompatActivity implements PermissionCallba
 
     @Override
     public void onShowSettings(final PermissionInterface permissionInterface, int requestCode) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setMessage("Butuh Perijinan Aplikasi");
-//        builder.setPositiveButton("Oke", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                permissionInterface.onSettingsShown();
-//            }
-//        });
-//
-//        builder.setNegativeButton("Cancel", null);
-//        builder.show();
+
     }
 
     @Override

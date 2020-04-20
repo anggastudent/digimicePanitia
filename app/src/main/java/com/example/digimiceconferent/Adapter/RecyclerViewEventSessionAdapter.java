@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.digimiceconferent.Activity.ScanQRPeserta;
 import com.example.digimiceconferent.Model.EventSession;
 import com.example.digimiceconferent.R;
+import com.example.digimiceconferent.SharedPrefManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,7 +38,7 @@ public class RecyclerViewEventSessionAdapter extends RecyclerView.Adapter<Recycl
 
     @Override
     public void onBindViewHolder(@NonNull final SessionPanitiaViewHolder holder, int position) {
-        EventSession eventSession = listSession.get(position);
+        final EventSession eventSession = listSession.get(position);
         holder.nameSession.setText(eventSession.getJudul());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try {
@@ -52,6 +53,8 @@ public class RecyclerViewEventSessionAdapter extends RecyclerView.Adapter<Recycl
         holder.btScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPrefManager sharedPrefManager = new SharedPrefManager(holder.itemView.getContext());
+                sharedPrefManager.saveSPString(sharedPrefManager.SP_ID_SESSION, eventSession.getId());
                 Intent intent = new Intent(holder.itemView.getContext(), ScanQRPeserta.class);
                 holder.itemView.getContext().startActivity(intent);
 

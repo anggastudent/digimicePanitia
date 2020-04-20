@@ -102,7 +102,7 @@ public class EditProfil extends AppCompatActivity {
 
     private void getData() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.4.107/myAPI/public/edit-user/"+sharedPrefManager.getSPIdUser();
+        String url = "http://192.168.4.109/myAPI/public/edit-user/"+sharedPrefManager.getSPIdUser();
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -139,7 +139,7 @@ public class EditProfil extends AppCompatActivity {
             byte[] imageBytes = byteArrayOutputStream.toByteArray();
             imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         }
-        String url = "http://192.168.4.107/myAPI/public/update-user/"+sharedPrefManager.getSPIdUser();
+        String url = "http://192.168.4.109/myAPI/public/update-user/"+sharedPrefManager.getSPIdUser();
         StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

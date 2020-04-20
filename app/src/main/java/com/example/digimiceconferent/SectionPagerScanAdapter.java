@@ -9,9 +9,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.digimiceconferent.Fragment.ScanKartuNamaFragment;
-import com.example.digimiceconferent.Fragment.ScanSmartphoneFragment;
-import com.example.digimiceconferent.R;
+import com.example.digimiceconferent.Fragment.SetQrCodeFragment;
+import com.example.digimiceconferent.Fragment.ScanQrCodeFragment;
 
 public class SectionPagerScanAdapter extends FragmentPagerAdapter {
 
@@ -33,10 +32,10 @@ public class SectionPagerScanAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new ScanSmartphoneFragment();
+                fragment = new ScanQrCodeFragment();
                 break;
             case 1:
-                fragment = new ScanKartuNamaFragment();
+                fragment = new SetQrCodeFragment();
                 break;
         }
         return fragment;

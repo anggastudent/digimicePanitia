@@ -223,7 +223,7 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
 
     public void editAgenda() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.4.107/myAPI/public/update-agenda/"+id_agenda;
+        String url = "http://192.168.4.109/myAPI/public/update-agenda/"+id_agenda;
 
         StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override

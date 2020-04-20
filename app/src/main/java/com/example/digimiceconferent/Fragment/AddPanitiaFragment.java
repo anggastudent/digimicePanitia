@@ -113,7 +113,7 @@ public class AddPanitiaFragment extends Fragment {
 
     public void addPanitia(){
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "http://192.168.4.107/myAPI/public/add-panitia";
+        String url = "http://192.168.4.109/myAPI/public/add-panitia";
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

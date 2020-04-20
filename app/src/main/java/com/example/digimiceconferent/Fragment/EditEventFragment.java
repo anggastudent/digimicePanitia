@@ -188,7 +188,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
 
     private void showDataEdit() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "http://192.168.4.107/myAPI/public/edit-event/"+sharedPrefManager.getSpIdEvent();
+        String url = "http://192.168.4.109/myAPI/public/edit-event/"+sharedPrefManager.getSpIdEvent();
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -204,7 +204,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                         etEndDateEvent.setText(data.getString("end"));
 
                         Glide.with(getContext())
-                                .load("http://192.168.4.107/myAPI/public/" + data.getString("banner"))
+                                .load("http://192.168.4.109/myAPI/public/" + data.getString("banner"))
                                 .apply(new RequestOptions().override(100, 100))
                                 .into(imgBanner);
 
@@ -232,7 +232,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
     private void sendEdit() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
-        String url = "http://192.168.4.107/myAPI/public/update-event/"+sharedPrefManager.getSpIdEvent();
+        String url = "http://192.168.4.109/myAPI/public/update-event/"+sharedPrefManager.getSpIdEvent();
 
         if(bitmap != null) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
