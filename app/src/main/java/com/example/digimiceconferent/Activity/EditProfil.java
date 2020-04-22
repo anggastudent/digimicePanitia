@@ -1,5 +1,6 @@
 package com.example.digimiceconferent.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,6 +54,7 @@ public class EditProfil extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Edit Profil");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         }
 
         etNamaLengkap = findViewById(R.id.name_user_edit);
@@ -172,5 +175,16 @@ public class EditProfil extends AppCompatActivity {
         };
 
         queue.add(request);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

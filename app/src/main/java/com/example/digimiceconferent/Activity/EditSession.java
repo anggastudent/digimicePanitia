@@ -1,8 +1,10 @@
 package com.example.digimiceconferent.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +39,10 @@ public class EditSession extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_session);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Edit Sesi");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         etNameSession = findViewById(R.id.name_edit_session);
         btEditSession = findViewById(R.id.bt_edit_session);
 
@@ -105,5 +111,15 @@ public class EditSession extends AppCompatActivity {
         });
 
         queue.add(arrayRequest);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

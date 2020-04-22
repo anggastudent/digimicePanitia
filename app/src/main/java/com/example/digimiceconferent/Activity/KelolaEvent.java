@@ -1,9 +1,11 @@
 package com.example.digimiceconferent.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.digimiceconferent.Model.Event;
@@ -50,5 +52,15 @@ public class KelolaEvent extends AppCompatActivity {
         alamatEvent.setText(sharedPrefManager.getSpAddressEvent());
         waktuEvent.setText(sharedPrefManager.getSpWaktuEvent());
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return false;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

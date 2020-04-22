@@ -15,52 +15,40 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".Activity.RekapitulasiPeserta"
-            android:screenOrientation="locked"
-            android:parentActivityName=".Activity.KelolaPeserta">
+            android:screenOrientation="locked">
             </activity>
         <activity
             android:name=".Activity.EditProfil"
-            android:parentActivityName=".Activity.HomePanitia"
             android:screenOrientation="locked"></activity>
         <activity
             android:name=".Activity.ScanQRPeserta"
-            android:parentActivityName=".Activity.KelolaPeserta"
             android:screenOrientation="locked" />
         <activity
             android:name=".Activity.EditSession"
-            android:parentActivityName=".Activity.KelolaEvent"
             android:screenOrientation="locked" />
         <activity
             android:name=".Activity.AddSession"
-            android:parentActivityName=".Activity.KelolaEvent"
             android:screenOrientation="locked" />
         <activity
             android:name=".Activity.KelolaPeserta"
-            android:parentActivityName=".Activity.HomePanitia"
             android:screenOrientation="locked" />
         <activity
             android:name=".Activity.DetailUploadMateri"
-            android:parentActivityName=".Activity.KelolaEvent"
             android:screenOrientation="locked" />
         <activity
             android:name=".Activity.EditAgenda"
-            android:parentActivityName=".Activity.KelolaEvent"
             android:screenOrientation="locked" />
         <activity
             android:name=".Activity.AddAgenda"
-            android:parentActivityName=".Activity.KelolaEvent"
             android:screenOrientation="locked" />
         <activity
             android:name=".Activity.KelolaEvent"
-            android:parentActivityName=".Activity.HomePanitia"
             android:screenOrientation="locked" />
         <activity
             android:name=".Activity.KelolaPacket"
-            android:parentActivityName=".Activity.DetailPacket"
             android:screenOrientation="locked" />
         <activity
             android:name=".Activity.DetailPacket"
-            android:parentActivityName=".Activity.HomePanitia"
             android:screenOrientation="locked" />
         <activity android:name=".Activity.HomeAnggota" />
         <activity

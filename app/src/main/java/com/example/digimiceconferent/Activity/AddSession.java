@@ -1,8 +1,10 @@
 package com.example.digimiceconferent.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +31,10 @@ public class AddSession extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_session);
-
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Tambah Sesi");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         sharedPrefManager = new SharedPrefManager(this);
         etNamaSession = findViewById(R.id.name_add_session);
         btAddSession = findViewById(R.id.bt_add_session);
@@ -65,7 +70,16 @@ public class AddSession extends AppCompatActivity {
                 return data;
             }
         };
-
         queue.add(request);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

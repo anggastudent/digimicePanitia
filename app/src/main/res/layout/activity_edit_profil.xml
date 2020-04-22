@@ -19,7 +19,6 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:background="@drawable/border_radius"
             android:src="@drawable/foto"
             android:layout_marginBottom="16dp"/>
 
