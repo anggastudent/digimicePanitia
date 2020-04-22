@@ -29,7 +29,7 @@ public class ScanQRPeserta extends AppCompatActivity implements PermissionCallba
         setContentView(R.layout.activity_scan_q_r_peserta);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Scan QRCode");
+            getSupportActionBar().setTitle("Presensi Peserta");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         SectionPagerScanAdapter sectionPagerAdapter = new SectionPagerScanAdapter(getSupportFragmentManager(),this);

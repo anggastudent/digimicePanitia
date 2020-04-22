@@ -14,11 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".Activity.EditProfil"
+        <activity android:name=".Activity.RekapitulasiPeserta"
+            android:screenOrientation="locked"
+            android:parentActivityName=".Activity.KelolaPeserta">
+            </activity>
+        <activity
+            android:name=".Activity.EditProfil"
             android:parentActivityName=".Activity.HomePanitia"
-            android:screenOrientation="locked">
-        </activity>
+            android:screenOrientation="locked"></activity>
         <activity
             android:name=".Activity.ScanQRPeserta"
             android:parentActivityName=".Activity.KelolaPeserta"

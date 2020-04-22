@@ -81,7 +81,14 @@ public class EditProfil extends AppCompatActivity {
         btEditProfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editProfil();
+                if (!etPasswordBaru.getText().toString().equals(etRePasswordBaru.getText().toString())) {
+                    Toast.makeText(getApplicationContext(), "Password Baru Tidak Sama", Toast.LENGTH_SHORT).show();
+
+                }else {
+                    editProfil();
+                }
+
+
             }
         });
     }
@@ -111,7 +118,7 @@ public class EditProfil extends AppCompatActivity {
                         JSONObject data = response.getJSONObject(i);
                         etNamaLengkap.setText(data.getString("name"));
                         Glide.with(getApplicationContext())
-                                .load("http://192.168.4.107/myAPI/public/" + data.getString("avatar"))
+                                .load("http://192.168.4.109/myAPI/public/" + data.getString("avatar"))
                                 .apply(new RequestOptions().override(100, 100))
                                 .into(avatar);
                     }

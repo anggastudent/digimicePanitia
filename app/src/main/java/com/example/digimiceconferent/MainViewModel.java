@@ -13,10 +13,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Model.Agenda;
 import com.example.digimiceconferent.Model.Event;
 import com.example.digimiceconferent.Model.Kabupaten;
 import com.example.digimiceconferent.Model.Provinsi;
+import com.example.digimiceconferent.Model.Rekapitulasi;
 import com.example.digimiceconferent.Model.SessionAgenda;
 import com.example.digimiceconferent.Model.EventPacket;
 import com.example.digimiceconferent.Model.EventSession;
@@ -34,34 +36,12 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Agenda>> listAgenda = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Materi>> listMateri = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Provinsi>> listProvinsi = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Rekapitulasi>> listRekapitulasi = new MutableLiveData<>();
 
     public MainViewModel() {
     }
 
-    public void setListEventAddPanitia(RequestQueue queue, final Context context, String user_id) {
-        final ArrayList<String> list = new ArrayList<>();
-        String url = "http://192.168.4.109/myAPI/public/event?user_id="+user_id;
-        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                try {
-                    for (int i=0; i < response.length(); i++){
-                        JSONObject data = response.getJSONObject(i);
-                        list.add(data.getString("id"));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
 
-        queue.add(arrayRequest);
-    }
     public void setEventPanitia(RequestQueue queue, final Context context, String user_id) {
         final ArrayList<Event> listItemEvent = new ArrayList<>();
 
@@ -116,6 +96,7 @@ public class MainViewModel extends ViewModel {
                         eventSession.setId(data.getString("id"));
                         eventSession.setJudul(data.getString("name"));
                         String start = "";
+                        String end = "";
 
                         JSONArray dataAgenda = data.getJSONArray("agenda");
                         ArrayList<SessionAgenda> listAgenda = new ArrayList<>();
@@ -128,8 +109,12 @@ public class MainViewModel extends ViewModel {
                             if (j == 0) {
                                 start+=data2.getString("start");
                             }
+                            if(j==dataAgenda.length()-1){
+                                end+=data2.getString("end");
+                            }
                             listAgenda.add(agenda);
                         }
+                        eventSession.setEnd(end);
                         eventSession.setStart(start);
                         eventSession.setListAgenda(listAgenda);
                         listItemEventSession.add(eventSession);
@@ -295,6 +280,40 @@ public class MainViewModel extends ViewModel {
 
         queue.add(arrayRequest);
     }
+
+    public void setListRekapitulasi(RequestQueue queue, final Context context, String eventId, String sessionId) {
+        final ArrayList<Rekapitulasi> list = new ArrayList<>();
+        String url = "http://192.168.4.109/myAPI/public/rekapitulasi?event_id="+eventId+"&session_id="+sessionId;
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject data = response.getJSONObject(i);
+                        Rekapitulasi rekapitulasi = new Rekapitulasi();
+                        rekapitulasi.setName(data.getString("name"));
+                        rekapitulasi.setEmail(data.getString("email"));
+                        rekapitulasi.setPhone(data.getString("phone"));
+                        rekapitulasi.setRekap(data.getString("rekap"));
+                        rekapitulasi.setPaymentStatus(data.getString("payment_status"));
+                        rekapitulasi.setProvinsi(data.getString("provinsi"));
+                        list.add(rekapitulasi);
+                    }
+
+                    listRekapitulasi.postValue(list);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(arrayRequest);
+    }
     public LiveData<ArrayList<EventPacket>> getEventPacket() {
         return listPacket;
     }
@@ -317,6 +336,10 @@ public class MainViewModel extends ViewModel {
 
     public LiveData<ArrayList<Provinsi>> getProvinsi() {
         return listProvinsi;
+    }
+
+    public LiveData<ArrayList<Rekapitulasi>> getRekapitulasi() {
+        return listRekapitulasi;
     }
 
 
