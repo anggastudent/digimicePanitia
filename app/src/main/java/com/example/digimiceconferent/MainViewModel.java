@@ -16,7 +16,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Model.Agenda;
 import com.example.digimiceconferent.Model.Event;
+import com.example.digimiceconferent.Model.Expired;
 import com.example.digimiceconferent.Model.Kabupaten;
+import com.example.digimiceconferent.Model.Paid;
+import com.example.digimiceconferent.Model.Pending;
 import com.example.digimiceconferent.Model.Provinsi;
 import com.example.digimiceconferent.Model.Rekapitulasi;
 import com.example.digimiceconferent.Model.SessionAgenda;
@@ -37,6 +40,9 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Materi>> listMateri = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Provinsi>> listProvinsi = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Rekapitulasi>> listRekapitulasi = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Pending>> listPending = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Expired>> listExpired = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Paid>> listPaid = new MutableLiveData<>();
 
     public MainViewModel() {
     }
@@ -314,6 +320,108 @@ public class MainViewModel extends ViewModel {
 
         queue.add(arrayRequest);
     }
+
+    public void setListPending(RequestQueue queue, final Context context, String userId) {
+        final ArrayList<Pending> list = new ArrayList<>();
+        String url = "http://192.168.4.109/myAPI/public/pending/" + userId;
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject data = response.getJSONObject(i);
+                        Pending pending = new Pending();
+                        pending.setId(data.getString("id_invoice"));
+                        pending.setName(data.getString("name_paket"));
+                        pending.setStatus(data.getString("status"));
+                        pending.setMaxParticipant(data.getString("max_participant"));
+                        pending.setPrice(data.getString("price"));
+                        pending.setExpired(data.getString("expired"));
+                        list.add(pending);
+                    }
+                    listPending.postValue(list);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(arrayRequest);
+    }
+
+    public void setListExpired(RequestQueue queue, final Context context, String userId) {
+        final ArrayList<Expired> list = new ArrayList<>();
+        String url = "http://192.168.4.109/myAPI/public/expired/" + userId;
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject data = response.getJSONObject(i);
+                        Expired expired = new Expired();
+                        expired.setId(data.getString("id_invoice"));
+                        expired.setName(data.getString("name_paket"));
+                        expired.setMaxParticipant("max_participant");
+                        expired.setStatus(data.getString("status"));
+                        expired.setPrice(data.getString("price"));
+                        expired.setExpired(data.getString("expired"));
+                        list.add(expired);
+                    }
+
+                    listExpired.postValue(list);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(arrayRequest);
+    }
+
+    public void setListPaid(RequestQueue queue, final Context context, String userId) {
+        final ArrayList<Paid> list = new ArrayList<>();
+        String url = "http://192.168.4.109/myAPI/public/paid/" + userId;
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject data = response.getJSONObject(i);
+                        Paid paid = new Paid();
+                        paid.setId(data.getString("id_invoice"));
+                        paid.setStatus(data.getString("status"));
+                        paid.setName(data.getString("name_paket"));
+                        paid.setPrice(data.getString("price"));
+                        paid.setMaxParticipant(data.getString("max_participant"));
+                        paid.setPaid(data.getString("paid_at"));
+                        list.add(paid);
+                    }
+
+                    listPaid.postValue(list);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(arrayRequest);
+
+    }
     public LiveData<ArrayList<EventPacket>> getEventPacket() {
         return listPacket;
     }
@@ -340,6 +448,18 @@ public class MainViewModel extends ViewModel {
 
     public LiveData<ArrayList<Rekapitulasi>> getRekapitulasi() {
         return listRekapitulasi;
+    }
+
+    public LiveData<ArrayList<Pending>> getPending() {
+        return listPending;
+    }
+
+    public LiveData<ArrayList<Expired>> getExpired() {
+        return listExpired;
+    }
+
+    public LiveData<ArrayList<Paid>> getPaid() {
+        return listPaid;
     }
 
 

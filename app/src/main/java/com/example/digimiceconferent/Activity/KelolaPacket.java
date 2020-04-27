@@ -4,8 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -99,7 +99,19 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
         btPilihPaket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addEvent();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(KelolaPacket.this );
+                builder.setMessage("Apakah anda sudah yakin ? ");
+                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        addEvent();
+                    }
+                });
+
+                builder.setNegativeButton("Tidak", null);
+                builder.show();
+
             }
         });
 
@@ -187,6 +199,10 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(String response) {
                 Toast.makeText(getApplicationContext(), "Berhasil",Toast.LENGTH_SHORT).show();
+                if (price != 0) {
+                    Intent intent = new Intent(KelolaPacket.this, HomePanitia.class);
+                    startActivity(intent);
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -203,8 +219,6 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                 data.put("event_type_id", "3");
                 if (imageString != null) {
                     data.put("banner", imageString);
-                } else {
-                    data.put("banner", "null");
                 }
                 data.put("description", etDescEvent.getText().toString());
                 data.put("place", etPlaceEvent.getText().toString());
@@ -221,6 +235,10 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                 data.put("team_role", sharedPrefManager.getSPRole());
                 data.put("name_team", sharedPrefManager.getSpNameTeam());
                 data.put("name_session", etSessionEvent.getText().toString());
+                data.put("name_packet", sharedPrefManager.getSpNamePacket());
+                data.put("email", sharedPrefManager.getSpEmail());
+                data.put("price_packet", String.valueOf(price));
+
                 return data;
             }
         };

@@ -1,4 +1,4 @@
-package com.example.digimiceconferent;
+package com.example.digimiceconferent.Adapter;
 
 import android.content.Context;
 
@@ -14,9 +14,11 @@ import com.example.digimiceconferent.Fragment.AgendaFragment;
 import com.example.digimiceconferent.Fragment.EditEventFragment;
 import com.example.digimiceconferent.Fragment.SessionFragment;
 import com.example.digimiceconferent.Fragment.UploadMateriFragment;
+import com.example.digimiceconferent.R;
 
 public class SectionPagerEventAdapter extends FragmentPagerAdapter {
     private Context context;
+
     public SectionPagerEventAdapter(@NonNull FragmentManager fm, Context mContext) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         context = mContext;

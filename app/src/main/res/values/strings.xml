@@ -18,6 +18,9 @@
     <string name="tab_2_peserta">Peserta</string>
     <string name="tab_1_scan">Scan Qr Code</string>
     <string name="tab_2_scan">Set Qr Code</string>
+    <string name="tab_1_pembayaran">Belum Lunas</string>
+    <string name="tab_2_pembayaran">Batal</string>
+    <string name="tab_3_pembayaran">Lunas</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

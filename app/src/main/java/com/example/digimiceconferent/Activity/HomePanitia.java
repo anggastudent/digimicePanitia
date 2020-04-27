@@ -13,12 +13,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Fragment.AkunFragment;
 import com.example.digimiceconferent.Fragment.EventFragment;
 import com.example.digimiceconferent.Fragment.PanitiaFragment;
 import com.example.digimiceconferent.Fragment.PembayaranFragment;
 import com.example.digimiceconferent.Fragment.PesertaFragment;
 import com.example.digimiceconferent.R;
+import com.example.digimiceconferent.SharedPrefManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomePanitia extends AppCompatActivity {
@@ -43,16 +47,17 @@ public class HomePanitia extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         bottomNavigationView.getMenu().findItem(R.id.navigation_panitia).setChecked(true);
+
         fm.beginTransaction().add(R.id.nav_host_fragment, fragmentEvent, "1").hide(fragmentEvent).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, fragmentPanitia, "2").commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, fragmentPeserta, "3").hide(fragmentPeserta).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, fragmentPembayaran, "4").hide(fragmentPembayaran).commit();
         fm.beginTransaction().add(R.id.nav_host_fragment, fragmentAkun, "5").hide(fragmentAkun).commit();
 
-        TextView largeTextView = bottomNavigationView.findViewById(R.id.bottom_nav).findViewById(com.google.android.material.R.id.largeLabel);
-        TextView smallTextView = bottomNavigationView.findViewById(R.id.bottom_nav).findViewById(com.google.android.material.R.id.smallLabel);
-        largeTextView.setVisibility(View.GONE);
-        smallTextView.setVisibility(View.VISIBLE);
+//        TextView largeTextView = bottomNavigationView.findViewById(R.id.bottom_nav).findViewById(com.google.android.material.R.id.largeLabel);
+//        TextView smallTextView = bottomNavigationView.findViewById(R.id.bottom_nav).findViewById(com.google.android.material.R.id.smallLabel);
+//        largeTextView.setVisibility(View.GONE);
+//        smallTextView.setVisibility(View.VISIBLE);
 
     }
 
@@ -89,7 +94,5 @@ public class HomePanitia extends AppCompatActivity {
             return false;
         }
     };
-
-
 
 }

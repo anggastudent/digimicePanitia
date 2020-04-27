@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.digimiceconferent.R;
-import com.example.digimiceconferent.SectionPagerAdapter;
+import com.example.digimiceconferent.Adapter.SectionPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 /**

@@ -1,4 +1,4 @@
-package com.example.digimiceconferent;
+package com.example.digimiceconferent.Adapter;
 
 import android.content.Context;
 
@@ -9,22 +9,25 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.digimiceconferent.Fragment.PresensiPesertaFragment;
-import com.example.digimiceconferent.Fragment.RekapPesertaFragment;
+import com.example.digimiceconferent.Fragment.AddPanitiaFragment;
+import com.example.digimiceconferent.Fragment.AddPemateriFragment;
+import com.example.digimiceconferent.Fragment.PaketFragment;
+import com.example.digimiceconferent.Fragment.UploadMateriFragment;
+import com.example.digimiceconferent.R;
 
-public class SectionPagerPesertaAdapter extends FragmentPagerAdapter {
-
+public class SectionPagerAdapter extends FragmentPagerAdapter {
     private Context context;
 
-    public SectionPagerPesertaAdapter(@NonNull FragmentManager fm, Context mContext) {
+    public SectionPagerAdapter(@NonNull FragmentManager fm, Context mContext) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         context = mContext;
     }
 
     @StringRes
     private int[] TAB_TITLES = new int[]{
-            R.string.tab_1_peserta,
-            R.string.tab_2_peserta
+            R.string.tab_1,
+            R.string.tab_2
+
     };
 
     @NonNull
@@ -32,13 +35,15 @@ public class SectionPagerPesertaAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         Fragment fragment = null;
         switch (position) {
-            case 0:
-                fragment = new PresensiPesertaFragment();
+            case 0 :
+                fragment = new PaketFragment();
                 break;
-            case 1:
-                fragment = new RekapPesertaFragment();
+            case 1 :
+                fragment = new AddPanitiaFragment();
                 break;
+
         }
+
         return fragment;
     }
 

@@ -8,9 +8,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.digimiceconferent.Adapter.SectionPagerPesertaAdapter;
 import com.example.digimiceconferent.R;
-import com.example.digimiceconferent.SectionPagerEventAdapter;
-import com.example.digimiceconferent.SectionPagerPesertaAdapter;
 import com.example.digimiceconferent.SharedPrefManager;
 import com.google.android.material.tabs.TabLayout;
 
