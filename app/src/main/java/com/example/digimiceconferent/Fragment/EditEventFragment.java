@@ -3,6 +3,7 @@ package com.example.digimiceconferent.Fragment;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -23,6 +25,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +63,10 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
     DatePickerFragment.DialogDateListener listener;
     static EditText etStartDateEvent;
     static EditText etEndDateEvent;
+    ProgressBar loading;
     SharedPrefManager sharedPrefManager;
+
+    ProgressDialog prosesDialog;
 
     ImageView imgBanner;
 
@@ -88,6 +94,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         super.onViewCreated(view, savedInstanceState);
 
         sharedPrefManager = new SharedPrefManager(getContext());
+        prosesDialog = new ProgressDialog(getContext());
         imgBanner = view.findViewById(R.id.edit_img_banner);
         etNameEvent = view.findViewById(R.id.edit_name_event_kelola);
         etDescEvent = view.findViewById(R.id.edit_deskripsi_kelola);
@@ -96,6 +103,8 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         etPriceEvent = view.findViewById(R.id.edit_price_event_kelola);
         etStartDateEvent = view.findViewById(R.id.edit_start_event_kelola);
         etEndDateEvent = view.findViewById(R.id.edit_end_event_kelola);
+        loading = view.findViewById(R.id.loading_edit_event);
+
 
         btEditPaket = view.findViewById(R.id.bt_edit_paket);
         btaddImg = view.findViewById(R.id.add_edit_img_banner_event);
@@ -105,17 +114,21 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         etStartDateEvent.setText(startDate);
         etEndDateEvent.setText(endDate);
 
+        showLoading(true);
+
         btStartDate.setOnClickListener(this);
         btEndDate.setOnClickListener(this);
         btaddImg.setOnClickListener(this);
         btEditPaket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                prosesDialog.setMessage("Memproses");
+                prosesDialog.show();
                 sendEdit();
             }
         });
 
-        showDataEdit();
+
     }
 
     @Override
@@ -188,7 +201,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
 
     private void showDataEdit() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "http://192.168.4.109/myAPI/public/edit-event/"+sharedPrefManager.getSpIdEvent();
+        String url = "http://192.168.3.5/myAPI/public/edit-event/"+sharedPrefManager.getSpIdEvent();
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -204,16 +217,20 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                         etEndDateEvent.setText(data.getString("end"));
 
                         Glide.with(getContext())
-                                .load("http://192.168.4.109/myAPI/public/" + data.getString("banner"))
+                                .load("http://192.168.3.5/myAPI/public/" + data.getString("banner"))
                                 .apply(new RequestOptions().override(100, 100))
                                 .into(imgBanner);
 
-                        if (data.getString("price").equals("0")) {
+                        if (Integer.parseInt(data.getString("price"))==0) {
                             etPriceEvent.setEnabled(false);
                             etPriceEvent.setText("0");
+                        }else{
+                            etPriceEvent.setText(data.getString("ticket"));
                         }
 
                     }
+
+                    showLoading(false);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -232,7 +249,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
     private void sendEdit() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
-        String url = "http://192.168.4.109/myAPI/public/update-event/"+sharedPrefManager.getSpIdEvent();
+        String url = "http://192.168.3.5/myAPI/public/update-event/"+sharedPrefManager.getSpIdEvent();
 
         if(bitmap != null) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -244,11 +261,13 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                prosesDialog.dismiss();
                 Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                prosesDialog.dismiss();
                 Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
             }
         }){
@@ -272,5 +291,16 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         queue.add(request);
     }
 
-
+    private void showLoading(Boolean state) {
+        if (state) {
+            loading.setVisibility(View.VISIBLE);
+        } else {
+            loading.setVisibility(View.GONE);
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        showDataEdit();
+    }
 }

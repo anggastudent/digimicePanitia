@@ -25,8 +25,8 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
     private int[] TAB_TITLES = new int[]{
-            R.string.tab_1,
-            R.string.tab_2
+            R.string.tab_1
+
 
     };
 
@@ -38,9 +38,7 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
             case 0 :
                 fragment = new PaketFragment();
                 break;
-            case 1 :
-                fragment = new AddPanitiaFragment();
-                break;
+
 
         }
 

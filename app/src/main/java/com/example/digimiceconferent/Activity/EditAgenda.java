@@ -143,7 +143,7 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
                     }
 
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, list);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(EditAgenda.this, android.R.layout.simple_list_item_1, list);
                     spSesi.setAdapter(adapter);
                     spSesi.setSelection(index);
                     spSesi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -225,7 +225,7 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
 
     public void editAgenda() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.4.109/myAPI/public/update-agenda/"+id_agenda;
+        String url = "http://192.168.3.5/myAPI/public/update-agenda/"+id_agenda;
 
         StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override

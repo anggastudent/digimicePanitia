@@ -1,145 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.AddPemateriFragment">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <ProgressBar
+        android:id="@+id/loading_add_pemateri"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"/>
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        tools:context=".Fragment.AddPemateriFragment">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="@string/nama_lengkap"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <EditText
-            android:id="@+id/name_add_pemateri"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/border_form"
-            android:paddingLeft="16dp"
-            android:hint="@string/nama_lengkap"
-            android:inputType="text"
-            android:textSize="16sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/nama_lengkap"/>
 
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="@string/email"/>
-
-        <EditText
-            android:id="@+id/email_add_pemateri"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/border_form"
-            android:paddingLeft="16dp"
-            android:hint="@string/email"
-            android:inputType="text"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="@string/password"/>
-
-        <EditText
-            android:id="@+id/password_add_pemateri"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/border_form"
-            android:paddingLeft="16dp"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="@string/verify_password"/>
-
-        <EditText
-            android:id="@+id/re_password_add_pemateri"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/border_form"
-            android:paddingLeft="16dp"
-            android:hint="@string/verify_password"
-            android:inputType="textPassword"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="@string/no_telp"/>
-
-        <EditText
-            android:id="@+id/no_telp_add_pemateri"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/border_form"
-            android:paddingLeft="16dp"
-            android:hint="@string/no_telp"
-            android:inputType="text"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/provinsi"/>
-
-        <Spinner
-            android:id="@+id/spinner_provinsi"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/border_form"
-            android:dropDownWidth="wrap_content"
-            android:padding="8dp"
-            android:spinnerMode="dropdown" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/kabupaten"/>
-
-        <Spinner
-            android:id="@+id/spinner_kabupaten"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/border_form"
-            android:dropDownWidth="wrap_content"
-            android:padding="8dp"
-            android:spinnerMode="dropdown" />
+            <EditText
+                android:id="@+id/name_add_pemateri"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:paddingLeft="16dp"
+                android:hint="@string/nama_lengkap"
+                android:inputType="text"
+                android:textSize="16sp" />
 
 
-        <Button
-            android:id="@+id/bt_add_pemateri"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/tambah_pemateri"
-            android:textColor="@android:color/white"
-            android:background="@drawable/border_radius"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/colorButton"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/email"/>
 
-    </LinearLayout>
-</ScrollView>
+            <EditText
+                android:id="@+id/email_add_pemateri"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:paddingLeft="16dp"
+                android:hint="@string/email"
+                android:inputType="text"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/password"/>
+
+            <EditText
+                android:id="@+id/password_add_pemateri"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:paddingLeft="16dp"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/verify_password"/>
+
+            <EditText
+                android:id="@+id/re_password_add_pemateri"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:paddingLeft="16dp"
+                android:hint="@string/verify_password"
+                android:inputType="textPassword"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/no_telp"/>
+
+            <EditText
+                android:id="@+id/no_telp_add_pemateri"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:paddingLeft="16dp"
+                android:hint="@string/no_telp"
+                android:inputType="phone"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/provinsi"/>
+
+            <Spinner
+                android:id="@+id/spinner_provinsi"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:dropDownWidth="wrap_content"
+                android:padding="8dp"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/kabupaten"/>
+
+            <Spinner
+                android:id="@+id/spinner_kabupaten"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:dropDownWidth="wrap_content"
+                android:padding="8dp"
+                android:spinnerMode="dropdown" />
+
+
+            <Button
+                android:id="@+id/bt_add_pemateri"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tambah_pemateri"
+                android:textColor="@android:color/white"
+                android:background="@drawable/border_radius"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/colorButton"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

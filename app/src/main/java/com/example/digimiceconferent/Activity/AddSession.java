@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -42,14 +43,24 @@ public class AddSession extends AppCompatActivity {
         btAddSession.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addSession();
+                boolean isEmpty = false;
+                String nameSession = etNamaSession.getText().toString().trim();
+                if (TextUtils.isEmpty(nameSession)) {
+                    isEmpty = true;
+                    etNamaSession.setError("Nama sesi tidak boleh kosong");
+                }
+
+                if (!isEmpty) {
+                    addSession();
+                }
+
             }
         });
     }
 
     private void addSession() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.4.109/myAPI/public/add-session";
+        String url = "http://192.168.3.5/myAPI/public/add-session";
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

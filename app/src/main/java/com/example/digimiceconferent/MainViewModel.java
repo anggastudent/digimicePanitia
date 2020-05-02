@@ -51,7 +51,7 @@ public class MainViewModel extends ViewModel {
     public void setEventPanitia(RequestQueue queue, final Context context, String user_id) {
         final ArrayList<Event> listItemEvent = new ArrayList<>();
 
-        String url = "http://192.168.4.109/myAPI/public/event?user_id="+user_id;
+        String url = "http://192.168.3.5/myAPI/public/event?user_id="+user_id;
        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
            @Override
            public void onResponse(JSONArray response) {
@@ -88,7 +88,7 @@ public class MainViewModel extends ViewModel {
         final ArrayList<EventSession> listItemEventSession = new ArrayList<>();
         
 
-        String url = "http://192.168.4.109/myAPI/public/session/"+eventId;
+        String url = "http://192.168.3.5/myAPI/public/session/"+eventId;
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -147,7 +147,7 @@ public class MainViewModel extends ViewModel {
 
     public void setListPacket(RequestQueue queue, final Context context) {
         final ArrayList<EventPacket> list = new ArrayList<>();
-        String url = "http://192.168.4.109/myAPI/public/paket";
+        String url = "http://192.168.3.5/myAPI/public/paket";
 
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -182,7 +182,7 @@ public class MainViewModel extends ViewModel {
     public void setListAgenda(RequestQueue queue, final Context context, String id_event) {
 
         final ArrayList<Agenda> list = new ArrayList<>();
-        String url = "http://192.168.4.109/myAPI/public/agenda?event_id="+id_event;
+        String url = "http://192.168.3.5/myAPI/public/agenda?event_id="+id_event;
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -219,7 +219,7 @@ public class MainViewModel extends ViewModel {
 
     public void setListMateri(RequestQueue queue, final Context context, String idAgenda) {
         final ArrayList<Materi> list = new ArrayList<>();
-        String url = "http://192.168.4.109/myAPI/public/materi/"+idAgenda;
+        String url = "http://192.168.3.5/myAPI/public/materi/"+idAgenda;
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -248,7 +248,7 @@ public class MainViewModel extends ViewModel {
 
     public void setListProvinsi(RequestQueue queue, final Context context) {
         final ArrayList<Provinsi> list = new ArrayList<>();
-        String url = "http://192.168.4.109/myAPI/public/provinsi";
+        String url = "http://192.168.3.5/myAPI/public/provinsi";
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -289,7 +289,7 @@ public class MainViewModel extends ViewModel {
 
     public void setListRekapitulasi(RequestQueue queue, final Context context, String eventId, String sessionId) {
         final ArrayList<Rekapitulasi> list = new ArrayList<>();
-        String url = "http://192.168.4.109/myAPI/public/rekapitulasi?event_id="+eventId+"&session_id="+sessionId;
+        String url = "http://192.168.3.5/myAPI/public/rekapitulasi?event_id="+eventId+"&session_id="+sessionId;
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -323,7 +323,7 @@ public class MainViewModel extends ViewModel {
 
     public void setListPending(RequestQueue queue, final Context context, String userId) {
         final ArrayList<Pending> list = new ArrayList<>();
-        String url = "http://192.168.4.109/myAPI/public/pending/" + userId;
+        String url = "http://192.168.3.5/myAPI/public/pending/" + userId;
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -336,7 +336,9 @@ public class MainViewModel extends ViewModel {
                         pending.setStatus(data.getString("status"));
                         pending.setMaxParticipant(data.getString("max_participant"));
                         pending.setPrice(data.getString("price"));
-                        pending.setExpired(data.getString("expired"));
+                        pending.setPending(data.getString("expired"));
+                        pending.setUrl(data.getString("url"));
+                        pending.setNameEvent(data.getString("name_event"));
                         list.add(pending);
                     }
                     listPending.postValue(list);
@@ -356,7 +358,7 @@ public class MainViewModel extends ViewModel {
 
     public void setListExpired(RequestQueue queue, final Context context, String userId) {
         final ArrayList<Expired> list = new ArrayList<>();
-        String url = "http://192.168.4.109/myAPI/public/expired/" + userId;
+        String url = "http://192.168.3.5/myAPI/public/expired/" + userId;
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -366,10 +368,12 @@ public class MainViewModel extends ViewModel {
                         Expired expired = new Expired();
                         expired.setId(data.getString("id_invoice"));
                         expired.setName(data.getString("name_paket"));
-                        expired.setMaxParticipant("max_participant");
+                        expired.setMaxParticipant(data.getString("max_participant"));
                         expired.setStatus(data.getString("status"));
                         expired.setPrice(data.getString("price"));
                         expired.setExpired(data.getString("expired"));
+                        expired.setUrl(data.getString("url"));
+                        expired.setNameEvent(data.getString("name_event"));
                         list.add(expired);
                     }
 
@@ -390,7 +394,7 @@ public class MainViewModel extends ViewModel {
 
     public void setListPaid(RequestQueue queue, final Context context, String userId) {
         final ArrayList<Paid> list = new ArrayList<>();
-        String url = "http://192.168.4.109/myAPI/public/paid/" + userId;
+        String url = "http://192.168.3.5/myAPI/public/paid/" + userId;
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -404,6 +408,8 @@ public class MainViewModel extends ViewModel {
                         paid.setPrice(data.getString("price"));
                         paid.setMaxParticipant(data.getString("max_participant"));
                         paid.setPaid(data.getString("paid_at"));
+                        paid.setUrl(data.getString("url"));
+                        paid.setNameEvent(data.getString("name_event"));
                         list.add(paid);
                     }
 

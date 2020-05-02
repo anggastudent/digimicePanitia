@@ -13,7 +13,10 @@ import com.example.digimiceconferent.Activity.CheckoutDetail;
 import com.example.digimiceconferent.Model.Pending;
 import com.example.digimiceconferent.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RecyclerViewPendingAdapter extends RecyclerView.Adapter<RecyclerViewPendingAdapter.PendingViewHolder> {
     ArrayList<Pending> list = new ArrayList<>();
@@ -32,17 +35,29 @@ public class RecyclerViewPendingAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(@NonNull final PendingViewHolder holder, int position) {
-        Pending pending = list.get(position);
+        final Pending pending = list.get(position);
         holder.noPembayaran.setText(pending.getId());
         holder.namaPaket.setText(pending.getName());
         holder.maksPeserta.setText(pending.getMaxParticipant());
         holder.harga.setText(pending.getPrice());
-        holder.tanggal.setText(pending.getExpired());
+        holder.namaEvent.setText(pending.getNameEvent());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        try {
+            Date dateExp = dateFormat.parse(pending.getPending());
+            SimpleDateFormat dateFormatNew = new SimpleDateFormat("HH:mm '/' dd MMMM yyyy");
+            holder.tanggal.setText("Terakhir "+dateFormatNew.format(dateExp));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //holder.tanggal.setText(pending.getExpired());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), CheckoutDetail.class);
+                intent.putExtra(CheckoutDetail.EXTRA_PENDING, pending);
                 holder.itemView.getContext().startActivity(intent);
             }
         });
@@ -54,7 +69,7 @@ public class RecyclerViewPendingAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public class PendingViewHolder extends RecyclerView.ViewHolder {
-        TextView noPembayaran, namaPaket, maksPeserta, harga, tanggal;
+        TextView noPembayaran, namaPaket, namaEvent, maksPeserta, harga, tanggal;
         public PendingViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -63,6 +78,7 @@ public class RecyclerViewPendingAdapter extends RecyclerView.Adapter<RecyclerVie
             maksPeserta = itemView.findViewById(R.id.maks_peserta_pending);
             harga = itemView.findViewById(R.id.harga_pending);
             tanggal = itemView.findViewById(R.id.tanggal_pending);
+            namaEvent = itemView.findViewById(R.id.nama_event_pending);
         }
     }
 }

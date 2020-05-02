@@ -31,6 +31,13 @@
             tools:text="Nama Paket"/>
 
         <TextView
+            android:id="@+id/nama_event_paid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            tools:text="Nama Event"/>
+
+        <TextView
             android:id="@+id/maks_peserta_paid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

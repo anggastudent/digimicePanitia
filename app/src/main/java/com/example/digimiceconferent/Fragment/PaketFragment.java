@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ public class PaketFragment extends Fragment {
     RecyclerView rvPacket;
     RecyclerViewEventPacketAdapter adapter;
     RequestQueue queue;
+    SwipeRefreshLayout swipePaket;
 
     public PaketFragment() {
         // Required empty public constructor
@@ -60,7 +62,29 @@ public class PaketFragment extends Fragment {
         rvPacket.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new RecyclerViewEventPacketAdapter();
         loadingPaket = view.findViewById(R.id.loading_paket);
+        swipePaket = view.findViewById(R.id.swipe_list_paket);
+
+        swipePaket.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+
         showLoading(true);
+
+        showData();
+
+        swipePaket.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                showData();
+                swipePaket.setRefreshing(false);
+            }
+        });
+
+        rvPacket.setHasFixedSize(true);
+        rvPacket.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+    }
+
+    private void showData() {
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         mainViewModel.setListPacket(queue, getContext());
         mainViewModel.getEventPacket().observe(this, new Observer<ArrayList<EventPacket>>() {
@@ -72,10 +96,6 @@ public class PaketFragment extends Fragment {
                 }
             }
         });
-        rvPacket.setHasFixedSize(true);
-        rvPacket.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-
     }
 
     private void showLoading(Boolean state) {

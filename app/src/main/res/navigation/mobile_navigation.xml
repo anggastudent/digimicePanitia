@@ -11,10 +11,10 @@
         tools:layout="@layout/fragment_event"/>
 
     <fragment
-        android:id="@+id/navigation_panitia"
-        android:name="com.example.digimiceconferent.Fragment.PanitiaFragment"
-        android:label="Panitia"
-        tools:layout="@layout/fragment_panitia"/>
+        android:id="@+id/navigation_paket"
+        android:name="com.example.digimiceconferent.Fragment.PaketFragment"
+        android:label="Pilih Paket Event"
+        tools:layout="@layout/fragment_paket"/>
 
     <fragment
         android:id="@+id/navigation_peserta"

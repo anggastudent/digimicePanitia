@@ -9,10 +9,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -31,7 +35,9 @@ public class LunasFragment extends Fragment {
     RecyclerView rvPaid;
     RecyclerViewPaidAdapter adapter;
     SharedPrefManager sharedPrefManager;
-    RequestQueue queue;
+    ProgressBar loading;
+    SwipeRefreshLayout swipePaid;
+    LinearLayout noDataPage;
 
     public LunasFragment() {
         // Required empty public constructor
@@ -50,22 +56,69 @@ public class LunasFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         rvPaid = view.findViewById(R.id.rv_paid);
+        loading = view.findViewById(R.id.loading_paid);
+        swipePaid = view.findViewById(R.id.swipe_paid);
+        noDataPage = view.findViewById(R.id.no_data_paid);
+
+        swipePaid.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         rvPaid.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new RecyclerViewPaidAdapter();
         sharedPrefManager = new SharedPrefManager(getContext());
-        queue = Volley.newRequestQueue(getContext());
 
-        MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setListPaid(queue, getContext(), sharedPrefManager.getSPIdUser());
-        mainViewModel.getPaid().observe(this, new Observer<ArrayList<Paid>>() {
+        showLoading(true);
+        swipePaid.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onChanged(ArrayList<Paid> paids) {
-                adapter.sendData(paids);
+            public void onRefresh() {
+                showData();
+                swipePaid.setRefreshing(false);
             }
         });
 
         rvPaid.setAdapter(adapter);
         rvPaid.setHasFixedSize(true);
         adapter.notifyDataSetChanged();
+    }
+
+    private void showData() {
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
+        mainViewModel.setListPaid(queue, getContext(), sharedPrefManager.getSPIdUser());
+        mainViewModel.getPaid().observe(this, new Observer<ArrayList<Paid>>() {
+            @Override
+            public void onChanged(ArrayList<Paid> paids) {
+                if (paids != null) {
+                    showLoading(false);
+                    showEmpty(false);
+                    adapter.sendData(paids);
+                }
+                if(paids.size()==0){
+                    showLoading(false);
+                    showEmpty(true);
+                }
+
+            }
+        });
+    }
+
+    private void showLoading(Boolean state) {
+        if (state) {
+            loading.setVisibility(View.VISIBLE);
+        } else {
+            loading.setVisibility(View.GONE);
+        }
+    }
+
+    private void showEmpty(Boolean state) {
+        if (state) {
+            noDataPage.setVisibility(View.VISIBLE);
+        } else {
+            noDataPage.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showData();
     }
 }

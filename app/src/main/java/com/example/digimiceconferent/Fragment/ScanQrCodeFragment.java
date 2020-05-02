@@ -154,7 +154,7 @@ public class ScanQrCodeFragment extends Fragment implements ZXingScannerView.Res
 
     private void scanQr(final String qrCode) {
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "http://192.168.4.109/myAPI/public/scan-qrcode";
+        String url = "http://192.168.3.5/myAPI/public/scan-qrcode";
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

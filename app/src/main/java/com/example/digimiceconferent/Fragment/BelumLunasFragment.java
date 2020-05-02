@@ -9,10 +9,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -32,7 +35,9 @@ public class BelumLunasFragment extends Fragment {
     SharedPrefManager sharedPrefManager;
     RecyclerView rvPending;
     RecyclerViewPendingAdapter adapter;
-    RequestQueue queue;
+    ProgressBar loading;
+    LinearLayout noDataPage;
+    SwipeRefreshLayout swipePending;
 
     public BelumLunasFragment() {
         // Required empty public constructor
@@ -49,24 +54,72 @@ public class BelumLunasFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        loading = view.findViewById(R.id.loading_pending);
+        swipePending = view.findViewById(R.id.swipe_pending);
         rvPending = view.findViewById(R.id.rv_pending);
+        noDataPage = view.findViewById(R.id.no_data_pending);
+
+        swipePending.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         adapter = new RecyclerViewPendingAdapter();
-        queue = Volley.newRequestQueue(getContext());
         sharedPrefManager = new SharedPrefManager(getContext());
         rvPending.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setListPending(queue, getContext(), sharedPrefManager.getSPIdUser());
-        mainViewModel.getPending().observe(this, new Observer<ArrayList<Pending>>() {
+        showLoading(true);
+
+        swipePending.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onChanged(ArrayList<Pending> pendings) {
-                adapter.sendData(pendings);
+            public void onRefresh() {
+                showData();
+                swipePending.setRefreshing(false);
             }
         });
 
         rvPending.setAdapter(adapter);
         rvPending.setHasFixedSize(true);
         adapter.notifyDataSetChanged();
+    }
+
+    private void showData() {
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
+        mainViewModel.setListPending(queue, getContext(), sharedPrefManager.getSPIdUser());
+        mainViewModel.getPending().observe(this, new Observer<ArrayList<Pending>>() {
+            @Override
+            public void onChanged(ArrayList<Pending> pendings) {
+                if (pendings != null) {
+                    showLoading(false);
+                    showEmpty(false);
+                    adapter.sendData(pendings);
+
+                }
+                if(pendings.size() == 0){
+                    showLoading(false);
+                    showEmpty(true);
+                }
+
+            }
+        });
+    }
+
+    private void showLoading(Boolean state) {
+        if (state) {
+            loading.setVisibility(View.VISIBLE);
+        } else {
+            loading.setVisibility(View.GONE);
+        }
+    }
+
+    private void showEmpty(Boolean state) {
+        if (state) {
+            noDataPage.setVisibility(View.VISIBLE);
+        } else {
+            noDataPage.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showData();
     }
 }

@@ -7,20 +7,46 @@ public class Expired implements Parcelable {
     String id;
     String status;
     String name;
+    String nameEvent;
     String price;
     String maxParticipant;
     String expired;
+    String url;
 
-    public Expired() {
+    public String getNameEvent() {
+        return nameEvent;
+    }
+
+    public void setNameEvent(String nameEvent) {
+        this.nameEvent = nameEvent;
     }
 
     protected Expired(Parcel in) {
         id = in.readString();
         status = in.readString();
         name = in.readString();
+        nameEvent = in.readString();
         price = in.readString();
         maxParticipant = in.readString();
         expired = in.readString();
+        url = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(status);
+        dest.writeString(name);
+        dest.writeString(nameEvent);
+        dest.writeString(price);
+        dest.writeString(maxParticipant);
+        dest.writeString(expired);
+        dest.writeString(url);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<Expired> CREATOR = new Creator<Expired>() {
@@ -34,6 +60,17 @@ public class Expired implements Parcelable {
             return new Expired[size];
         }
     };
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Expired() {
+    }
 
     public String getId() {
         return id;
@@ -83,18 +120,4 @@ public class Expired implements Parcelable {
         this.expired = expired;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(status);
-        dest.writeString(name);
-        dest.writeString(price);
-        dest.writeString(maxParticipant);
-        dest.writeString(expired);
-    }
 }

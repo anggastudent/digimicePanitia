@@ -10,6 +10,8 @@ public class Paid implements Parcelable {
     String price;
     String maxParticipant;
     String paid;
+    String url;
+    String nameEvent;
 
     public Paid() {
     }
@@ -21,6 +23,25 @@ public class Paid implements Parcelable {
         price = in.readString();
         maxParticipant = in.readString();
         paid = in.readString();
+        url = in.readString();
+        nameEvent = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(status);
+        dest.writeString(name);
+        dest.writeString(price);
+        dest.writeString(maxParticipant);
+        dest.writeString(paid);
+        dest.writeString(url);
+        dest.writeString(nameEvent);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<Paid> CREATOR = new Creator<Paid>() {
@@ -34,6 +55,22 @@ public class Paid implements Parcelable {
             return new Paid[size];
         }
     };
+
+    public String getNameEvent() {
+        return nameEvent;
+    }
+
+    public void setNameEvent(String nameEvent) {
+        this.nameEvent = nameEvent;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public String getId() {
         return id;
@@ -83,18 +120,4 @@ public class Paid implements Parcelable {
         this.paid = paid;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(status);
-        dest.writeString(name);
-        dest.writeString(price);
-        dest.writeString(maxParticipant);
-        dest.writeString(paid);
-    }
 }

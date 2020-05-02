@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -32,6 +34,8 @@ public class UploadMateriFragment extends Fragment {
     RecyclerView rvAgendaMateri;
     RequestQueue queue;
     RecyclerViewAgendaMateriAdapter adapter;
+    ProgressBar loading;
+    LinearLayout noDataPage;
 
     public UploadMateriFragment() {
         // Required empty public constructor
@@ -50,20 +54,58 @@ public class UploadMateriFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         sharedPrefManager = new SharedPrefManager(getContext());
         rvAgendaMateri = view.findViewById(R.id.rv_agenda_materi);
+        loading = view.findViewById(R.id.loading_upload_materi);
         queue = Volley.newRequestQueue(getContext());
         adapter = new RecyclerViewAgendaMateriAdapter();
-
         rvAgendaMateri.setLayoutManager(new LinearLayoutManager(getContext()));
+        noDataPage = view.findViewById(R.id.no_data_upload_materi);
+
+        showLoading(true);
+
+        rvAgendaMateri.setAdapter(adapter);
+        rvAgendaMateri.setHasFixedSize(true);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void showData() {
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         mainViewModel.setListAgenda(queue, getContext(), sharedPrefManager.getSpIdEvent());
         mainViewModel.getAgenda().observe(this, new Observer<ArrayList<Agenda>>() {
             @Override
             public void onChanged(ArrayList<Agenda> agenda) {
-                adapter.sendData(agenda);
+                if (agenda != null) {
+                    adapter.sendData(agenda);
+                    showLoading(false);
+                    showEmpty(false);
+                }
+                if(agenda.size() == 0){
+                    showLoading(false);
+                    showEmpty(true);
+                }
             }
         });
-        rvAgendaMateri.setAdapter(adapter);
-        rvAgendaMateri.setHasFixedSize(true);
-        adapter.notifyDataSetChanged();
+    }
+
+    private void showLoading(Boolean state) {
+        if (state) {
+            loading.setVisibility(View.VISIBLE);
+        } else {
+            loading.setVisibility(View.GONE);
+        }
+    }
+
+    private void showEmpty(Boolean state) {
+        if (state) {
+            noDataPage.setVisibility(View.VISIBLE);
+        } else {
+            noDataPage.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        showData();
     }
 }

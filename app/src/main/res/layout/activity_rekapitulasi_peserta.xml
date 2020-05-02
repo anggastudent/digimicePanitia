@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context=".Activity.RekapitulasiPeserta">
 
+    <ProgressBar
+        android:id="@+id/loading_rekapitulasi"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -174,6 +180,28 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/no_data_rekap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_info_black_24dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textSize="21sp"
+            android:text="@string/tidak_ada_data"/>
+
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_rekapitulasi"
         android:layout_width="match_parent"

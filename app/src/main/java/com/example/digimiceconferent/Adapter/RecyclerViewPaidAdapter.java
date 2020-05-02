@@ -1,5 +1,6 @@
 package com.example.digimiceconferent.Adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +9,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.digimiceconferent.Activity.CheckoutDetail;
 import com.example.digimiceconferent.Model.Paid;
 import com.example.digimiceconferent.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RecyclerViewPaidAdapter extends RecyclerView.Adapter<RecyclerViewPaidAdapter.PaidViewHolder> {
     ArrayList<Paid> list = new ArrayList<>();
@@ -30,13 +35,33 @@ public class RecyclerViewPaidAdapter extends RecyclerView.Adapter<RecyclerViewPa
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PaidViewHolder holder, int position) {
-        Paid paid = list.get(position);
+    public void onBindViewHolder(@NonNull final PaidViewHolder holder, int position) {
+        final Paid paid = list.get(position);
         holder.noPembayaran.setText(paid.getId());
         holder.namaPaket.setText(paid.getName());
         holder.maksPeserta.setText(paid.getMaxParticipant());
         holder.harga.setText(paid.getPrice());
-        holder.tanggal.setText(paid.getPaid());
+        holder.namaEvent.setText(paid.getNameEvent());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        try {
+            Date dateExp = dateFormat.parse(paid.getPaid());
+            SimpleDateFormat dateFormatNew = new SimpleDateFormat("dd MMMM yyyy");
+            holder.tanggal.setText(dateFormatNew.format(dateExp));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+       //holder.tanggal.setText(paid.getPaid());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.itemView.getContext(), CheckoutDetail.class);
+                intent.putExtra(CheckoutDetail.EXTRA_PAID,paid);
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -45,7 +70,7 @@ public class RecyclerViewPaidAdapter extends RecyclerView.Adapter<RecyclerViewPa
     }
 
     public class PaidViewHolder extends RecyclerView.ViewHolder {
-        TextView noPembayaran, namaPaket, maksPeserta, harga, tanggal;
+        TextView noPembayaran, namaPaket, namaEvent, maksPeserta, harga, tanggal;
 
         public PaidViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -55,6 +80,7 @@ public class RecyclerViewPaidAdapter extends RecyclerView.Adapter<RecyclerViewPa
             maksPeserta = itemView.findViewById(R.id.maks_peserta_paid);
             harga = itemView.findViewById(R.id.harga_paid);
             tanggal = itemView.findViewById(R.id.tanggal_paid);
+            namaEvent = itemView.findViewById(R.id.nama_event_paid);
         }
     }
 }

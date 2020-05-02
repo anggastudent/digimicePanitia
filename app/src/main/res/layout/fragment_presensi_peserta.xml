@@ -7,6 +7,13 @@
     tools:context=".Fragment.PresensiPesertaFragment">
 
 <!-- TODO: Update blank fragment layout -->
+    <ProgressBar
+        android:id="@+id/loading_presensi"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_session"
         android:layout_width="match_parent"

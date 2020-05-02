@@ -34,6 +34,7 @@ public class RekapPesertaFragment extends Fragment {
     RecyclerViewSessionRekapitulasiAdapter adapterSession;
     SharedPrefManager sharedPrefManager;
     RequestQueue queue;
+    ProgressBar loading;
 
     public RekapPesertaFragment() {
         // Required empty public constructor
@@ -52,21 +53,44 @@ public class RekapPesertaFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         queue = Volley.newRequestQueue(getContext());
         rvSesi = view.findViewById(R.id.rv_sesi_rekap);
+        loading = view.findViewById(R.id.loading_rekap);
         rvSesi.setLayoutManager(new LinearLayoutManager(getContext()));
         sharedPrefManager = new SharedPrefManager(getContext());
         adapterSession = new RecyclerViewSessionRekapitulasiAdapter();
 
+        showLoading(true);
+
+        rvSesi.setAdapter(adapterSession);
+        rvSesi.setHasFixedSize(true);
+        adapterSession.notifyDataSetChanged();
+    }
+
+    private void showData() {
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         mainViewModel.setListEventSessionPanitia(queue, getContext(), sharedPrefManager.getSpIdEvent());
         mainViewModel.getEventSessionPanitia().observe(this, new Observer<ArrayList<EventSession>>() {
             @Override
             public void onChanged(ArrayList<EventSession> eventSessions) {
-                adapterSession.sendData(eventSessions);
+                if (eventSessions != null) {
+                    adapterSession.sendData(eventSessions);
+                    showLoading(false);
+                }
+
             }
         });
+    }
 
-        rvSesi.setAdapter(adapterSession);
-        rvSesi.setHasFixedSize(true);
-        adapterSession.notifyDataSetChanged();
+    private void showLoading(Boolean state) {
+        if (state) {
+            loading.setVisibility(View.VISIBLE);
+        } else {
+            loading.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showData();
     }
 }

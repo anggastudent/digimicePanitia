@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,11 +80,26 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
         btSetQr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getQrCode != null) {
-                    setQr(getQrCode);
-                }else {
-                    Toast.makeText(getContext(), "Scan Qr Code Dahulu", Toast.LENGTH_SHORT).show();
+                boolean isEmpty = false;
+                String email = etEmail.getText().toString().trim();
+
+                if (TextUtils.isEmpty(email)) {
+                    etEmail.setError("Email tidak boleh kosong");
+                    isEmpty = true;
                 }
+
+                if (!isEmpty) {
+                    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                    if (etEmail.getText().toString().trim().matches(emailPattern)) {
+                        if (getQrCode != null) {
+                            setQr(getQrCode);
+                        }else {
+                            Toast.makeText(getContext(), "Scan Qr Code Dahulu", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                }
+
             }
         });
     }
@@ -149,7 +165,7 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
 
     private void setQr(final String qrCode) {
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "http://192.168.4.109/myAPI/public/set-qrcode";
+        String url = "http://192.168.3.5/myAPI/public/set-qrcode";
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -159,6 +175,7 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                etEmail.setText(null);
                 Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){

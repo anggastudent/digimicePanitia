@@ -7,7 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -39,11 +42,10 @@ import java.util.Map;
  */
 public class AddPanitiaFragment extends Fragment {
 
-    private Spinner spEvent;
-    private Button btAddPanitia;
+    Button btAddPanitia;
     EditText etEmail;
-    MainViewModel mainViewModel;
     SharedPrefManager sharedPrefManager;
+    ProgressBar loading;
 
     String eventId;
 
@@ -63,73 +65,60 @@ public class AddPanitiaFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        spEvent = view.findViewById(R.id.spinner_event);
         btAddPanitia = view.findViewById(R.id.bt_add_panitia);
         etEmail = view.findViewById(R.id.email_add_panitia);
 
         sharedPrefManager = new SharedPrefManager(getContext());
-        String user_id = sharedPrefManager.getSPIdUser();
-
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setEventPanitia(queue, getContext(),user_id);
-        mainViewModel.getEventPanitia().observe(this, new Observer<ArrayList<Event>>() {
-            @Override
-            public void onChanged(final ArrayList<Event> events) {
-                ArrayList<String> list = new ArrayList<>();
-                for (int i=0; i<events.size();i++) {
-                    Event dataEvent = events.get(i);
-                    list.add(dataEvent.getJudul());
-                }
-
-                if (events != null) {
-                    final ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1,list);
-                    spEvent.setAdapter(adapter);
-                    spEvent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            Event event = events.get(position);
-                            eventId = event.getId();
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-                        }
-                    });
-                }
-            }
-        });
 
         btAddPanitia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addPanitia();
+
+                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                String email = etEmail.getText().toString().trim();
+
+                boolean isEmptyField = false;
+
+                if (TextUtils.isEmpty(email)) {
+                    isEmptyField = true;
+                    etEmail.setError("Email tidak boleh kosong");
+                }
+
+                if (!isEmptyField) {
+                    if (etEmail.getText().toString().trim().matches(emailPattern)) {
+                        addPanitia();
+                    }else{
+                        etEmail.setError("Email tidak valid");
+                    }
+
+                }
             }
         });
 
 
     }
 
-    public void addPanitia(){
+
+    private void addPanitia(){
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "http://192.168.4.109/myAPI/public/add-panitia";
+        String url = "http://192.168.3.5/myAPI/public/add-panitia";
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+                etEmail.setText(null);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Gagal", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> data = new HashMap<String, String>();
                 data.put("email", etEmail.getText().toString());
-                data.put("event_id", eventId);
+                data.put("event_id", sharedPrefManager.getSpIdEvent());
                 data.put("name_team", sharedPrefManager.getSpNameTeam());
                 return data;
             }

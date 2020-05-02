@@ -64,7 +64,7 @@ public class EditSession extends AppCompatActivity {
     private void editSession(String sessionId) {
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        String url = "http://192.168.4.109/myAPI/public/edit-session/" + sessionId;
+        String url = "http://192.168.3.5/myAPI/public/edit-session/" + sessionId;
         StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -90,7 +90,7 @@ public class EditSession extends AppCompatActivity {
 
     private void showSession(String sessionId) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.4.109/myAPI/public/show-session/" + sessionId;
+        String url = "http://192.168.3.5/myAPI/public/show-session/" + sessionId;
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {

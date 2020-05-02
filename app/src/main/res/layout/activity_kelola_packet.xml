@@ -141,7 +141,7 @@
                 android:background="@drawable/border_form"
                 android:paddingLeft="16dp"
                 android:hint="@string/start_event"
-                android:inputType="text"
+                android:inputType="date"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -171,7 +171,7 @@
                 android:background="@drawable/border_form"
                 android:paddingLeft="16dp"
                 android:hint="@string/end_event"
-                android:inputType="text"
+                android:inputType="date"
                 android:textSize="16sp" />
 
             <TextView
@@ -253,7 +253,7 @@
                 android:background="@drawable/border_form"
                 android:paddingLeft="16dp"
                 android:hint="@string/harga_tiket"
-                android:inputType="text"
+                android:inputType="number"
                 android:textSize="16sp" />
 
             <Button

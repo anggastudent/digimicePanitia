@@ -16,6 +16,8 @@ import android.os.Environment;
 import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +58,9 @@ public class DetailUploadMateri extends AppCompatActivity {
     RecyclerViewMateriAdapter adapter;
     RequestQueue queue;
     FloatingActionButton addMateri;
+    LinearLayout noDataPage;
+    ProgressBar loading;
+
     private int PICK_PDF_REQUEST = 1;
     File file;
     String filePdf;
@@ -71,6 +76,8 @@ public class DetailUploadMateri extends AppCompatActivity {
         tvAgenda = findViewById(R.id.name_event_agenda_materi);
         tvTime = findViewById(R.id.tanggal_event_agenda_materi);
         addMateri = findViewById(R.id.add_materi);
+        noDataPage = findViewById(R.id.no_data_materi);
+        loading = findViewById(R.id.loading_materi);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setElevation(0);
@@ -83,6 +90,8 @@ public class DetailUploadMateri extends AppCompatActivity {
         rvMateri = findViewById(R.id.rv_materi);
         adapter = new RecyclerViewMateriAdapter();
         rvMateri.setLayoutManager(new LinearLayoutManager(this));
+
+        showLoading(true);
 
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         final Agenda agenda = getIntent().getParcelableExtra(EXTRA_MATERI);
@@ -107,7 +116,16 @@ public class DetailUploadMateri extends AppCompatActivity {
             mainViewModel.getMateri().observe(this, new Observer<ArrayList<Materi>>() {
                 @Override
                 public void onChanged(ArrayList<Materi> materis) {
-                    adapter.sendData(materis);
+                    if (materis != null) {
+                        adapter.sendData(materis);
+                        showLoading(false);
+                        showEmpty(false);
+                    }
+                    if(materis.size() == 0){
+                        showLoading(false);
+                        showEmpty(true);
+                    }
+
                 }
             });
         }
@@ -138,5 +156,21 @@ public class DetailUploadMateri extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showEmpty(Boolean state) {
+        if (state) {
+            noDataPage.setVisibility(View.VISIBLE);
+        } else {
+            noDataPage.setVisibility(View.GONE);
+        }
+    }
+
+    private void showLoading(Boolean state) {
+        if (state) {
+            loading.setVisibility(View.VISIBLE);
+        }else{
+            loading.setVisibility(View.GONE);
+        }
     }
 }

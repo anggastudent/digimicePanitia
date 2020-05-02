@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -42,6 +43,8 @@ public class EditProfil extends AppCompatActivity {
     Button btUploadGambar, btEditProfil;
     ImageView avatar;
     SharedPrefManager sharedPrefManager;
+    ProgressBar loading;
+
     int PICK_IMAGE_REQUEST = 22;
     String imageString;
     Bitmap bitmap;
@@ -61,6 +64,7 @@ public class EditProfil extends AppCompatActivity {
         etPasswordLama = findViewById(R.id.old_password_user_edit);
         etPasswordBaru = findViewById(R.id.new_password_user_edit);
         etRePasswordBaru = findViewById(R.id.re_password_user_edit);
+        loading = findViewById(R.id.loading_edit_profil);
 
         btUploadGambar = findViewById(R.id.bt_upload_avatar_user);
         btEditProfil = findViewById(R.id.bt_edit_user);
@@ -68,7 +72,7 @@ public class EditProfil extends AppCompatActivity {
         avatar = findViewById(R.id.avatar_user_edit);
 
         sharedPrefManager = new SharedPrefManager(this);
-
+        showLoading(true);
         getData();
 
         btUploadGambar.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +89,7 @@ public class EditProfil extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!etPasswordBaru.getText().toString().equals(etRePasswordBaru.getText().toString())) {
-                    Toast.makeText(getApplicationContext(), "Password Baru Tidak Sama", Toast.LENGTH_SHORT).show();
+                    etRePasswordBaru.setError("Password tidak sama");
 
                 }else {
                     editProfil();
@@ -112,7 +116,7 @@ public class EditProfil extends AppCompatActivity {
 
     private void getData() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.4.109/myAPI/public/edit-user/"+sharedPrefManager.getSPIdUser();
+        String url = "http://192.168.3.5/myAPI/public/edit-user/"+sharedPrefManager.getSPIdUser();
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -125,6 +129,8 @@ public class EditProfil extends AppCompatActivity {
                                 .apply(new RequestOptions().override(100, 100))
                                 .into(avatar);
                     }
+
+                    showLoading(false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -149,7 +155,7 @@ public class EditProfil extends AppCompatActivity {
             byte[] imageBytes = byteArrayOutputStream.toByteArray();
             imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         }
-        String url = "http://192.168.4.109/myAPI/public/update-user/"+sharedPrefManager.getSPIdUser();
+        String url = "http://192.168.3.5/myAPI/public/update-user/"+sharedPrefManager.getSPIdUser();
         StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -186,5 +192,13 @@ public class EditProfil extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showLoading(Boolean state) {
+        if (state) {
+            loading.setVisibility(View.VISIBLE);
+        } else {
+            loading.setVisibility(View.GONE);
+        }
     }
 }

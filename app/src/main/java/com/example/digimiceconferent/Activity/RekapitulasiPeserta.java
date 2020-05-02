@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -32,6 +35,8 @@ public class RekapitulasiPeserta extends AppCompatActivity {
     SharedPrefManager sharedPrefManager;
     RecyclerViewRekapitulasiAdapter adapter;
     RequestQueue queue;
+    ProgressBar loading;
+    LinearLayout noPageData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,8 @@ public class RekapitulasiPeserta extends AppCompatActivity {
         lunas = findViewById(R.id.lunas_rekap);
         belumLunas = findViewById(R.id.belum_lunas_rekap);
         rvRekap = findViewById(R.id.rv_rekapitulasi);
+        loading = findViewById(R.id.loading_rekapitulasi);
+        noPageData = findViewById(R.id.no_data_rekap);
 
         hadir.setText("0");
         belumHadir.setText("0");
@@ -63,6 +70,8 @@ public class RekapitulasiPeserta extends AppCompatActivity {
         sharedPrefManager = new SharedPrefManager(this);
         adapter = new RecyclerViewRekapitulasiAdapter();
         queue = Volley.newRequestQueue(this);
+
+        showLoading(true);
 
         final EventSession eventSession = getIntent().getParcelableExtra(EXTRA_REKAPUTILASI);
         if (eventSession != null) {
@@ -113,7 +122,13 @@ public class RekapitulasiPeserta extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
+                        showLoading(false);
+                        showEmpty(false);
+                    }
 
+                    if (rekapitulasis.size() == 0) {
+                        showLoading(false);
+                        showEmpty(true);
                     }
 
                 }
@@ -133,5 +148,21 @@ public class RekapitulasiPeserta extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showLoading(Boolean state) {
+        if (state) {
+            loading.setVisibility(View.VISIBLE);
+        } else {
+            loading.setVisibility(View.GONE);
+        }
+    }
+
+    private void showEmpty(Boolean state) {
+        if (state) {
+            noPageData.setVisibility(View.VISIBLE);
+        } else {
+            noPageData.setVisibility(View.GONE);
+        }
     }
 }

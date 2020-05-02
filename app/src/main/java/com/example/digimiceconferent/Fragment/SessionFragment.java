@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -38,6 +40,8 @@ public class SessionFragment extends Fragment {
     RecyclerViewSessionAdapter adapter;
     SharedPrefManager sharedPrefManager;
     FloatingActionButton addSession;
+    ProgressBar loading;
+    LinearLayout noDataPage;
 
     public SessionFragment() {
         // Required empty public constructor
@@ -59,9 +63,13 @@ public class SessionFragment extends Fragment {
         adapter = new RecyclerViewSessionAdapter();
         queue = Volley.newRequestQueue(getContext());
         addSession = view.findViewById(R.id.add_session);
+        loading = view.findViewById(R.id.loading_session);
 
+
+        showLoading(true);
         if (sharedPrefManager.getSpPresenceType().equals("Bebas")) {
            addSession.hide();
+
         }
 
         addSession.setOnClickListener(new View.OnClickListener() {
@@ -72,14 +80,6 @@ public class SessionFragment extends Fragment {
             }
         });
         rvSesi.setLayoutManager(new LinearLayoutManager(getContext()));
-        MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setListEventSessionPanitia(queue, getContext(),sharedPrefManager.getSpIdEvent());
-        mainViewModel.getEventSessionPanitia().observe(this, new Observer<ArrayList<EventSession>>() {
-            @Override
-            public void onChanged(ArrayList<EventSession> sessions) {
-                adapter.sendData(sessions);
-            }
-        });
 
         rvSesi.setAdapter(adapter);
         rvSesi.setHasFixedSize(true);
@@ -87,6 +87,33 @@ public class SessionFragment extends Fragment {
 
     }
 
+    private void showLoading(Boolean state) {
+        if (state) {
+            loading.setVisibility(View.VISIBLE);
+        } else {
+            loading.setVisibility(View.GONE);
+        }
+    }
+
+    private void showData() {
+        MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
+        mainViewModel.setListEventSessionPanitia(queue, getContext(),sharedPrefManager.getSpIdEvent());
+        mainViewModel.getEventSessionPanitia().observe(this, new Observer<ArrayList<EventSession>>() {
+            @Override
+            public void onChanged(ArrayList<EventSession> sessions) {
+                if (sessions != null) {
+                    adapter.sendData(sessions);
+                    showLoading(false);
+                }
+
+            }
+        });
+    }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        showData();
+    }
 }

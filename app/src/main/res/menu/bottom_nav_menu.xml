@@ -8,7 +8,7 @@
     <item
         android:id="@+id/navigation_panitia"
         android:icon="@drawable/ic_card_travel_black_24dp"
-        android:title="Panitia" />
+        android:title="Paket" />
 
     <item
         android:id="@+id/navigation_peserta"

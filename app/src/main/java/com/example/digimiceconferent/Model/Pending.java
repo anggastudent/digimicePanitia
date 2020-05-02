@@ -9,7 +9,9 @@ public class Pending implements Parcelable {
     String name;
     String price;
     String maxParticipant;
-    String expired;
+    String pending;
+    String url;
+    String nameEvent;
 
     public Pending() {
     }
@@ -20,7 +22,26 @@ public class Pending implements Parcelable {
         name = in.readString();
         price = in.readString();
         maxParticipant = in.readString();
-        expired = in.readString();
+        pending = in.readString();
+        url = in.readString();
+        nameEvent = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(status);
+        dest.writeString(name);
+        dest.writeString(price);
+        dest.writeString(maxParticipant);
+        dest.writeString(pending);
+        dest.writeString(url);
+        dest.writeString(nameEvent);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<Pending> CREATOR = new Creator<Pending>() {
@@ -34,6 +55,22 @@ public class Pending implements Parcelable {
             return new Pending[size];
         }
     };
+
+    public String getNameEvent() {
+        return nameEvent;
+    }
+
+    public void setNameEvent(String nameEvent) {
+        this.nameEvent = nameEvent;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public String getId() {
         return id;
@@ -75,26 +112,12 @@ public class Pending implements Parcelable {
         this.maxParticipant = maxParticipant;
     }
 
-    public String getExpired() {
-        return expired;
+    public String getPending() {
+        return pending;
     }
 
-    public void setExpired(String expired) {
-        this.expired = expired;
+    public void setPending(String expired) {
+        this.pending = expired;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(status);
-        dest.writeString(name);
-        dest.writeString(price);
-        dest.writeString(maxParticipant);
-        dest.writeString(expired);
-    }
 }

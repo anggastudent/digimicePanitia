@@ -1,18 +1,22 @@
 package com.example.digimiceconferent.Fragment;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +46,8 @@ public class AkunFragment extends Fragment {
     Button btEditProfil, btLogout;
     ImageView avatar;
     SharedPrefManager sharedPrefManager;
+    SwipeRefreshLayout swipeAkun;
+    ProgressBar loading;
 
     public AkunFragment() {
         // Required empty public constructor
@@ -66,11 +72,20 @@ public class AkunFragment extends Fragment {
         teamUser = view.findViewById(R.id.team_user_akun);
         btLogout = view.findViewById(R.id.bt_logout_akun);
         avatar = view.findViewById(R.id.avatar_user_akun);
+        loading = view.findViewById(R.id.loading_akun);
+        swipeAkun = view.findViewById(R.id.swipe_akun);
 
         sharedPrefManager = new SharedPrefManager(getContext());
+        swipeAkun.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
 
-        getData();
-
+        showLoading(true);
+        swipeAkun.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+                swipeAkun.setRefreshing(false);
+            }
+        });
         if (!sharedPrefManager.getSPBoolean()) {
             Intent intent = new Intent(getContext(), Login.class);
             startActivity(intent);
@@ -79,10 +94,21 @@ public class AkunFragment extends Fragment {
         btLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sharedPrefManager.saveSPBoolean(sharedPrefManager.SP_BOOLEAN, false);
-                Intent intent = new Intent(getContext(), Login.class);
-                startActivity(intent);
-                getActivity().finish();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Apakah anda ingin keluar ?");
+                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sharedPrefManager.saveSPBoolean(sharedPrefManager.SP_BOOLEAN, false);
+                        Intent intent = new Intent(getContext(), Login.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                });
+                builder.setNegativeButton("Tidak", null);
+                builder.show();
+
             }
         });
 
@@ -99,11 +125,12 @@ public class AkunFragment extends Fragment {
     private void getData() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
-        String url = "http://192.168.4.109/myAPI/public/user/" + sharedPrefManager.getSPIdUser();
+        String url = "http://192.168.3.5/myAPI/public/user/" + sharedPrefManager.getSPIdUser();
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+
                 try {
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject data = response.getJSONObject(i);
@@ -113,14 +140,17 @@ public class AkunFragment extends Fragment {
                         teamUser.setText(data.getString("team"));
 
                         Glide.with(getContext())
-                                .load("http://192.168.4.109/myAPI/public/" + data.getString("avatar"))
+                                .load("http://192.168.3.5/myAPI/public/" + data.getString("avatar"))
                                 .apply(new RequestOptions().override(150, 150))
                                 .into(avatar);
 
                     }
+                    showLoading(false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -130,5 +160,19 @@ public class AkunFragment extends Fragment {
         });
 
         queue.add(arrayRequest);
+    }
+
+    private void showLoading(Boolean state) {
+        if (state) {
+            loading.setVisibility(View.VISIBLE);
+        } else {
+            loading.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
     }
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -111,7 +112,7 @@ public class AddAgenda extends AppCompatActivity implements View.OnClickListener
                 }
 
                 if (eventSessions != null) {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, list);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(AddAgenda.this, android.R.layout.simple_list_item_1, list);
                     spSesi.setAdapter(adapter);
                     spSesi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
@@ -151,7 +152,48 @@ public class AddAgenda extends AppCompatActivity implements View.OnClickListener
                 timePickerFragment1.show(getSupportFragmentManager(), END_TIME_PICKER);
                 break;
             case R.id.bt_add_agenda:
-               addAgenda();
+                boolean isEmpty = false;
+                String namaAgenda = etNameAgenda.getText().toString().trim();
+                String descAgenda = etDescAgenda.getText().toString().trim();
+                String startDate = etStartDateAgenda.getText().toString().trim();
+                String startTime = etStartTimeAgenda.getText().toString().trim();
+                String endDate = etEndDateAgenda.getText().toString().trim();
+                String endTime = etEndTimeAgenda.getText().toString().trim();
+
+                if (TextUtils.isEmpty(namaAgenda)) {
+                    isEmpty = true;
+                    etNameAgenda.setError("Nama tidak boleh kosong");
+                }
+
+                if (TextUtils.isEmpty(descAgenda)) {
+                    isEmpty = true;
+                    etDescAgenda.setError("Deskripsi tidak boleh kosong");
+                }
+
+                if (TextUtils.isEmpty(startDate)) {
+                    isEmpty = true;
+                    etStartDateAgenda.setError("Tanggal tidak boleh kosong");
+                }
+
+                if (TextUtils.isEmpty(endDate)) {
+                    isEmpty = true;
+                    etEndDateAgenda.setError("Tanggal tidak boleh kosong");
+                }
+
+                if (TextUtils.isEmpty(startTime)) {
+                    isEmpty = true;
+                    etStartTimeAgenda.setError("Waktu tidak boleh kosong");
+                }
+                if (TextUtils.isEmpty(endTime)) {
+                    isEmpty = true;
+                    etEndTimeAgenda.setError("Waktu tidak boleh kosong");
+                }
+
+                if (!isEmpty) {
+
+                    addAgenda();
+                }
+
                 break;
         }
     }
@@ -196,7 +238,7 @@ public class AddAgenda extends AppCompatActivity implements View.OnClickListener
 
     private void addAgenda() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.4.109/myAPI/public/add-agenda";
+        String url = "http://192.168.3.5/myAPI/public/add-agenda";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

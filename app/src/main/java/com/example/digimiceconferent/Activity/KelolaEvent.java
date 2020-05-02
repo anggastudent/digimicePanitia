@@ -2,10 +2,13 @@ package com.example.digimiceconferent.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.digimiceconferent.Adapter.SectionPagerEventAdapter;
@@ -34,6 +37,7 @@ public class KelolaEvent extends AppCompatActivity {
         alamatEvent = findViewById(R.id.alamat_kelola_event);
         waktuEvent = findViewById(R.id.tanggal_kelola_event);
 
+
         SectionPagerEventAdapter sectionPagerAdapter = new SectionPagerEventAdapter(getSupportFragmentManager(), this);
         ViewPager viewPager = findViewById(R.id.view_pager_event);
         viewPager.setAdapter(sectionPagerAdapter);
@@ -47,12 +51,17 @@ public class KelolaEvent extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        showData();
+
+    }
+
+    private void showData() {
         namaEvent.setText(sharedPrefManager.getSpNameEvent());
         tempatEvent.setText(sharedPrefManager.getSpPlaceEvent());
         alamatEvent.setText(sharedPrefManager.getSpAddressEvent());
         waktuEvent.setText(sharedPrefManager.getSpWaktuEvent());
-
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

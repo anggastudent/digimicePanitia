@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ public class EventFragment extends Fragment {
     RecyclerViewEventAdapter adapter;
     RequestQueue queue;
     SharedPrefManager sharedPrefManager;
+    SwipeRefreshLayout swipeEvent;
 
     public EventFragment() {
         // Required empty public constructor
@@ -52,16 +54,35 @@ public class EventFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         queue = Volley.newRequestQueue(getContext());
+        swipeEvent = view.findViewById(R.id.swipe_list_event);
+        swipeEvent.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         rvEvent = view.findViewById(R.id.rv_event);
         rvEvent.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new RecyclerViewEventAdapter();
         sharedPrefManager = new SharedPrefManager(getContext());
         loadingEvent = view.findViewById(R.id.loading_event);
-        String user_id = sharedPrefManager.getSPIdUser();
+
         showLoading(true);
+
+        swipeEvent.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                showData();
+                swipeEvent.setRefreshing(false);
+            }
+        });
+        rvEvent.setAdapter(adapter);
+        rvEvent.setHasFixedSize(true);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void showData() {
+
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setEventPanitia(queue, getContext(),user_id);
+        mainViewModel.setEventPanitia(queue, getContext(), sharedPrefManager.getSPIdUser());
         mainViewModel.getEventPanitia().observe(this, new Observer<ArrayList<Event>>() {
             @Override
             public void onChanged(ArrayList<Event> events) {
@@ -71,17 +92,18 @@ public class EventFragment extends Fragment {
                 }
             }
         });
-
-        rvEvent.setAdapter(adapter);
-        rvEvent.setHasFixedSize(true);
-        adapter.notifyDataSetChanged();
     }
-
     private void showLoading(Boolean state) {
         if (state) {
             loadingEvent.setVisibility(View.VISIBLE);
         } else {
             loadingEvent.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showData();
     }
 }

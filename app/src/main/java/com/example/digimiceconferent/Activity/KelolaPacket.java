@@ -194,15 +194,15 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
             imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         }
 
-        String url = "http://192.168.4.109/myAPI/public/add-event";
+        String url = "http://192.168.3.5/myAPI/public/add-event";
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Toast.makeText(getApplicationContext(), "Berhasil",Toast.LENGTH_SHORT).show();
-                if (price != 0) {
-                    Intent intent = new Intent(KelolaPacket.this, HomePanitia.class);
-                    startActivity(intent);
-                }
+
+                Intent intent = new Intent(KelolaPacket.this, HomePanitia.class);
+                startActivity(intent);
+
             }
         }, new Response.ErrorListener() {
             @Override

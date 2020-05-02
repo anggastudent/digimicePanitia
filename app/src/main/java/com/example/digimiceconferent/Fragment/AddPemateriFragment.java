@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -45,7 +47,7 @@ public class AddPemateriFragment extends Fragment {
     EditText namePermateri, emailPemateri, password, repassword, noTelp;
     Spinner spKabupaten, spProvinsi;
     Button btAddPemateri;
-
+    ProgressBar loading;
 
     String provinsi_id;
     String kabupaten_id;
@@ -74,7 +76,93 @@ public class AddPemateriFragment extends Fragment {
         spProvinsi = view.findViewById(R.id.spinner_provinsi);
         spKabupaten = view.findViewById(R.id.spinner_kabupaten);
         btAddPemateri = view.findViewById(R.id.bt_add_pemateri);
+        loading = view.findViewById(R.id.loading_add_pemateri);
 
+        showLoading(true);
+        btAddPemateri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isEmpty = false;
+                String name = namePermateri.getText().toString().trim();
+                String email = emailPemateri.getText().toString().trim();
+                String pass = password.getText().toString().trim();
+                String repass = repassword.getText().toString().trim();
+                String telp = noTelp.getText().toString().trim();
+
+                if (TextUtils.isEmpty(name)) {
+                    isEmpty = true;
+                    namePermateri.setError("Nama tidak boleh kosong");
+                }
+                if (TextUtils.isEmpty(email)) {
+                    isEmpty = true;
+                    emailPemateri.setError("Email tidak boleh kosong");
+                }
+                if (TextUtils.isEmpty(pass)) {
+                    isEmpty = true;
+                    password.setError("Password tidak boleh kosong");
+                }
+                if (TextUtils.isEmpty(repass)) {
+                    isEmpty = true;
+                    repassword.setError("Verifikasi password tidak boleh kosong");
+                }
+                if (TextUtils.isEmpty(telp)) {
+                    isEmpty = true;
+                    noTelp.setError("No Telp tidak boleh kosong");
+                }
+                if (password.getText().toString().equals(repassword.getText().toString())) {
+                    if (!isEmpty) {
+                        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                        if (emailPemateri.getText().toString().trim().matches(emailPattern)) {
+                            addPemateri();
+                        }else{
+                            emailPemateri.setError("Email tidak valid");
+                        }
+
+                    }
+                }else{
+                    repassword.setError("Password tidak sama");
+                }
+
+            }
+        });
+    }
+
+    private void addPemateri() {
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        final SharedPrefManager sharedPrefManager = new SharedPrefManager(getContext());
+        String url = "http://192.168.3.5/myAPI/public/add-pemateri";
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                namePermateri.setText(null);
+                emailPemateri.setText(null);
+                password.setText(null);
+                repassword.setText(null);
+                noTelp.setText(null);
+                Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> data = new HashMap<>();
+                data.put("name", namePermateri.getText().toString());
+                data.put("email", emailPemateri.getText().toString());
+                data.put("password", password.getText().toString());
+                data.put("no_telp", noTelp.getText().toString());
+                data.put("regencies_id", kabupaten_id);
+                data.put("event_id", sharedPrefManager.getSpIdEvent());
+                return data;
+            }
+        };
+        queue.add(request);
+    }
+
+    private void showData() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         mainViewModel.setListProvinsi(queue, getContext());
@@ -123,58 +211,24 @@ public class AddPemateriFragment extends Fragment {
 
                         }
                     });
+                    showLoading(false);
                 }
 
             }
         });
-
-        btAddPemateri.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (password.getText().toString().equals(repassword.getText().toString())) {
-                    addPemateri();
-                }else{
-                    Toast.makeText(getContext(), "Password Tidak Sama", Toast.LENGTH_SHORT).show();
-                }
-
-
-
-            }
-        });
-
     }
 
-    private void addPemateri() {
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        final SharedPrefManager sharedPrefManager = new SharedPrefManager(getContext());
-        String url = "http://192.168.4.109/myAPI/public/add-pemateri";
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+    @Override
+    public void onResume() {
+        super.onResume();
+        showData();
+    }
 
-                Map<String, String> data = new HashMap<>();
-                data.put("name", namePermateri.getText().toString());
-                data.put("email", emailPemateri.getText().toString());
-                data.put("password", password.getText().toString());
-                data.put("no_telp", noTelp.getText().toString());
-                data.put("regencies_id", kabupaten_id);
-                data.put("event_id", sharedPrefManager.getSpIdEvent());
-                return data;
-
-            }
-
-        };
-        queue.add(request);
+    private void showLoading(Boolean state) {
+        if (state) {
+            loading.setVisibility(View.VISIBLE);
+        } else {
+            loading.setVisibility(View.GONE);
+        }
     }
 }

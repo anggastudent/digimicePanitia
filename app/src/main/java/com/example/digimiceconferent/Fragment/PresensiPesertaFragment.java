@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -33,6 +34,7 @@ public class PresensiPesertaFragment extends Fragment {
     RecyclerViewEventSessionAdapter adapter;
     RequestQueue queue;
     SharedPrefManager sharedPrefManager;
+    ProgressBar loading;
 
     public PresensiPesertaFragment() {
         // Required empty public constructor
@@ -50,22 +52,44 @@ public class PresensiPesertaFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rvSession = view.findViewById(R.id.rv_session);
+        loading = view.findViewById(R.id.loading_presensi);
         rvSession.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new RecyclerViewEventSessionAdapter();
         queue = Volley.newRequestQueue(getContext());
         sharedPrefManager = new SharedPrefManager(getContext());
 
+        showLoading(true);
+
+        rvSession.setAdapter(adapter);
+        rvSession.setHasFixedSize(true);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void showData() {
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         mainViewModel.setListEventSessionPanitia(queue, getContext(), sharedPrefManager.getSpIdEvent());
         mainViewModel.getEventSessionPanitia().observe(this, new Observer<ArrayList<EventSession>>() {
             @Override
             public void onChanged(ArrayList<EventSession> eventSessions) {
-                adapter.sendEventSessionPanitia(eventSessions);
+                if (eventSessions != null) {
+                    adapter.sendEventSessionPanitia(eventSessions);
+                    showLoading(false);
+                }
             }
         });
+    }
 
-        rvSession.setAdapter(adapter);
-        rvSession.setHasFixedSize(true);
-        adapter.notifyDataSetChanged();
+    private void showLoading(Boolean state) {
+        if (state) {
+            loading.setVisibility(View.VISIBLE);
+        } else {
+            loading.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showData();
     }
 }

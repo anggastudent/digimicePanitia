@@ -134,7 +134,7 @@
                 android:background="@drawable/border_form"
                 android:paddingLeft="16dp"
                 android:hint="@string/start_agenda"
-                android:inputType="text"
+                android:inputType="date"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -164,7 +164,7 @@
                 android:background="@drawable/border_form"
                 android:paddingLeft="16dp"
                 android:hint="@string/time"
-                android:inputType="text"
+                android:inputType="datetime"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -194,7 +194,7 @@
                 android:background="@drawable/border_form"
                 android:paddingLeft="16dp"
                 android:hint="@string/end_agenda"
-                android:inputType="text"
+                android:inputType="date"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -224,7 +224,7 @@
                 android:background="@drawable/border_form"
                 android:paddingLeft="16dp"
                 android:hint="@string/time"
-                android:inputType="text"
+                android:inputType="datetime"
                 android:textSize="16sp" />
 
             <Button

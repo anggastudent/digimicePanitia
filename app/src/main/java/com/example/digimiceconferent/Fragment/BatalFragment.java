@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -34,10 +35,10 @@ public class BatalFragment extends Fragment {
 
     RecyclerView rvExpired;
     SharedPrefManager sharedPrefManagar;
-    RequestQueue queue;
     RecyclerViewExpiredAdapter adapter;
     SwipeRefreshLayout swipeRefreshLayout;
-    LinearLayout linearLayout;
+    ProgressBar loading;
+    LinearLayout noDataPage;
 
     public BatalFragment() {
         // Required empty public constructor
@@ -56,52 +57,70 @@ public class BatalFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_expired);
-        linearLayout = view.findViewById(R.id.layout_expired);
-
+        loading = view.findViewById(R.id.loading_expired);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
-
         rvExpired = view.findViewById(R.id.rv_expired);
+        noDataPage = view.findViewById(R.id.no_data_expired);
+
         sharedPrefManagar = new SharedPrefManager(getContext());
-        queue = Volley.newRequestQueue(getContext());
+
         adapter = new RecyclerViewExpiredAdapter();
         rvExpired.setLayoutManager(new LinearLayoutManager(getContext()));
 
-//        MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-//        mainViewModel.setListExpired(queue, getContext(), sharedPrefManagar.getSPIdUser());
-//        mainViewModel.getExpired().observe(this, new Observer<ArrayList<Expired>>() {
-//            @Override
-//            public void onChanged(ArrayList<Expired> expireds) {
-//                adapter.sendData(expireds);
-//            }
-//        });
-
-        refresh();
-
+        showLoading(true);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                        refresh();
-                    }
-                }, 5000);
+                getData();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
+
         rvExpired.setAdapter(adapter);
         rvExpired.setHasFixedSize(true);
         adapter.notifyDataSetChanged();
     }
 
-    private void refresh() {
+    private void getData() {
+        RequestQueue queue = Volley.newRequestQueue(getContext());
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         mainViewModel.setListExpired(queue, getContext(), sharedPrefManagar.getSPIdUser());
         mainViewModel.getExpired().observe(this, new Observer<ArrayList<Expired>>() {
             @Override
             public void onChanged(ArrayList<Expired> expireds) {
-                adapter.sendData(expireds);
+                if (expireds != null) {
+                    showLoading(false);
+                    showEmpty(false);
+                    adapter.sendData(expireds);
+                }
+                if(expireds.size() == 0){
+                    showLoading(false);
+                    showEmpty(true);
+                }
+
             }
         });
+    }
+
+    private void showLoading(Boolean state) {
+        if (state) {
+            loading.setVisibility(View.VISIBLE);
+        } else {
+            loading.setVisibility(View.GONE);
+        }
+    }
+
+    private void showEmpty(Boolean state) {
+        if (state) {
+            noDataPage.setVisibility(View.VISIBLE);
+        } else {
+            noDataPage.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
     }
 }

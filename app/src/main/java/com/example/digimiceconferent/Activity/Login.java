@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,16 +31,16 @@ public class Login extends AppCompatActivity {
     Button btnLogin;
     EditText email, password;
     SharedPrefManager sharedPrefManager;
-    LinearLayout loading;
+    ProgressDialog loading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loading = findViewById(R.id.loading_login);
         btnLogin = findViewById(R.id.bt_login);
         email = findViewById(R.id.et_email);
         password = findViewById(R.id.et_password);
-
+        loading = new ProgressDialog(Login.this);
         sharedPrefManager = new SharedPrefManager(this);
 
         if (sharedPrefManager.getSPBoolean() && sharedPrefManager.getSPRole().equals("lead eo")) {
@@ -55,20 +56,42 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loading.setVisibility(View.VISIBLE);
-                login();
+                boolean isEmpty = false;
+                String getEmail = email.getText().toString().trim();
+                String getPass = password.getText().toString().trim();
+                if (TextUtils.isEmpty(getEmail)) {
+                    isEmpty = true;
+                    email.setError("Email tidak boleh kosong");
+                }
+
+                if (TextUtils.isEmpty(getPass)) {
+                    isEmpty = true;
+                    password.setError("Password tidak boleh kosong");
+                }
+
+                if (!isEmpty) {
+                    String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                    if (email.getText().toString().trim().matches(emailPattern)) {
+                        loading.setMessage("Loading..");
+                        loading.show();
+                        login();
+                    }else{
+                        email.setError("Email tidak valid");
+                    }
+                }
+
+
             }
         });
     }
 
     private void login() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.4.109/myAPI/public/login";
+        String url = "http://192.168.3.5/myAPI/public/login";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                loading.setVisibility(View.GONE);
                 JSONObject data = null;
                 try {
 
@@ -91,6 +114,7 @@ public class Login extends AppCompatActivity {
                         Intent intent = new Intent(Login.this, HomePanitia.class);
                         startActivity(intent);
                         finish();
+                        loading.dismiss();
                         Toast.makeText(getApplicationContext(), "Login Berhasil", Toast.LENGTH_SHORT).show();
                     } else if (role_team.equals("eo")) {
                         sharedPrefManager.saveSPString(sharedPrefManager.SP_ROLE, role_team);
@@ -101,6 +125,7 @@ public class Login extends AppCompatActivity {
                         Intent intent = new Intent(Login.this, HomeAnggota.class);
                         startActivity(intent);
                         finish();
+                        loading.dismiss();
                         Toast.makeText(getApplicationContext(), "Login Berhasil", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
@@ -112,7 +137,7 @@ public class Login extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                loading.setVisibility(View.GONE);
+                loading.dismiss();
                 Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){
