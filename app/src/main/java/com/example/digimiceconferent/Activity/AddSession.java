@@ -3,7 +3,9 @@ package com.example.digimiceconferent.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +30,8 @@ public class AddSession extends AppCompatActivity {
     EditText etNamaSession;
     Button btAddSession;
     SharedPrefManager sharedPrefManager;
+    ProgressDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +44,17 @@ public class AddSession extends AppCompatActivity {
         etNamaSession = findViewById(R.id.name_add_session);
         btAddSession = findViewById(R.id.bt_add_session);
 
+        dialog = new ProgressDialog(AddSession.this);
+        dialog.setMessage("Memproses");
         btAddSession.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
+
                 boolean isEmpty = false;
                 String nameSession = etNamaSession.getText().toString().trim();
                 if (TextUtils.isEmpty(nameSession)) {
@@ -51,6 +63,7 @@ public class AddSession extends AppCompatActivity {
                 }
 
                 if (!isEmpty) {
+                    showDialog(true);
                     addSession();
                 }
 
@@ -64,11 +77,14 @@ public class AddSession extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                etNamaSession.setText(null);
+                showDialog(false);
                 Toast.makeText(getApplicationContext(), "berhasil", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                showDialog(false);
                 Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){
@@ -92,5 +108,14 @@ public class AddSession extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showDialog(Boolean state) {
+
+        if (state) {
+            dialog.show();
+        } else {
+            dialog.dismiss();
+        }
     }
 }

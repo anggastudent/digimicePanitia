@@ -1,11 +1,13 @@
 package com.example.digimiceconferent.Fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,6 +47,7 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
     Button btSetQr;
     SharedPrefManager sharedPrefManager;
     String getQrCode;
+    ProgressDialog dialog;
 
     public SetQrCodeFragment() {
         // Required empty public constructor
@@ -69,7 +72,8 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
         sharedPrefManager = new SharedPrefManager(getContext());
         viewGroup.addView(scannerView);
 
-
+        dialog = new ProgressDialog(getContext());
+        dialog.setMessage("Memproses...");
 
         if (!flashCamera) {
             flashCamera = true;
@@ -78,8 +82,14 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
         }
 
         btSetQr.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
+
                 boolean isEmpty = false;
                 String email = etEmail.getText().toString().trim();
 
@@ -92,6 +102,7 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
                     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                     if (etEmail.getText().toString().trim().matches(emailPattern)) {
                         if (getQrCode != null) {
+                            showDialog(true);
                             setQr(getQrCode);
                         }else {
                             Toast.makeText(getContext(), "Scan Qr Code Dahulu", Toast.LENGTH_SHORT).show();
@@ -169,6 +180,7 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                showDialog(false);
                 Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
                 getQrCode = null;
             }
@@ -176,6 +188,7 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
             @Override
             public void onErrorResponse(VolleyError error) {
                 etEmail.setText(null);
+                showDialog(false);
                 Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){
@@ -193,5 +206,13 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
         queue.add(request);
     }
 
+    private void showDialog(Boolean state) {
+
+        if (state) {
+            dialog.show();
+        } else {
+            dialog.dismiss();
+        }
+    }
 
 }

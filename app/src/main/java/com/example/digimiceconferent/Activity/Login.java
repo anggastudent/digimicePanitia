@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -54,8 +55,14 @@ public class Login extends AppCompatActivity {
         }
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
+
                 boolean isEmpty = false;
                 String getEmail = email.getText().toString().trim();
                 String getPass = password.getText().toString().trim();
@@ -131,14 +138,13 @@ public class Login extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
 
-                    Toast.makeText(getApplicationContext(), "Login Gagal", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loading.dismiss();
-                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Login Gagal", Toast.LENGTH_SHORT).show();
             }
         }){
             protected Map<String, String> getParams(){

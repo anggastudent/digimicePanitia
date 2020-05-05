@@ -2,6 +2,9 @@ package com.example.digimiceconferent.Fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +15,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
+import android.os.SystemClock;
+import android.provider.DocumentsContract;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +32,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.digimiceconferent.Activity.EditSession;
+import com.example.digimiceconferent.FilePath;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 import com.kishan.askpermission.AskPermission;
@@ -54,6 +61,7 @@ public class UploadMateriDialogFragment extends DialogFragment implements Permis
     File file;
     String filePdf;
     Uri filePath;
+    ProgressDialog dialog;
 
     public UploadMateriDialogFragment() {
         // Required empty public constructor
@@ -77,13 +85,23 @@ public class UploadMateriDialogFragment extends DialogFragment implements Permis
         etNameFile = view.findViewById(R.id.nama_upload_materi);
         queue = Volley.newRequestQueue(getContext());
         sharedPrefManager = new SharedPrefManager(getContext());
+        dialog = new ProgressDialog(getContext());
+        dialog.setMessage("Memproses..");
         permissions();
 
         btUpload.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
 
-                uploadFile();
+                if (filePdf != null) {
+                    showDialog(true);
+                    uploadFile();
+                }
             }
         });
 
@@ -108,12 +126,15 @@ public class UploadMateriDialogFragment extends DialogFragment implements Permis
             @Override
             public void onResponse(String response) {
                 Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+                filePdf = null;
+                showDialog(false);
                 getDialog().dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                showDialog(false);
+                Toast.makeText(getContext(), "Upload Gagal", Toast.LENGTH_SHORT).show();
                 getDialog().dismiss();
             }
         }){
@@ -138,19 +159,53 @@ public class UploadMateriDialogFragment extends DialogFragment implements Permis
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == PICK_PDF_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null){
             filePath = data.getData();
-            file = new File(Environment.getExternalStorageDirectory(),filePath.getPath().substring(20));
 
-            int size = (int) file.length();
-            byte[] bytes = new byte[size];
-            try {
-                BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
-                bufferedInputStream.read(bytes,0, bytes.length);
-                bufferedInputStream.close();
-                filePdf = Base64.encodeToString(bytes, Base64.DEFAULT);
-            } catch (Exception e) {
-                e.printStackTrace();
+            String path = FilePath.getPath(getContext(),filePath);
+
+            if (path != null) {
+
+                file = new File(path);
+                int size = (int) file.length();
+
+                if (size < 5000000) {
+                    byte[] bytes = new byte[size];
+                    try {
+                        BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
+                        bufferedInputStream.read(bytes, 0, bytes.length);
+                        bufferedInputStream.close();
+                        filePdf = Base64.encodeToString(bytes, Base64.DEFAULT);
+                        Toast.makeText(getContext(), "Materi disimpan", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setMessage("Berkas melebihi 5 MB.");
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            getDialog().dismiss();
+                        }
+                    });
+                    builder.show();
+                }
+
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Berkas tidak ada di Penyimpanan Internal.");
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getDialog().dismiss();
+                    }
+                });
+                builder.show();
             }
+
+
         }else{
+            Toast.makeText(getContext(),"Materi tidak disimpan", Toast.LENGTH_SHORT).show();
             getDialog().dismiss();
         }
     }
@@ -181,5 +236,14 @@ public class UploadMateriDialogFragment extends DialogFragment implements Permis
                 .setCallback(this)
                 .setErrorCallback(this)
                 .request(REQUEST_PERMISSIONS);
+    }
+
+    private void showDialog(Boolean state) {
+
+        if (state) {
+            dialog.show();
+        } else {
+            dialog.dismiss();
+        }
     }
 }

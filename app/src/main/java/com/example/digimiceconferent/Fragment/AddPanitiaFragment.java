@@ -1,5 +1,6 @@
 package com.example.digimiceconferent.Fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.digimiceconferent.Activity.EditSession;
 import com.example.digimiceconferent.MainViewModel;
 import com.example.digimiceconferent.Model.Event;
 import com.example.digimiceconferent.R;
@@ -45,7 +48,7 @@ public class AddPanitiaFragment extends Fragment {
     Button btAddPanitia;
     EditText etEmail;
     SharedPrefManager sharedPrefManager;
-    ProgressBar loading;
+    ProgressDialog dialog;
 
     String eventId;
 
@@ -67,12 +70,18 @@ public class AddPanitiaFragment extends Fragment {
 
         btAddPanitia = view.findViewById(R.id.bt_add_panitia);
         etEmail = view.findViewById(R.id.email_add_panitia);
-
+        dialog = new ProgressDialog(getContext());
+        dialog.setMessage("Memproses");
         sharedPrefManager = new SharedPrefManager(getContext());
 
         btAddPanitia.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
 
                 String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 String email = etEmail.getText().toString().trim();
@@ -86,6 +95,7 @@ public class AddPanitiaFragment extends Fragment {
 
                 if (!isEmptyField) {
                     if (etEmail.getText().toString().trim().matches(emailPattern)) {
+                        showDialog(true);
                         addPanitia();
                     }else{
                         etEmail.setError("Email tidak valid");
@@ -107,10 +117,12 @@ public class AddPanitiaFragment extends Fragment {
             public void onResponse(String response) {
                 Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
                 etEmail.setText(null);
+                showDialog(false);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                showDialog(false);
                 Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){
@@ -126,6 +138,15 @@ public class AddPanitiaFragment extends Fragment {
 
         queue.add(request);
 
+    }
+
+    private void showDialog(Boolean state) {
+
+        if (state) {
+            dialog.show();
+        } else {
+            dialog.dismiss();
+        }
     }
 
 }

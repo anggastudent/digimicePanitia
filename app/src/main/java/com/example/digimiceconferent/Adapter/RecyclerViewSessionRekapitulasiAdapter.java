@@ -1,6 +1,7 @@
 package com.example.digimiceconferent.Adapter;
 
 import android.content.Intent;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,14 @@ public class RecyclerViewSessionRekapitulasiAdapter extends RecyclerView.Adapter
         final EventSession eventSession = list.get(position);
         holder.namaSesi.setText(eventSession.getJudul());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
+
                 Intent intent = new Intent(holder.itemView.getContext(), RekapitulasiPeserta.class);
                 intent.putExtra(RekapitulasiPeserta.EXTRA_REKAPUTILASI, eventSession);
                 holder.itemView.getContext().startActivity(intent);

@@ -37,7 +37,7 @@ public class CheckoutDetail extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                Toast.makeText(CheckoutDetail.this, "Web berhasil di load", Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(CheckoutDetail.this, "Web berhasil di load", Toast.LENGTH_SHORT).show();
             }
         });
 

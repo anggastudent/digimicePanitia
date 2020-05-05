@@ -1,6 +1,7 @@
 package com.example.digimiceconferent.Adapter;
 
 import android.content.Intent;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,8 +66,13 @@ public class RecyclerViewEventPresensiAdapter extends RecyclerView.Adapter<Recyc
 
 
         holder.btnDetail.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
 
                 sharedPrefManager.saveSPString(sharedPrefManager.SP_ID_EVENT, event.getId());
                 sharedPrefManager.saveSPString(sharedPrefManager.SP_NAME_EVENT, event.getJudul());

@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,8 +93,13 @@ public class AkunFragment extends Fragment {
             getActivity().finish();
         }
         btLogout.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setMessage("Apakah anda ingin keluar ?");
@@ -113,8 +119,14 @@ public class AkunFragment extends Fragment {
         });
 
         btEditProfil.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
+
                 Intent intent = new Intent(getContext(), EditProfil.class);
                 startActivity(intent);
             }

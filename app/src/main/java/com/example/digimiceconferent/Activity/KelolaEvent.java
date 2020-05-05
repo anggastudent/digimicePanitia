@@ -45,6 +45,11 @@ public class KelolaEvent extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tab_kelola_event);
         tabLayout.setupWithViewPager(viewPager);
 
+        if (sharedPrefManager.getSPRole().equals("eo")) {
+
+            tabLayout.removeTabAt(5);
+        }
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setElevation(0);
             getSupportActionBar().setTitle("Kelola Event");

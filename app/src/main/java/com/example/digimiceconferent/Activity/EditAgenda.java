@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -46,6 +49,7 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
     EditText etNameAgenda, etDescAgenda, etStartDateAgenda, etStartTimeAgenda, etEndDateAgenda,
             etEndTimeAgenda;
     Spinner spSesi;
+    ProgressDialog dialog;
     Button btStartDateAgenda, btStartTimeAgenda, btEndDateAgenda, btEndTimeAgenda, btEditAgenda;
     SharedPrefManager sharedPrefManager;
     final String START_DATE_PICKER = "start date picker";
@@ -95,6 +99,9 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
         btEndDateAgenda.setOnClickListener(this);
         btEndTimeAgenda.setOnClickListener(this);
         btEditAgenda.setOnClickListener(this);
+
+        dialog = new ProgressDialog(EditAgenda.this);
+        dialog.setMessage("Memproses");
 
         final Agenda agenda = getIntent().getParcelableExtra(EXTRA_EDIT_AGENDA);
         if (agenda != null) {
@@ -163,8 +170,14 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
         });
     }
 
+    private long lastClick = 0;
     @Override
     public void onClick(View v) {
+        if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+            return;
+        }
+        lastClick = SystemClock.elapsedRealtime();
+
         switch (v.getId()) {
             case R.id.bt_start_date_edit_agenda:
                 DatePickerFragment datePickerFragment = new DatePickerFragment();
@@ -183,7 +196,65 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
                 timePickerFragment1.show(getSupportFragmentManager(), END_TIME_PICKER);
                 break;
             case R.id.bt_edit_agenda:
-                editAgenda();
+                boolean isEmpty = false;
+                String namaAgenda = etNameAgenda.getText().toString().trim();
+                String descAgenda = etDescAgenda.getText().toString().trim();
+                String startDate = etStartDateAgenda.getText().toString().trim();
+                String startTime = etStartTimeAgenda.getText().toString().trim();
+                String endDate = etEndDateAgenda.getText().toString().trim();
+                String endTime = etEndTimeAgenda.getText().toString().trim();
+
+                if (TextUtils.isEmpty(namaAgenda)) {
+                    isEmpty = true;
+                    etNameAgenda.setError("Nama tidak boleh kosong");
+                }
+
+                if (TextUtils.isEmpty(descAgenda)) {
+                    isEmpty = true;
+                    etDescAgenda.setError("Deskripsi tidak boleh kosong");
+                }
+
+                if (TextUtils.isEmpty(startDate)) {
+                    isEmpty = true;
+                    etStartDateAgenda.setError("Tanggal tidak boleh kosong");
+                }
+
+                if (TextUtils.isEmpty(endDate)) {
+                    isEmpty = true;
+                    etEndDateAgenda.setError("Tanggal tidak boleh kosong");
+                }
+
+                if (TextUtils.isEmpty(startTime)) {
+                    isEmpty = true;
+                    etStartTimeAgenda.setError("Waktu tidak boleh kosong");
+                }
+                if (TextUtils.isEmpty(endTime)) {
+                    isEmpty = true;
+                    etEndTimeAgenda.setError("Waktu tidak boleh kosong");
+                }
+
+                SimpleDateFormat dateFormatNew = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                try {
+                    String getStart = etStartDateAgenda.getText().toString() + " " + etStartTimeAgenda.getText().toString();
+                    String getEnd = etEndDateAgenda.getText().toString() + " " + etEndTimeAgenda.getText().toString();
+
+                    Date cekDateStart = dateFormatNew.parse(getStart);
+                    Date cekDateEnd = dateFormatNew.parse(getEnd);
+
+                    if (!isEmpty) {
+                        if (cekDateStart.before(cekDateEnd)) {
+                            showDialog(true);
+                            editAgenda();
+                        } else {
+                            etEndDateAgenda.setError("Harus sama atau lebih dari start");
+                            etEndTimeAgenda.setError("Harus sama atau lebih dari start");
+                        }
+                    }
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 break;
         }
     }
@@ -230,11 +301,15 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
         StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                showDialog(false);
+                etEndDateAgenda.setError(null);
+                etEndTimeAgenda.setError(null);
                 Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                showDialog(false);
                 Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){
@@ -263,5 +338,14 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showDialog(Boolean state) {
+
+        if (state) {
+            dialog.show();
+        } else {
+            dialog.dismiss();
+        }
     }
 }

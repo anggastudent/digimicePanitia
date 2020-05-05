@@ -1,5 +1,6 @@
 package com.example.digimiceconferent.Fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.digimiceconferent.Activity.EditSession;
 import com.example.digimiceconferent.MainViewModel;
 import com.example.digimiceconferent.Model.Kabupaten;
 import com.example.digimiceconferent.Model.Provinsi;
@@ -51,6 +54,7 @@ public class AddPemateriFragment extends Fragment {
 
     String provinsi_id;
     String kabupaten_id;
+    ProgressDialog dialog;
 
     public AddPemateriFragment() {
         // Required empty public constructor
@@ -79,9 +83,18 @@ public class AddPemateriFragment extends Fragment {
         loading = view.findViewById(R.id.loading_add_pemateri);
 
         showLoading(true);
+        dialog = new ProgressDialog(getContext());
+        dialog.setMessage("Memproses");
+
         btAddPemateri.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
+
                 boolean isEmpty = false;
                 String name = namePermateri.getText().toString().trim();
                 String email = emailPemateri.getText().toString().trim();
@@ -113,6 +126,7 @@ public class AddPemateriFragment extends Fragment {
                     if (!isEmpty) {
                         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                         if (emailPemateri.getText().toString().trim().matches(emailPattern)) {
+                            showDialog(true);
                             addPemateri();
                         }else{
                             emailPemateri.setError("Email tidak valid");
@@ -139,11 +153,13 @@ public class AddPemateriFragment extends Fragment {
                 password.setText(null);
                 repassword.setText(null);
                 noTelp.setText(null);
+                showDialog(false);
                 Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                showDialog(false);
                 Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){
@@ -229,6 +245,15 @@ public class AddPemateriFragment extends Fragment {
             loading.setVisibility(View.VISIBLE);
         } else {
             loading.setVisibility(View.GONE);
+        }
+    }
+
+    private void showDialog(Boolean state) {
+
+        if (state) {
+            dialog.show();
+        } else {
+            dialog.dismiss();
         }
     }
 }

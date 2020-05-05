@@ -1,6 +1,7 @@
 package com.example.digimiceconferent.Adapter;
 
 import android.content.Intent;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +41,14 @@ public class RecyclerViewEventPacketAdapter extends RecyclerView.Adapter<Recycle
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
+            private long mLastClickTime = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 SharedPrefManager sharedPrefManager = new SharedPrefManager(holder.itemView.getContext());
                 sharedPrefManager.saveSPString(sharedPrefManager.SP_NAME_PACKET, eventPacket.getName_packet());
                 sharedPrefManager.saveSPString(sharedPrefManager.SP_MAX_PARTICIPANT, eventPacket.getMax_participant());

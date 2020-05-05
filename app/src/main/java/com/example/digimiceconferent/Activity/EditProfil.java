@@ -3,11 +3,14 @@ package com.example.digimiceconferent.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.MenuItem;
@@ -44,6 +47,8 @@ public class EditProfil extends AppCompatActivity {
     ImageView avatar;
     SharedPrefManager sharedPrefManager;
     ProgressBar loading;
+    ProgressDialog dialog;
+    SwipeRefreshLayout swipeEditProfil;
 
     int PICK_IMAGE_REQUEST = 22;
     String imageString;
@@ -65,19 +70,37 @@ public class EditProfil extends AppCompatActivity {
         etPasswordBaru = findViewById(R.id.new_password_user_edit);
         etRePasswordBaru = findViewById(R.id.re_password_user_edit);
         loading = findViewById(R.id.loading_edit_profil);
+        swipeEditProfil = findViewById(R.id.swipe_edit_profil);
 
         btUploadGambar = findViewById(R.id.bt_upload_avatar_user);
         btEditProfil = findViewById(R.id.bt_edit_user);
 
         avatar = findViewById(R.id.avatar_user_edit);
 
+        dialog = new ProgressDialog(EditProfil.this);
+        dialog.setMessage("Memproses");
+
         sharedPrefManager = new SharedPrefManager(this);
         showLoading(true);
         getData();
 
+        swipeEditProfil.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        swipeEditProfil.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+                swipeEditProfil.setRefreshing(false);
+            }
+        });
         btUploadGambar.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
+
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_PICK);
@@ -86,12 +109,19 @@ public class EditProfil extends AppCompatActivity {
         });
 
         btEditProfil.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
+
                 if (!etPasswordBaru.getText().toString().equals(etRePasswordBaru.getText().toString())) {
                     etRePasswordBaru.setError("Password tidak sama");
 
                 }else {
+                    showDialog(true);
                     editProfil();
                 }
 
@@ -125,7 +155,7 @@ public class EditProfil extends AppCompatActivity {
                         JSONObject data = response.getJSONObject(i);
                         etNamaLengkap.setText(data.getString("name"));
                         Glide.with(getApplicationContext())
-                                .load("http://192.168.4.109/myAPI/public/" + data.getString("avatar"))
+                                .load("http://192.168.3.5/myAPI/public/" + data.getString("avatar"))
                                 .apply(new RequestOptions().override(100, 100))
                                 .into(avatar);
                     }
@@ -159,11 +189,13 @@ public class EditProfil extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                showDialog(false);
                 Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                showDialog(false);
                 Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){
@@ -201,4 +233,14 @@ public class EditProfil extends AppCompatActivity {
             loading.setVisibility(View.GONE);
         }
     }
+
+    private void showDialog(Boolean state) {
+
+        if (state) {
+            dialog.show();
+        } else {
+            dialog.dismiss();
+        }
+    }
+
 }

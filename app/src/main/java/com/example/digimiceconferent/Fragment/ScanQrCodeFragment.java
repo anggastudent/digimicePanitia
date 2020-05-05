@@ -1,5 +1,6 @@
 package com.example.digimiceconferent.Fragment;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ public class ScanQrCodeFragment extends Fragment implements ZXingScannerView.Res
     private boolean frontCamera = true;
     private boolean flashCamera = false;
     SharedPrefManager sharedPrefManager;
+    ProgressDialog dialog;
 
     public ScanQrCodeFragment() {
         // Required empty public constructor
@@ -65,7 +67,8 @@ public class ScanQrCodeFragment extends Fragment implements ZXingScannerView.Res
         viewGroup.addView(scannerView);
 
         sharedPrefManager = new SharedPrefManager(getContext());
-
+        dialog = new ProgressDialog(getContext());
+        dialog.setMessage("Memproses..");
         if (!flashCamera) {
             flashCamera = true;
         } else {
@@ -78,6 +81,7 @@ public class ScanQrCodeFragment extends Fragment implements ZXingScannerView.Res
     public void handleResult(Result rawResult) {
 
         //Toast.makeText(getContext(), rawResult.getText(), Toast.LENGTH_SHORT).show();
+        showDialog(true);
         scanQr(rawResult.getText());
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("Apakah ingin Absen Lagi?");
@@ -158,11 +162,13 @@ public class ScanQrCodeFragment extends Fragment implements ZXingScannerView.Res
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                showDialog(false);
                 Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                showDialog(false);
                 Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
@@ -182,5 +188,14 @@ public class ScanQrCodeFragment extends Fragment implements ZXingScannerView.Res
 
     private void resumeScan(){
         scannerView.resumeCameraPreview(this);
+    }
+
+    private void showDialog(Boolean state) {
+
+        if (state) {
+            dialog.show();
+        } else {
+            dialog.dismiss();
+        }
     }
 }

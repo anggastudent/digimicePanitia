@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -37,6 +38,7 @@ public class RekapitulasiPeserta extends AppCompatActivity {
     RequestQueue queue;
     ProgressBar loading;
     LinearLayout noPageData;
+    SwipeRefreshLayout swipeRekap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class RekapitulasiPeserta extends AppCompatActivity {
         rvRekap = findViewById(R.id.rv_rekapitulasi);
         loading = findViewById(R.id.loading_rekapitulasi);
         noPageData = findViewById(R.id.no_data_rekap);
+        swipeRekap = findViewById(R.id.swipe_rekap);
 
         hadir.setText("0");
         belumHadir.setText("0");
@@ -72,7 +75,47 @@ public class RekapitulasiPeserta extends AppCompatActivity {
         queue = Volley.newRequestQueue(this);
 
         showLoading(true);
+        showData();
+        swipeRekap.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        swipeRekap.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                showData();
+                swipeRekap.setRefreshing(false);
+            }
+        });
+        rvRekap.setAdapter(adapter);
+        rvRekap.setHasFixedSize(true);
+        adapter.notifyDataSetChanged();
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showLoading(Boolean state) {
+        if (state) {
+            loading.setVisibility(View.VISIBLE);
+        } else {
+            loading.setVisibility(View.GONE);
+        }
+    }
+
+    private void showEmpty(Boolean state) {
+        if (state) {
+            noPageData.setVisibility(View.VISIBLE);
+        } else {
+            noPageData.setVisibility(View.GONE);
+        }
+    }
+
+    private void showData() {
         final EventSession eventSession = getIntent().getParcelableExtra(EXTRA_REKAPUTILASI);
         if (eventSession != null) {
             MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
@@ -134,35 +177,6 @@ public class RekapitulasiPeserta extends AppCompatActivity {
                 }
             });
 
-            rvRekap.setAdapter(adapter);
-            rvRekap.setHasFixedSize(true);
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void showLoading(Boolean state) {
-        if (state) {
-            loading.setVisibility(View.VISIBLE);
-        } else {
-            loading.setVisibility(View.GONE);
-        }
-    }
-
-    private void showEmpty(Boolean state) {
-        if (state) {
-            noPageData.setVisibility(View.VISIBLE);
-        } else {
-            noPageData.setVisibility(View.GONE);
         }
     }
 }

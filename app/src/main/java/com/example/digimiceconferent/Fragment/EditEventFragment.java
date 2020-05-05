@@ -16,7 +16,9 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +51,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -73,7 +76,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
     static String startDate;
     static String endDate;
     String imageString;
-    int PICK_IMAGE_REQUEST = 151;
+    int PICK_IMAGE_REQUEST = 11;
     Bitmap bitmap;
 
 
@@ -115,33 +118,98 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         etEndDateEvent.setText(endDate);
 
         showLoading(true);
-
+        showDataEdit();
         btStartDate.setOnClickListener(this);
         btEndDate.setOnClickListener(this);
         btaddImg.setOnClickListener(this);
         btEditPaket.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
-                prosesDialog.setMessage("Memproses");
-                prosesDialog.show();
-                sendEdit();
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
+                boolean isEmpty = false;
+                String name = etNameEvent.getText().toString();
+                String desc = etDescEvent.getText().toString();
+                String place = etPlaceEvent.getText().toString();
+                String address = etAddressEvent.getText().toString();
+                String price = etPriceEvent.getText().toString();
+                String getStart = etStartDateEvent.getText().toString();
+                String getEnd = etEndDateEvent.getText().toString();
+
+                if (TextUtils.isEmpty(name)) {
+                    isEmpty = true;
+                    etNameEvent.setError("Nama tidak boleh kosong");
+                }
+
+                if (TextUtils.isEmpty(desc)) {
+                    isEmpty = true;
+                    etDescEvent.setError("Deskripsi tidak boleh kosong");
+                }
+                if (TextUtils.isEmpty(place)) {
+                    isEmpty = true;
+                    etPlaceEvent.setError("Tempat tidak boleh kosong");
+                }
+                if (TextUtils.isEmpty(address)) {
+                    isEmpty = true;
+                    etAddressEvent.setError("Alamat tidak boleh kosong");
+                }
+                if (TextUtils.isEmpty(getStart)) {
+                    isEmpty = true;
+                    etStartDateEvent.setError("Tanggal tidak boleh kosong");
+                }
+                if (TextUtils.isEmpty(getEnd)) {
+                    isEmpty = true;
+                    etEndDateEvent.setError("Tanggal tidak boleh kosong");
+                }
+                if (TextUtils.isEmpty(price)) {
+                    isEmpty = true;
+                    etPriceEvent.setError("Harga tiket tidak boleh kosong");
+                }
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String start = etStartDateEvent.getText().toString();
+                String end = etEndDateEvent.getText().toString();
+                try {
+                    Date dateStart = dateFormat.parse(start);
+                    Date dateEnd = dateFormat.parse(end);
+                    if (dateEnd.before(dateStart)) {
+                        isEmpty = true;
+                        etEndDateEvent.setError("Tanggal harus lebih dari start");
+                    }
+
+                    if (!isEmpty && dateEnd.equals(dateStart)) {
+                        prosesDialog.setMessage("Memproses...");
+                        prosesDialog.show();
+                        sendEdit();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
-
     }
 
+    private long lastClick = 0;
     @Override
     public void onClick(View v) {
+        if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+            return;
+        }
+        lastClick = SystemClock.elapsedRealtime();
+
         switch (v.getId()) {
             case R.id.bt_edit_start_date:
                 DialogFragment fragmentStart = new DatePicker();
-                fragmentStart.show(getActivity().getSupportFragmentManager(), "start");
+                fragmentStart.show(getChildFragmentManager(), "start");
                 break;
 
             case R.id.bt_edit_end_date:
                 DialogFragment fragmentEnd = new DatePicker();
-                fragmentEnd.show(getActivity().getSupportFragmentManager(), "end");
+                fragmentEnd.show(getChildFragmentManager(), "end");
                 break;
 
             case R.id.add_edit_img_banner_event:
@@ -161,7 +229,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             Uri filePath = data.getData();
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+                bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), filePath);
                 imgBanner.setImageBitmap(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -195,7 +263,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
-            return new DatePickerDialog(getActivity(),this, year, month, day);
+            return new DatePickerDialog(getContext(),this, year, month, day);
         }
     }
 
@@ -253,7 +321,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
 
         if(bitmap != null) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 60, byteArrayOutputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
             byte[] imageBytes = byteArrayOutputStream.toByteArray();
             imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         }
@@ -261,7 +329,9 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                etEndDateEvent.setError(null);
                 prosesDialog.dismiss();
+                showDataEdit();
                 Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
@@ -298,9 +368,5 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
             loading.setVisibility(View.GONE);
         }
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        showDataEdit();
-    }
+
 }

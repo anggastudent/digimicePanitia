@@ -3,7 +3,10 @@ package com.example.digimiceconferent.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +36,7 @@ public class EditSession extends AppCompatActivity {
 
     EditText etNameSession;
     Button btEditSession;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +50,33 @@ public class EditSession extends AppCompatActivity {
         etNameSession = findViewById(R.id.name_edit_session);
         btEditSession = findViewById(R.id.bt_edit_session);
 
+        dialog = new ProgressDialog(EditSession.this);
+        dialog.setMessage("Memproses");
+
         final EventSession eventSession = getIntent().getParcelableExtra(EXTRA_EDIT_SESSION);
         if (eventSession != null) {
 
             showSession(eventSession.getId());
 
             btEditSession.setOnClickListener(new View.OnClickListener() {
+                private long lastClick = 0;
                 @Override
                 public void onClick(View v) {
-                    editSession(eventSession.getId());
+                    if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                        return;
+                    }
+                    lastClick = SystemClock.elapsedRealtime();
+                    boolean isEmpty = false;
+                    String nama = etNameSession.getText().toString();
+                    if (TextUtils.isEmpty(nama)) {
+                        isEmpty = true;
+                        etNameSession.setError("Nama tidak boleh kosong");
+                    }
+                    if (!isEmpty) {
+                        showDialog(true);
+                        editSession(eventSession.getId());
+                    }
+
                 }
             });
         }
@@ -68,11 +90,13 @@ public class EditSession extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                showDialog(false);
                 Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                showDialog(false);
                 Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){
@@ -99,6 +123,7 @@ public class EditSession extends AppCompatActivity {
                         JSONObject data = response.getJSONObject(i);
                         etNameSession.setText(data.getString("name"));
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -121,5 +146,14 @@ public class EditSession extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showDialog(Boolean state) {
+
+        if (state) {
+            dialog.show();
+        } else {
+            dialog.dismiss();
+        }
     }
 }

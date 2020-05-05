@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -46,8 +47,14 @@ public class DetailPacket extends AppCompatActivity {
         tvPricePacket.setText("Rp. "+sharedPrefManager.getSpPricePacket());
 
         btKelolaPaket.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
+
                 Intent intent = new Intent(DetailPacket.this, KelolaPacket.class);
                 startActivity(intent);
             }

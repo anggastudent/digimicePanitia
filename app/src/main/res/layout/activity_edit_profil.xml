@@ -1,126 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/swipe_edit_profil"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <ProgressBar
-        android:id="@+id/loading_edit_profil"
-        android:layout_width="48dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
-
-    <ScrollView
+    android:layout_height="match_parent">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ProgressBar
+            android:id="@+id/loading_edit_profil"
+            android:layout_width="48dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="16dp"
-            tools:context=".Activity.EditProfil">
+            android:layout_gravity="center"
+            android:visibility="gone"/>
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/avatar_user_edit"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:src="@drawable/foto"
-                android:layout_marginBottom="16dp"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/bt_upload_avatar_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorButton"
-                android:background="@drawable/border_radius"
-                android:textColor="@android:color/white"
-                android:text="@string/upload"/>
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@string/nama_lengkap"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="16dp"
+                tools:context=".Activity.EditProfil">
 
-            <EditText
-                android:id="@+id/name_user_edit"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/border_form"
-                android:paddingLeft="16dp"
-                android:hint="@string/nama_lengkap"
-                android:inputType="text"
-                android:textSize="16sp" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/avatar_user_edit"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/foto"
+                    android:layout_marginBottom="16dp"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@string/password_lama"/>
+                <Button
+                    android:id="@+id/bt_upload_avatar_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorButton"
+                    android:background="@drawable/border_radius"
+                    android:textColor="@android:color/white"
+                    android:text="@string/upload"/>
 
-            <EditText
-                android:id="@+id/old_password_user_edit"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/border_form"
-                android:paddingLeft="16dp"
-                android:hint="@string/password_lama"
-                android:inputType="textPassword"
-                android:textSize="16sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/nama_lengkap"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@string/password_baru"/>
+                <EditText
+                    android:id="@+id/name_user_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/border_form"
+                    android:paddingLeft="16dp"
+                    android:hint="@string/nama_lengkap"
+                    android:inputType="text"
+                    android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/new_password_user_edit"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/border_form"
-                android:paddingLeft="16dp"
-                android:hint="@string/password_baru"
-                android:inputType="textPassword"
-                android:textSize="16sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/password_lama"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@string/verify_password_baru"/>
+                <EditText
+                    android:id="@+id/old_password_user_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/border_form"
+                    android:paddingLeft="16dp"
+                    android:hint="@string/password_lama"
+                    android:inputType="textPassword"
+                    android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/re_password_user_edit"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/border_form"
-                android:paddingLeft="16dp"
-                android:hint="@string/verify_password"
-                android:inputType="textPassword"
-                android:textSize="16sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/password_baru"/>
 
-            <Button
-                android:id="@+id/bt_edit_user"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border_radius"
-                android:textColor="@android:color/white"
-                android:backgroundTint="@color/colorButton"
-                android:text="@string/edit_profil"/>
+                <EditText
+                    android:id="@+id/new_password_user_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/border_form"
+                    android:paddingLeft="16dp"
+                    android:hint="@string/password_baru"
+                    android:inputType="textPassword"
+                    android:textSize="16sp" />
 
-        </LinearLayout>
-    </ScrollView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/verify_password_baru"/>
 
-</LinearLayout>
+                <EditText
+                    android:id="@+id/re_password_user_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/border_form"
+                    android:paddingLeft="16dp"
+                    android:hint="@string/verify_password"
+                    android:inputType="textPassword"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/bt_edit_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_radius"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="@color/colorButton"
+                    android:text="@string/edit_profil"/>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

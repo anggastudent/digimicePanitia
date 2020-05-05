@@ -5,12 +5,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +40,7 @@ import com.example.digimiceconferent.SharedPrefManager;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -50,7 +54,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
     ImageView imgBanner;
     RequestQueue queue;
     Spinner spPresensi;
-
+    ProgressDialog dialog;
     final String START_DATE_PICKER = "start date picker";
     final String END_DATE_PICKER = "end date picker";
 
@@ -97,15 +101,82 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
         btaddImg.setOnClickListener(this);
 
         btPilihPaket.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(KelolaPacket.this );
                 builder.setMessage("Apakah anda sudah yakin ? ");
                 builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        addEvent();
+                        boolean isEmpty = false;
+                        String name = etNameEvent.getText().toString();
+                        String desc = etDescEvent.getText().toString();
+                        String place = etPlaceEvent.getText().toString();
+                        String address = etAddressEvent.getText().toString();
+                        String startDate = etStartDateEvent.getText().toString();
+                        String endDate = etEndDateEvent.getText().toString();
+                        String price = etPriceEvent.getText().toString();
+                        String session = etSessionEvent.getText().toString();
+
+                        if (TextUtils.isEmpty(name)) {
+                            isEmpty = true;
+                            etNameEvent.setError("Nama tidak boleh kosong");
+                        }
+
+                        if (TextUtils.isEmpty(desc)) {
+                            isEmpty = true;
+                            etDescEvent.setError("Deskripsi tidak boleh kosong");
+                        }
+                        if (TextUtils.isEmpty(place)) {
+                            isEmpty = true;
+                            etPlaceEvent.setError("Tempat tidak boleh kosong");
+                        }
+                        if (TextUtils.isEmpty(address)) {
+                            isEmpty = true;
+                            etAddressEvent.setError("Alamat tidak boleh kosong");
+                        }
+                        if (TextUtils.isEmpty(startDate)) {
+                            isEmpty = true;
+                            etStartDateEvent.setError("Tanggal tidak boleh kosong");
+                        }
+                        if (TextUtils.isEmpty(endDate)) {
+                            isEmpty = true;
+                            etEndDateEvent.setError("Tanggal tidak boleh kosong");
+                        }
+                        if (TextUtils.isEmpty(price)) {
+                            isEmpty = true;
+                            etPriceEvent.setError("Harga tiket tidak boleh kosong");
+                        }
+                        if (TextUtils.isEmpty(session)) {
+                            isEmpty = true;
+                            etSessionEvent.setError("Nama sesi tidak boleh kosong");
+                        }
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        String start = etStartDateEvent.getText().toString();
+                        String end = etEndDateEvent.getText().toString();
+                        try {
+                            Date dateStart = dateFormat.parse(start);
+                            Date dateEnd = dateFormat.parse(end);
+                            if (dateEnd.before(dateStart)) {
+                                isEmpty = true;
+                                etEndDateEvent.setError("Tanggal harus lebih dari start");
+                            }
+
+                            if (!isEmpty && dateEnd.equals(dateStart)) {
+                                showProcess(true);
+                                addEvent();
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 });
 
@@ -114,6 +185,9 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+
+        dialog = new ProgressDialog(KelolaPacket.this);
+        dialog.setMessage("Memproses...");
 
         sharedPrefManager = new SharedPrefManager(this);
         tvNamePaket.setText(sharedPrefManager.getSpNamePacket());
@@ -129,8 +203,14 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private long lastClick = 0;
     @Override
     public void onClick(View v) {
+        if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+            return;
+        }
+        lastClick = SystemClock.elapsedRealtime();
+
         switch (v.getId()) {
             case R.id.bt_start_date:
                 DatePickerFragment datePickerFragmentStartDate = new DatePickerFragment();
@@ -198,10 +278,11 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                etEndDateEvent.setError(null);
                 Toast.makeText(getApplicationContext(), "Berhasil",Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(KelolaPacket.this, HomePanitia.class);
                 startActivity(intent);
+                showProcess(false);
 
             }
         }, new Response.ErrorListener() {
@@ -254,5 +335,14 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showProcess(Boolean state) {
+
+        if (state) {
+            dialog.show();
+        }else{
+            dialog.dismiss();
+        }
     }
 }

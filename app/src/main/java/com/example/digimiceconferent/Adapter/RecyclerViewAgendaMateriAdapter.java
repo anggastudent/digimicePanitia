@@ -1,6 +1,7 @@
 package com.example.digimiceconferent.Adapter;
 
 import android.content.Intent;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,8 +56,14 @@ public class RecyclerViewAgendaMateriAdapter extends RecyclerView.Adapter<Recycl
         holder.tvDescAgenda.setText(agenda.getDescAgenda());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
+
                 Agenda agenda = list.get(holder.getAdapterPosition());
                 Intent intent = new Intent(holder.itemView.getContext(), DetailUploadMateri.class);
                 intent.putExtra(DetailUploadMateri.EXTRA_MATERI, agenda);

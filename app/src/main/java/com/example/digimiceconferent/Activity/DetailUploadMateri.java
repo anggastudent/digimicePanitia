@@ -2,17 +2,21 @@ package com.example.digimiceconferent.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,6 +64,7 @@ public class DetailUploadMateri extends AppCompatActivity {
     FloatingActionButton addMateri;
     LinearLayout noDataPage;
     ProgressBar loading;
+    SwipeRefreshLayout swipeMateri;
 
     private int PICK_PDF_REQUEST = 1;
     File file;
@@ -78,6 +83,7 @@ public class DetailUploadMateri extends AppCompatActivity {
         addMateri = findViewById(R.id.add_materi);
         noDataPage = findViewById(R.id.no_data_materi);
         loading = findViewById(R.id.loading_materi);
+        swipeMateri = findViewById(R.id.swipe_detail_upload);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setElevation(0);
@@ -93,6 +99,75 @@ public class DetailUploadMateri extends AppCompatActivity {
 
         showLoading(true);
 
+        showData();
+        swipeMateri.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        swipeMateri.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                showData();
+                swipeMateri.setRefreshing(false);
+            }
+        });
+
+        rvMateri.setAdapter(adapter);
+        rvMateri.setHasFixedSize(true);
+        adapter.notifyDataSetChanged();
+
+        addMateri.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
+            @Override
+            public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailUploadMateri.this);
+                builder.setMessage("Apakah berkas sudah di Penyimpanan Internal ?");
+                builder.setPositiveButton("Iya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        UploadMateriDialogFragment fragment = new UploadMateriDialogFragment();
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        fragment.show(fragmentManager, UploadMateriDialogFragment.class.getSimpleName());
+                    }
+                });
+
+                builder.setNegativeButton("Tidak", null);
+                builder.show();
+
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showEmpty(Boolean state) {
+        if (state) {
+            noDataPage.setVisibility(View.VISIBLE);
+        } else {
+            noDataPage.setVisibility(View.GONE);
+        }
+    }
+
+    private void showLoading(Boolean state) {
+        if (state) {
+            loading.setVisibility(View.VISIBLE);
+        }else{
+            loading.setVisibility(View.GONE);
+        }
+    }
+
+    private void showData() {
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         final Agenda agenda = getIntent().getParcelableExtra(EXTRA_MATERI);
         if (agenda != null) {
@@ -128,49 +203,6 @@ public class DetailUploadMateri extends AppCompatActivity {
 
                 }
             });
-        }
-
-        rvMateri.setAdapter(adapter);
-        rvMateri.setHasFixedSize(true);
-        adapter.notifyDataSetChanged();
-
-        addMateri.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                UploadMateriDialogFragment fragment = new UploadMateriDialogFragment();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragment.show(fragmentManager, UploadMateriDialogFragment.class.getSimpleName());
-
-
-            }
-        });
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void showEmpty(Boolean state) {
-        if (state) {
-            noDataPage.setVisibility(View.VISIBLE);
-        } else {
-            noDataPage.setVisibility(View.GONE);
-        }
-    }
-
-    private void showLoading(Boolean state) {
-        if (state) {
-            loading.setVisibility(View.VISIBLE);
-        }else{
-            loading.setVisibility(View.GONE);
         }
     }
 }

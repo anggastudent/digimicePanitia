@@ -1,6 +1,7 @@
 package com.example.digimiceconferent.Adapter;
 
 import android.content.Intent;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +39,8 @@ public class RecyclerViewExpiredAdapter extends RecyclerView.Adapter<RecyclerVie
         final Expired expired = list.get(position);
         holder.noPembayaran.setText(expired.getId());
         holder.namaPaket.setText(expired.getName());
-        holder.maksPeserta.setText(expired.getMaxParticipant());
-        holder.harga.setText(expired.getPrice());
+        holder.maksPeserta.setText(expired.getMaxParticipant()+" Maksimal Peserta");
+        holder.harga.setText("Rp. "+expired.getPrice());
         holder.namaEvent.setText(expired.getNameEvent());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -54,8 +55,14 @@ public class RecyclerViewExpiredAdapter extends RecyclerView.Adapter<RecyclerVie
         //holder.tanggal.setText(expired.getExpired());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
+            private long lastClick = 0;
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                    return;
+                }
+                lastClick = SystemClock.elapsedRealtime();
+
                 Intent intent = new Intent(holder.itemView.getContext(), CheckoutDetail.class);
                 intent.putExtra(CheckoutDetail.EXTRA_EXPIRED, expired);
                 holder.itemView.getContext().startActivity(intent);
