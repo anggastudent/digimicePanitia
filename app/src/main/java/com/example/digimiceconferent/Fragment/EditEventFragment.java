@@ -4,18 +4,10 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -24,24 +16,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonArrayRequest;
+import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 
@@ -269,7 +264,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
 
     private void showDataEdit() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "http://192.168.3.5/myAPI/public/edit-event/"+sharedPrefManager.getSpIdEvent();
+        String url = MyUrl.URL+"/edit-event/"+sharedPrefManager.getSpIdEvent();
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -285,7 +280,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                         etEndDateEvent.setText(data.getString("end"));
 
                         Glide.with(getContext())
-                                .load("http://192.168.3.5/myAPI/public/" + data.getString("banner"))
+                                .load(MyUrl.URL+"/" + data.getString("banner"))
                                 .apply(new RequestOptions().override(100, 100))
                                 .into(imgBanner);
 
@@ -310,14 +305,14 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                 Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
             }
         });
-
+        queue.getCache().clear();
         queue.add(jsonArrayRequest);
     }
 
     private void sendEdit() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
-        String url = "http://192.168.3.5/myAPI/public/update-event/"+sharedPrefManager.getSpIdEvent();
+        String url = MyUrl.URL+"/update-event/"+sharedPrefManager.getSpIdEvent();
 
         if(bitmap != null) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -357,7 +352,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                 return data;
             }
         };
-
+        queue.getCache().clear();
         queue.add(request);
     }
 

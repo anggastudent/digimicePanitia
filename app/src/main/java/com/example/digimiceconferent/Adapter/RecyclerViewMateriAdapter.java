@@ -1,14 +1,26 @@
 package com.example.digimiceconferent.Adapter;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Model.Materi;
+import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 
 import java.util.ArrayList;
@@ -31,9 +43,32 @@ public class RecyclerViewMateriAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MateriViewHolder holder, int position) {
-        Materi materi = list.get(position);
+    public void onBindViewHolder(@NonNull final MateriViewHolder holder, int position) {
+        final Materi materi = list.get(position);
         holder.namaMateri.setText(materi.getNamaMateri());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MyUrl.URL+"/"+materi.getUrl()));
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+                builder.setMessage("Hapus materi " + materi.getNamaMateri()+" ?");
+                builder.setPositiveButton("Iya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        holder.delete(materi.getId(),materi);
+                    }
+                });
+                builder.setNegativeButton("Tidak", null);
+                builder.show();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -47,5 +82,28 @@ public class RecyclerViewMateriAdapter extends RecyclerView.Adapter<RecyclerView
             super(itemView);
             namaMateri = itemView.findViewById(R.id.name_materi);
         }
+
+        private void delete(String id, final Materi materi) {
+            RequestQueue queue = Volley.newRequestQueue(itemView.getContext());
+            String url = MyUrl.URL+"/delete-materi/"+id;
+            StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    notifyItemRemoved(getAdapterPosition());
+                    list.remove(materi);
+                    Toast.makeText(itemView.getContext(), "Berhasil Hapus", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            queue.getCache().clear();
+            queue.add(request);
+        }
     }
+
+
 }

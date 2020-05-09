@@ -1,14 +1,5 @@
 package com.example.digimiceconferent.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -16,17 +7,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import com.example.digimiceconferent.Fragment.AkunFragment;
 import com.example.digimiceconferent.Fragment.EventFragment;
 import com.example.digimiceconferent.Fragment.PaketFragment;
-import com.example.digimiceconferent.Fragment.PanitiaFragment;
 import com.example.digimiceconferent.Fragment.PembayaranFragment;
 import com.example.digimiceconferent.Fragment.PesertaFragment;
 import com.example.digimiceconferent.R;
-import com.example.digimiceconferent.SharedPrefManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomePanitia extends AppCompatActivity {

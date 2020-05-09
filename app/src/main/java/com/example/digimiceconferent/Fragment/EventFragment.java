@@ -2,6 +2,15 @@ package com.example.digimiceconferent.Fragment;
 
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,11 +20,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -38,6 +42,7 @@ public class EventFragment extends Fragment {
     RequestQueue queue;
     SharedPrefManager sharedPrefManager;
     SwipeRefreshLayout swipeEvent;
+    LinearLayout noPageData;
 
     public EventFragment() {
         // Required empty public constructor
@@ -48,6 +53,7 @@ public class EventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_event, container, false);
     }
 
@@ -63,6 +69,7 @@ public class EventFragment extends Fragment {
         adapter = new RecyclerViewEventAdapter();
         sharedPrefManager = new SharedPrefManager(getContext());
         loadingEvent = view.findViewById(R.id.loading_event);
+        noPageData = view.findViewById(R.id.no_data_event);
 
         showLoading(true);
 
@@ -89,6 +96,26 @@ public class EventFragment extends Fragment {
                 if (events != null) {
                     adapter.sendEventPanitia(events);
                     showLoading(false);
+                    showEmpty(false);
+                }
+
+                if (events.size() == 0) {
+                    showLoading(false);
+                    showEmpty(true);
+                }
+            }
+        });
+
+        mainViewModel.getSearchEvent().observe(this, new Observer<ArrayList<Event>>() {
+            @Override
+            public void onChanged(ArrayList<Event> events) {
+                showLoading(false);
+                showEmpty(false);
+                adapter.sendEventPanitia(events);
+
+                if (events.size() == 0) {
+                    showLoading(false);
+                    showEmpty(true);
                 }
             }
         });
@@ -101,9 +128,46 @@ public class EventFragment extends Fragment {
         }
     }
 
+    private void showEmpty(Boolean state) {
+        if (state) {
+            noPageData.setVisibility(View.VISIBLE);
+        } else {
+            noPageData.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         showData();
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_search_event, menu);
+        MenuItem item = menu.findItem(R.id.search);
+        SearchView searchView = new SearchView(getContext());
+        final MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
+        searchView.setQueryHint("Cari Event");
+        searchView.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                queue = Volley.newRequestQueue(getContext());
+                showLoading(true);
+                mainViewModel.setSearchEvent(queue, getContext(), sharedPrefManager.getSPIdUser(),query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        item.setActionView(searchView);
+
+    }
+
+
 }

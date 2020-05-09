@@ -2,6 +2,15 @@ package com.example.digimiceconferent.Fragment;
 
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,11 +20,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -37,6 +41,7 @@ public class PesertaFragment extends Fragment {
     SharedPrefManager sharedPrefManager;
     ProgressBar loading;
     SwipeRefreshLayout swipePeserta;
+    LinearLayout noPageData;
 
     public PesertaFragment() {
         // Required empty public constructor
@@ -47,6 +52,7 @@ public class PesertaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_peserta, container, false);
     }
 
@@ -58,7 +64,7 @@ public class PesertaFragment extends Fragment {
         rvPresensi = view.findViewById(R.id.rv_event_presensi);
         loading = view.findViewById(R.id.loading_peserta);
         swipePeserta = view.findViewById(R.id.swipe_peserta);
-
+        noPageData = view.findViewById(R.id.no_data_peserta);
         swipePeserta.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         adapter = new RecyclerViewEventPresensiAdapter();
         rvPresensi.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -87,10 +93,31 @@ public class PesertaFragment extends Fragment {
             public void onChanged(ArrayList<Event> events) {
                 if (events != null) {
                     showLoading(false);
+                    showEmpty(false);
                     adapter.sendData(events);
                 }
 
+                if (events.size() == 0) {
+                    showLoading(false);
+                    showEmpty(true);
+                }
+
             }
+        });
+
+        mainViewModel.getSearchEvent().observe(this, new Observer<ArrayList<Event>>() {
+            @Override
+            public void onChanged(ArrayList<Event> events) {
+                showLoading(false);
+                adapter.sendData(events);
+                showEmpty(false);
+
+                if (events.size() == 0) {
+                    showLoading(false);
+                    showEmpty(true);
+                }
+            }
+
         });
     }
 
@@ -102,9 +129,42 @@ public class PesertaFragment extends Fragment {
         }
     }
 
+    private void showEmpty(Boolean state) {
+        if (state) {
+            noPageData.setVisibility(View.VISIBLE);
+        } else {
+            noPageData.setVisibility(View.GONE);
+        }
+    }
     @Override
     public void onResume() {
         super.onResume();
         showData();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_search_event, menu);
+        MenuItem item = menu.findItem(R.id.search);
+        SearchView searchView = new SearchView(getContext());
+        final MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
+        searchView.setQueryHint("Cari Event");
+        searchView.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                RequestQueue queue = Volley.newRequestQueue(getContext());
+                showLoading(true);
+                mainViewModel.setSearchEvent(queue, getContext(), sharedPrefManager.getSPIdUser(),query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        item.setActionView(searchView);
     }
 }

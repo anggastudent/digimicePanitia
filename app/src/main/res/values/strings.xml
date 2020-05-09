@@ -78,6 +78,7 @@
     <string name="edit_profil">Edit Profil</string>
     <string name="bank_mandiri">BANK MANDIRI</string>
     <string name="tidak_ada_data">Tidak Ada Data</string>
+    <string name="search">Search</string>
 
 
     <string-array name="presensi">

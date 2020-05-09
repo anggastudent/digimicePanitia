@@ -1,10 +1,5 @@
 package com.example.digimiceconferent.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -19,17 +14,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Fragment.DatePickerFragment;
 import com.example.digimiceconferent.Fragment.TimePickerFragment;
 import com.example.digimiceconferent.MainViewModel;
 import com.example.digimiceconferent.Model.EventSession;
+import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 
@@ -236,7 +237,7 @@ public class AddAgenda extends AppCompatActivity implements View.OnClickListener
 
     private void addAgenda() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.3.5/myAPI/public/add-agenda";
+        String url = MyUrl.URL+ "/add-agenda";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -273,7 +274,7 @@ public class AddAgenda extends AppCompatActivity implements View.OnClickListener
                 return data;
             }
         };
-
+        queue.getCache().clear();
         queue.add(stringRequest);
     }
 

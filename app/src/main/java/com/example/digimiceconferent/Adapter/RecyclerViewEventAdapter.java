@@ -8,23 +8,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.digimiceconferent.Activity.KelolaEvent;
-import com.example.digimiceconferent.Activity.KelolaPacket;
 import com.example.digimiceconferent.Model.Event;
+import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 public class RecyclerViewEventAdapter extends RecyclerView.Adapter<RecyclerViewEventAdapter.EventPanitiaViewHolder> {
 
@@ -62,7 +61,7 @@ public class RecyclerViewEventAdapter extends RecyclerView.Adapter<RecyclerViewE
         }
 
         Glide.with(holder.itemView.getContext())
-                .load("http://192.168.3.5/myAPI/public/" + event.getBanner())
+                .load(MyUrl.URL+"/" + event.getBanner())
                 .apply(new RequestOptions().override(100, 100))
                 .into(holder.imageView);
 

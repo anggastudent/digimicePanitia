@@ -1,17 +1,27 @@
 package com.example.digimiceconferent.Adapter;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Activity.EditAgenda;
 import com.example.digimiceconferent.Model.Agenda;
+import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 
 import java.text.ParseException;
@@ -36,7 +46,7 @@ public class RecyclerViewAgendaAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull final AgendaHolder holder, int position) {
-        Agenda agenda = list.get(position);
+        final Agenda agenda = list.get(position);
         holder.tvSessionAgenda.setText(agenda.getSessionAgenda());
         holder.tvNameAgenda.setText(agenda.getNamaAgenda());
 
@@ -68,6 +78,24 @@ public class RecyclerViewAgendaAdapter extends RecyclerView.Adapter<RecyclerView
                 holder.itemView.getContext().startActivity(intent);
             }
         });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+                builder.setTitle("Peringatan");
+                builder.setMessage("Hapus agenda " + agenda.getNamaAgenda()+" ?\nMenghapus agenda akan menghapus data materi agenda");
+                builder.setPositiveButton("Iya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        holder.delete(agenda.getId(),agenda);
+                    }
+                });
+                builder.setNegativeButton("Tidak", null);
+                builder.show();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -85,5 +113,28 @@ public class RecyclerViewAgendaAdapter extends RecyclerView.Adapter<RecyclerView
             tvWaktuAgenda = itemView.findViewById(R.id.waktu_agenda);
             tvDescAgenda = itemView.findViewById(R.id.description_agenda);
         }
+
+        private void delete(String agendaId, final Agenda agenda) {
+            RequestQueue queue = Volley.newRequestQueue(itemView.getContext());
+            String url = MyUrl.URL+"/delete-agenda/"+agendaId;
+            StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    notifyItemRemoved(getAdapterPosition());
+                    list.remove(agenda);
+                    Toast.makeText(itemView.getContext(), "Berhasil Hapus", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            queue.getCache().clear();
+            queue.add(request);
+        }
     }
+
+
 }

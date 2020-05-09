@@ -5,12 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,17 +15,22 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.digimiceconferent.Activity.EditProfil;
 import com.example.digimiceconferent.Activity.Login;
+import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 
@@ -137,7 +136,7 @@ public class AkunFragment extends Fragment {
     private void getData() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
-        String url = "http://192.168.3.5/myAPI/public/user/" + sharedPrefManager.getSPIdUser();
+        String url = MyUrl.URL+"/user/" + sharedPrefManager.getSPIdUser();
 
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -152,7 +151,7 @@ public class AkunFragment extends Fragment {
                         teamUser.setText(data.getString("team"));
 
                         Glide.with(getContext())
-                                .load("http://192.168.3.5/myAPI/public/" + data.getString("avatar"))
+                                .load(MyUrl.URL+"/" + data.getString("avatar"))
                                 .apply(new RequestOptions().override(150, 150))
                                 .into(avatar);
 
@@ -170,7 +169,7 @@ public class AkunFragment extends Fragment {
                 Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-
+        queue.getCache().clear();
         queue.add(arrayRequest);
     }
 

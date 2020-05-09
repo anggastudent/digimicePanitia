@@ -1,8 +1,5 @@
 package com.example.digimiceconferent.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -13,13 +10,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 
@@ -73,7 +74,7 @@ public class AddSession extends AppCompatActivity {
 
     private void addSession() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.3.5/myAPI/public/add-session";
+        String url = MyUrl.URL+"/add-session";
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -97,6 +98,7 @@ public class AddSession extends AppCompatActivity {
                 return data;
             }
         };
+        queue.getCache().clear();
         queue.add(request);
     }
 

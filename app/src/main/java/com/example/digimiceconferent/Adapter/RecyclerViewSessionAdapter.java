@@ -1,17 +1,27 @@
 package com.example.digimiceconferent.Adapter;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Activity.EditSession;
 import com.example.digimiceconferent.Model.EventSession;
+import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 
 import java.util.ArrayList;
@@ -49,6 +59,31 @@ public class RecyclerViewSessionAdapter extends RecyclerView.Adapter<RecyclerVie
                 holder.itemView.getContext().startActivity(intent);
             }
         });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (list.size() == 1) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+                    builder.setMessage("Tidak dapat menghapus sesi");
+                    builder.setPositiveButton("Ok", null);
+                    builder.show();
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+                    builder.setTitle("Peringatan");
+                    builder.setMessage("Hapus sesi " + eventSession.getJudul()+" ?\nMenghapus sesi akan menghapus data agenda sesi");
+                    builder.setPositiveButton("Iya", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            holder.delete(eventSession.getId(),eventSession);
+                        }
+                    });
+                    builder.setNegativeButton("Tidak", null);
+                    builder.show();
+                }
+
+                return true;
+            }
+        });
     }
 
     @Override
@@ -61,6 +96,27 @@ public class RecyclerViewSessionAdapter extends RecyclerView.Adapter<RecyclerVie
         public SessionViewHolder(@NonNull View itemView) {
             super(itemView);
             namaSesi = itemView.findViewById(R.id.name_session);
+        }
+
+        private void delete(String sessionId, final EventSession eventSession) {
+            RequestQueue queue = Volley.newRequestQueue(itemView.getContext());
+            String url = MyUrl.URL+"/delete-session/"+sessionId;
+            StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    notifyItemRemoved(getAdapterPosition());
+                    list.remove(eventSession);
+                    Toast.makeText(itemView.getContext(), "Berhasil Hapus", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            queue.getCache().clear();
+            queue.add(request);
         }
     }
 }

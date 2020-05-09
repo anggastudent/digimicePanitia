@@ -1,5 +1,14 @@
 package com.example.digimiceconferent.Activity;
 
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -7,13 +16,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -177,6 +179,47 @@ public class RekapitulasiPeserta extends AppCompatActivity {
                 }
             });
 
+            mainViewModel.getSearchRekapitulasi().observe(this, new Observer<ArrayList<Rekapitulasi>>() {
+                @Override
+                public void onChanged(ArrayList<Rekapitulasi> rekapitulasis) {
+                    adapter.sendData(rekapitulasis);
+                    showLoading(false);
+                    showEmpty(false);
+
+                    if (rekapitulasis.size() == 0) {
+                        showLoading(false);
+                        showEmpty(true);
+                    }
+                }
+            });
+
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        final EventSession eventSession = getIntent().getParcelableExtra(EXTRA_REKAPUTILASI);
+        getMenuInflater().inflate(R.menu.menu_search_event, menu);
+        MenuItem item = menu.findItem(R.id.search);
+        SearchView searchView = new SearchView(this);
+        final MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
+        searchView.setQueryHint("Cari Event");
+        searchView.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                RequestQueue queue = Volley.newRequestQueue(RekapitulasiPeserta.this);
+                showLoading(true);
+                mainViewModel.setSearchRekapitulasi(queue, RekapitulasiPeserta.this, sharedPrefManager.getSpIdEvent(),eventSession.getId(),query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        item.setActionView(searchView);
+        return super.onCreateOptionsMenu(menu);
     }
 }

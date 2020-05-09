@@ -4,12 +4,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,14 +12,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Activity.KelolaPeserta;
+import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 import com.google.zxing.Result;
@@ -158,7 +158,7 @@ public class ScanQrCodeFragment extends Fragment implements ZXingScannerView.Res
 
     private void scanQr(final String qrCode) {
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "http://192.168.3.5/myAPI/public/scan-qrcode";
+        String url = MyUrl.URL+"/scan-qrcode";
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -182,7 +182,7 @@ public class ScanQrCodeFragment extends Fragment implements ZXingScannerView.Res
                 return data;
             }
         };
-
+        queue.getCache().clear();
         queue.add(request);
     }
 

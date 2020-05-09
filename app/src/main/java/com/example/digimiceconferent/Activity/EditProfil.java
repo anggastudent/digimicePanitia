@@ -1,10 +1,5 @@
 package com.example.digimiceconferent.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,16 +16,22 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonArrayRequest;
+import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 
@@ -146,7 +147,7 @@ public class EditProfil extends AppCompatActivity {
 
     private void getData() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.3.5/myAPI/public/edit-user/"+sharedPrefManager.getSPIdUser();
+        String url = MyUrl.URL+"/edit-user/"+sharedPrefManager.getSPIdUser();
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -155,7 +156,7 @@ public class EditProfil extends AppCompatActivity {
                         JSONObject data = response.getJSONObject(i);
                         etNamaLengkap.setText(data.getString("name"));
                         Glide.with(getApplicationContext())
-                                .load("http://192.168.3.5/myAPI/public/" + data.getString("avatar"))
+                                .load(MyUrl.URL+"/" + data.getString("avatar"))
                                 .apply(new RequestOptions().override(100, 100))
                                 .into(avatar);
                     }
@@ -171,7 +172,7 @@ public class EditProfil extends AppCompatActivity {
 
             }
         });
-
+        queue.getCache().clear();
         queue.add(arrayRequest);
     }
 
@@ -181,15 +182,17 @@ public class EditProfil extends AppCompatActivity {
 
         if (bitmap != null) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 60, byteArrayOutputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
             byte[] imageBytes = byteArrayOutputStream.toByteArray();
             imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         }
-        String url = "http://192.168.3.5/myAPI/public/update-user/"+sharedPrefManager.getSPIdUser();
+        String url = MyUrl.URL+"/update-user/"+sharedPrefManager.getSPIdUser();
         StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 showDialog(false);
+                etPasswordBaru.setText(null);
+                etPasswordLama.setText(null);
                 Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
@@ -211,7 +214,7 @@ public class EditProfil extends AppCompatActivity {
                 return data;
             }
         };
-
+        queue.getCache().clear();
         queue.add(request);
     }
 

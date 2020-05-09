@@ -2,11 +2,6 @@ package com.example.digimiceconferent.Fragment;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -19,13 +14,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 import com.google.zxing.Result;
@@ -176,7 +176,7 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
 
     private void setQr(final String qrCode) {
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "http://192.168.3.5/myAPI/public/set-qrcode";
+        String url = MyUrl.URL+"/set-qrcode";
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -202,7 +202,7 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
                 return data;
             }
         };
-
+        queue.getCache().clear();
         queue.add(request);
     }
 

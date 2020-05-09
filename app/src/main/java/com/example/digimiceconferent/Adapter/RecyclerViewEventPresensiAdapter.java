@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.digimiceconferent.Activity.KelolaPeserta;
 import com.example.digimiceconferent.Model.Event;
+import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 
@@ -59,7 +60,7 @@ public class RecyclerViewEventPresensiAdapter extends RecyclerView.Adapter<Recyc
         }
 
         Glide.with(holder.itemView.getContext())
-                .load("http://192.168.3.5/myAPI/public/" + event.getBanner())
+                .load(MyUrl.URL+"/" + event.getBanner())
                 .apply(new RequestOptions().override(100, 100))
                 .into(holder.banner);
 

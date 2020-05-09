@@ -1,8 +1,5 @@
 package com.example.digimiceconferent.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -11,18 +8,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonArrayRequest;
+import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Model.EventSession;
+import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 
 import org.json.JSONArray;
@@ -86,7 +86,7 @@ public class EditSession extends AppCompatActivity {
     private void editSession(String sessionId) {
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        String url = "http://192.168.3.5/myAPI/public/edit-session/" + sessionId;
+        String url = MyUrl.URL+"/edit-session/" + sessionId;
         StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -107,14 +107,14 @@ public class EditSession extends AppCompatActivity {
                 return data;
             }
         };
-
+        queue.getCache().clear();
         queue.add(request);
 
     }
 
     private void showSession(String sessionId) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.3.5/myAPI/public/show-session/" + sessionId;
+        String url = MyUrl.URL+"/show-session/" + sessionId;
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -134,7 +134,7 @@ public class EditSession extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-
+        queue.getCache().clear();
         queue.add(arrayRequest);
     }
 
