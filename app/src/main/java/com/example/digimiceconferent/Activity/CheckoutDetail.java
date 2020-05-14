@@ -1,15 +1,14 @@
 package com.example.digimiceconferent.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.digimiceconferent.Model.Expired;
 import com.example.digimiceconferent.Model.Paid;
@@ -54,7 +53,7 @@ public class CheckoutDetail extends AppCompatActivity {
             
             if(paid.getUrl().equals("")){
                 AlertDialog.Builder builder = new AlertDialog.Builder(CheckoutDetail.this);
-                builder.setMessage("Paket Gratis tidak ada Checkout");
+                builder.setMessage("Paket tidak perlu pembayaran");
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

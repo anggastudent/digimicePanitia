@@ -1,17 +1,27 @@
 package com.example.digimiceconferent.Adapter;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Activity.CheckoutDetail;
 import com.example.digimiceconferent.Model.Pending;
+import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 
 import java.text.ParseException;
@@ -68,6 +78,23 @@ public class RecyclerViewPendingAdapter extends RecyclerView.Adapter<RecyclerVie
                 holder.itemView.getContext().startActivity(intent);
             }
         });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+                builder.setMessage("Apakah anda ingin membatalkan " + pending.getNameEvent() + "?");
+                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        holder.expired(pending.getId());
+                    }
+                });
+                builder.setNegativeButton("Tidak", null);
+                builder.show();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -86,6 +113,25 @@ public class RecyclerViewPendingAdapter extends RecyclerView.Adapter<RecyclerVie
             harga = itemView.findViewById(R.id.harga_pending);
             tanggal = itemView.findViewById(R.id.tanggal_pending);
             namaEvent = itemView.findViewById(R.id.nama_event_pending);
+        }
+
+        private void expired(String id) {
+            RequestQueue queue = Volley.newRequestQueue(itemView.getContext());
+            String url = MyUrl.URL+"/expired-invoice/"+id;
+            StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(itemView.getContext(), response, Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            queue.getCache().clear();
+            queue.add(request);
         }
     }
 }

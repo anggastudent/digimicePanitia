@@ -43,6 +43,7 @@ public class EventFragment extends Fragment {
     SharedPrefManager sharedPrefManager;
     SwipeRefreshLayout swipeEvent;
     LinearLayout noPageData;
+    MainViewModel mainViewModel;
 
     public EventFragment() {
         // Required empty public constructor
@@ -81,6 +82,21 @@ public class EventFragment extends Fragment {
                 swipeEvent.setRefreshing(false);
             }
         });
+        mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
+        mainViewModel.getSearchEvent().observe(this, new Observer<ArrayList<Event>>() {
+            @Override
+            public void onChanged(ArrayList<Event> events) {
+                showLoading(false);
+                showEmpty(false);
+                adapter.sendEventPanitia(events);
+
+                if (events.size() == 0) {
+                    showLoading(false);
+                    showEmpty(true);
+                }
+            }
+        });
+
         rvEvent.setAdapter(adapter);
         rvEvent.setHasFixedSize(true);
         adapter.notifyDataSetChanged();
@@ -88,7 +104,6 @@ public class EventFragment extends Fragment {
 
     private void showData() {
 
-        MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         mainViewModel.setEventPanitia(queue, getContext(), sharedPrefManager.getSPIdUser());
         mainViewModel.getEventPanitia().observe(this, new Observer<ArrayList<Event>>() {
             @Override
@@ -106,19 +121,7 @@ public class EventFragment extends Fragment {
             }
         });
 
-        mainViewModel.getSearchEvent().observe(this, new Observer<ArrayList<Event>>() {
-            @Override
-            public void onChanged(ArrayList<Event> events) {
-                showLoading(false);
-                showEmpty(false);
-                adapter.sendEventPanitia(events);
 
-                if (events.size() == 0) {
-                    showLoading(false);
-                    showEmpty(true);
-                }
-            }
-        });
     }
     private void showLoading(Boolean state) {
         if (state) {

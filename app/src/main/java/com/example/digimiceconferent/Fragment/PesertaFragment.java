@@ -42,7 +42,7 @@ public class PesertaFragment extends Fragment {
     ProgressBar loading;
     SwipeRefreshLayout swipePeserta;
     LinearLayout noPageData;
-
+    MainViewModel mainViewModel;
     public PesertaFragment() {
         // Required empty public constructor
     }
@@ -68,7 +68,7 @@ public class PesertaFragment extends Fragment {
         swipePeserta.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         adapter = new RecyclerViewEventPresensiAdapter();
         rvPresensi.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         showLoading(true);
 
         swipePeserta.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -78,6 +78,22 @@ public class PesertaFragment extends Fragment {
                 swipePeserta.setRefreshing(false);
             }
         });
+
+        mainViewModel.getSearchEvent().observe(this, new Observer<ArrayList<Event>>() {
+            @Override
+            public void onChanged(ArrayList<Event> events) {
+                showLoading(false);
+                adapter.sendData(events);
+                showEmpty(false);
+
+                if (events.size() == 0) {
+                    showLoading(false);
+                    showEmpty(true);
+                }
+            }
+
+        });
+
         rvPresensi.setAdapter(adapter);
         rvPresensi.setHasFixedSize(true);
         adapter.notifyDataSetChanged();
@@ -105,20 +121,7 @@ public class PesertaFragment extends Fragment {
             }
         });
 
-        mainViewModel.getSearchEvent().observe(this, new Observer<ArrayList<Event>>() {
-            @Override
-            public void onChanged(ArrayList<Event> events) {
-                showLoading(false);
-                adapter.sendData(events);
-                showEmpty(false);
 
-                if (events.size() == 0) {
-                    showLoading(false);
-                    showEmpty(true);
-                }
-            }
-
-        });
     }
 
     private void showLoading(Boolean state) {
