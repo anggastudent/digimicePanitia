@@ -47,7 +47,7 @@ public class RecyclerViewPendingAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public void onBindViewHolder(@NonNull final PendingViewHolder holder, int position) {
         final Pending pending = list.get(position);
-        holder.noPembayaran.setText(pending.getId());
+        holder.noPembayaran.setText("No. "+pending.getId());
         holder.namaPaket.setText(pending.getName());
         holder.maksPeserta.setText(pending.getMaxParticipant()+" Maksimal Peserta");
         holder.harga.setText("Rp. "+pending.getPrice());

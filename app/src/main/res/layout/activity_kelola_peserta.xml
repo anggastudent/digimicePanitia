@@ -21,20 +21,22 @@
             android:layout_width="match_parent"
             android:textColor="@android:color/white"
             android:text="@string/nama_event"
-            android:textSize="19dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:layout_width="match_parent"
             android:textColor="@android:color/white"
             android:text="@string/tempat"
+            android:textSize="12sp"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/tempat_kelola_event_peserta"
             android:layout_width="match_parent"
             android:textColor="@android:color/white"
-            android:textSize="18dp"
+            android:textSize="14dp"
             android:text="@string/tempat"
             android:layout_height="wrap_content"/>
 
@@ -43,6 +45,7 @@
             android:layout_width="match_parent"
             android:textColor="@android:color/white"
             android:text="@string/alamat"
+            android:textSize="14sp"
             android:layout_height="wrap_content"/>
 
         <TextView
@@ -50,6 +53,7 @@
             android:layout_width="match_parent"
             android:textColor="@android:color/white"
             android:text="@string/start"
+            android:textSize="14sp"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>

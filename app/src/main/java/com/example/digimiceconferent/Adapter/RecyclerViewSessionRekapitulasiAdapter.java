@@ -14,7 +14,10 @@ import com.example.digimiceconferent.Activity.RekapitulasiPeserta;
 import com.example.digimiceconferent.Model.EventSession;
 import com.example.digimiceconferent.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RecyclerViewSessionRekapitulasiAdapter extends RecyclerView.Adapter<RecyclerViewSessionRekapitulasiAdapter.RekapitulasiViewHolder> {
     ArrayList<EventSession> list = new ArrayList<>();
@@ -35,6 +38,15 @@ public class RecyclerViewSessionRekapitulasiAdapter extends RecyclerView.Adapter
     public void onBindViewHolder(@NonNull final RekapitulasiViewHolder holder, int position) {
         final EventSession eventSession = list.get(position);
         holder.namaSesi.setText(eventSession.getJudul());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date dateStart = dateFormat.parse(eventSession.getStartSession());
+            SimpleDateFormat dateFormatNew = new SimpleDateFormat("dd MMMM yyyy");
+            holder.startSesi.setText(dateFormatNew.format(dateStart));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             private long lastClick = 0;
             @Override
@@ -57,10 +69,11 @@ public class RecyclerViewSessionRekapitulasiAdapter extends RecyclerView.Adapter
     }
 
     public class RekapitulasiViewHolder extends RecyclerView.ViewHolder {
-        TextView namaSesi;
+        TextView namaSesi, startSesi;
         public RekapitulasiViewHolder(@NonNull View itemView) {
             super(itemView);
             namaSesi = itemView.findViewById(R.id.name_session);
+            startSesi = itemView.findViewById(R.id.start_session);
         }
     }
 }

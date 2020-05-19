@@ -68,7 +68,8 @@ public class ScanQrCodeFragment extends Fragment implements ZXingScannerView.Res
 
         sharedPrefManager = new SharedPrefManager(getContext());
         dialog = new ProgressDialog(getContext());
-        dialog.setMessage("Memproses..");
+        dialog.setMessage("Memproses...");
+        dialog.setCancelable(false);
         if (!flashCamera) {
             flashCamera = true;
         } else {

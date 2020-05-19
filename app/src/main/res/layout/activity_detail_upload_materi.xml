@@ -28,7 +28,7 @@
                     android:id="@+id/session_event_agenda_materi"
                     android:layout_width="match_parent"
                     android:textColor="@android:color/white"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:text="@string/session"
                     android:layout_height="wrap_content"/>
 
@@ -37,7 +37,8 @@
                     android:layout_width="match_parent"
                     android:textColor="@android:color/white"
                     android:text="@string/nama_agenda"
-                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
                     android:layout_height="wrap_content"/>
 
                 <TextView
@@ -45,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:textColor="@android:color/white"
                     android:text="@string/start"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:layout_height="wrap_content"
                     android:paddingBottom="16dp"/>
             </LinearLayout>
@@ -96,6 +97,7 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="18dp"
         android:elevation="0dp"
+        android:background="@drawable/button_click"
         android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_add_black_24dp" />
 

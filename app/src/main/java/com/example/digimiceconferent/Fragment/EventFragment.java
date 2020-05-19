@@ -42,7 +42,7 @@ public class EventFragment extends Fragment {
     RequestQueue queue;
     SharedPrefManager sharedPrefManager;
     SwipeRefreshLayout swipeEvent;
-    LinearLayout noPageData;
+    LinearLayout noPageData,eventPage;
     MainViewModel mainViewModel;
 
     public EventFragment() {
@@ -71,7 +71,8 @@ public class EventFragment extends Fragment {
         sharedPrefManager = new SharedPrefManager(getContext());
         loadingEvent = view.findViewById(R.id.loading_event);
         noPageData = view.findViewById(R.id.no_data_event);
-
+        eventPage = view.findViewById(R.id.event_page);
+        greyBackground(false);
         showLoading(true);
 
         swipeEvent.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -80,17 +81,20 @@ public class EventFragment extends Fragment {
 
                 showData();
                 swipeEvent.setRefreshing(false);
+
             }
         });
         mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.getSearchEvent().observe(this, new Observer<ArrayList<Event>>() {
+        mainViewModel.getSearchEvent().observe(getViewLifecycleOwner(), new Observer<ArrayList<Event>>() {
             @Override
             public void onChanged(ArrayList<Event> events) {
                 showLoading(false);
+                greyBackground(true);
                 showEmpty(false);
                 adapter.sendEventPanitia(events);
 
                 if (events.size() == 0) {
+                    greyBackground(true);
                     showLoading(false);
                     showEmpty(true);
                 }
@@ -111,11 +115,13 @@ public class EventFragment extends Fragment {
                 if (events != null) {
                     adapter.sendEventPanitia(events);
                     showLoading(false);
+                    greyBackground(true);
                     showEmpty(false);
                 }
 
                 if (events.size() == 0) {
                     showLoading(false);
+                    greyBackground(true);
                     showEmpty(true);
                 }
             }
@@ -158,6 +164,7 @@ public class EventFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 queue = Volley.newRequestQueue(getContext());
+                greyBackground(false);
                 showLoading(true);
                 mainViewModel.setSearchEvent(queue, getContext(), sharedPrefManager.getSPIdUser(),query);
                 return true;
@@ -170,6 +177,14 @@ public class EventFragment extends Fragment {
         });
         item.setActionView(searchView);
 
+    }
+
+    private void greyBackground(Boolean state) {
+        if (state) {
+            eventPage.setBackground(getResources().getDrawable(R.color.colorGrey));
+        } else {
+            eventPage.setBackground(getResources().getDrawable(R.color.colorWhite));
+        }
     }
 
 

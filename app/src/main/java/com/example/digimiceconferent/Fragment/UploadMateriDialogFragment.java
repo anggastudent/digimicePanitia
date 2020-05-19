@@ -81,7 +81,8 @@ public class UploadMateriDialogFragment extends DialogFragment implements Permis
         queue = Volley.newRequestQueue(getContext());
         sharedPrefManager = new SharedPrefManager(getContext());
         dialog = new ProgressDialog(getContext());
-        dialog.setMessage("Memproses..");
+        dialog.setMessage("Memproses...");
+        dialog.setCancelable(false);
         permissions();
 
         btUpload.setOnClickListener(new View.OnClickListener() {

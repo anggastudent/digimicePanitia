@@ -163,6 +163,12 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                     isEmpty = true;
                     etPriceEvent.setError("Harga tiket tidak boleh kosong");
                 }
+
+                if (Integer.parseInt(etPriceEvent.getText().toString()) < 10000 && Integer.parseInt(etPriceEvent.getText().toString()) > 0) {
+                    isEmpty = true;
+                    etPriceEvent.setError("Harga tiket minimal Rp. 10.000");
+                }
+
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String start = etStartDateEvent.getText().toString();
                 String end = etEndDateEvent.getText().toString();
@@ -176,6 +182,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
 
                     if (!isEmpty && dateEnd.equals(dateStart)) {
                         prosesDialog.setMessage("Memproses...");
+                        prosesDialog.setCancelable(false);
                         prosesDialog.show();
                         sendEdit();
                     }
@@ -325,6 +332,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
             @Override
             public void onResponse(String response) {
                 etEndDateEvent.setError(null);
+                etPriceEvent.setError(null);
                 prosesDialog.dismiss();
                 showDataEdit();
                 Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();

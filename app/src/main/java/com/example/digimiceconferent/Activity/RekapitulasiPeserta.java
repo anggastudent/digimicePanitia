@@ -41,6 +41,7 @@ public class RekapitulasiPeserta extends AppCompatActivity {
     ProgressBar loading;
     LinearLayout noPageData;
     SwipeRefreshLayout swipeRekap;
+    MainViewModel mainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class RekapitulasiPeserta extends AppCompatActivity {
         sharedPrefManager = new SharedPrefManager(this);
         adapter = new RecyclerViewRekapitulasiAdapter();
         queue = Volley.newRequestQueue(this);
-
+        mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         showLoading(true);
         showData();
         swipeRekap.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
@@ -86,6 +87,21 @@ public class RekapitulasiPeserta extends AppCompatActivity {
                 swipeRekap.setRefreshing(false);
             }
         });
+
+        mainViewModel.getSearchRekapitulasi().observe(this, new Observer<ArrayList<Rekapitulasi>>() {
+            @Override
+            public void onChanged(ArrayList<Rekapitulasi> rekapitulasis) {
+                adapter.sendData(rekapitulasis);
+                showLoading(false);
+                showEmpty(false);
+
+                if (rekapitulasis.size() == 0) {
+                    showLoading(false);
+                    showEmpty(true);
+                }
+            }
+        });
+
         rvRekap.setAdapter(adapter);
         rvRekap.setHasFixedSize(true);
         adapter.notifyDataSetChanged();
@@ -120,7 +136,6 @@ public class RekapitulasiPeserta extends AppCompatActivity {
     private void showData() {
         final EventSession eventSession = getIntent().getParcelableExtra(EXTRA_REKAPUTILASI);
         if (eventSession != null) {
-            MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
             mainViewModel.setListRekapitulasi(queue, this, sharedPrefManager.getSpIdEvent(), eventSession.getId());
             mainViewModel.getRekapitulasi().observe(this, new Observer<ArrayList<Rekapitulasi>>() {
                 @Override
@@ -179,19 +194,7 @@ public class RekapitulasiPeserta extends AppCompatActivity {
                 }
             });
 
-            mainViewModel.getSearchRekapitulasi().observe(this, new Observer<ArrayList<Rekapitulasi>>() {
-                @Override
-                public void onChanged(ArrayList<Rekapitulasi> rekapitulasis) {
-                    adapter.sendData(rekapitulasis);
-                    showLoading(false);
-                    showEmpty(false);
 
-                    if (rekapitulasis.size() == 0) {
-                        showLoading(false);
-                        showEmpty(true);
-                    }
-                }
-            });
 
         }
     }
@@ -203,7 +206,7 @@ public class RekapitulasiPeserta extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.search);
         SearchView searchView = new SearchView(this);
         final MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        searchView.setQueryHint("Cari Event");
+        searchView.setQueryHint("Cari Peserta");
         searchView.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

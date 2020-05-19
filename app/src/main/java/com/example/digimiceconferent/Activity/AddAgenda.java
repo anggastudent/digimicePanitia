@@ -106,6 +106,7 @@ public class AddAgenda extends AppCompatActivity implements View.OnClickListener
 
         dialog = new ProgressDialog(AddAgenda.this);
         dialog.setMessage("Memproses");
+        dialog.setCancelable(false);
 
         showData();
 

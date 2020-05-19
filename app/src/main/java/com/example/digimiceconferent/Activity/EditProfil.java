@@ -19,7 +19,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -49,7 +48,6 @@ public class EditProfil extends AppCompatActivity {
     SharedPrefManager sharedPrefManager;
     ProgressBar loading;
     ProgressDialog dialog;
-    SwipeRefreshLayout swipeEditProfil;
 
     int PICK_IMAGE_REQUEST = 22;
     String imageString;
@@ -71,28 +69,18 @@ public class EditProfil extends AppCompatActivity {
         etPasswordBaru = findViewById(R.id.new_password_user_edit);
         etRePasswordBaru = findViewById(R.id.re_password_user_edit);
         loading = findViewById(R.id.loading_edit_profil);
-        swipeEditProfil = findViewById(R.id.swipe_edit_profil);
-
         btUploadGambar = findViewById(R.id.bt_upload_avatar_user);
         btEditProfil = findViewById(R.id.bt_edit_user);
 
         avatar = findViewById(R.id.avatar_user_edit);
 
         dialog = new ProgressDialog(EditProfil.this);
-        dialog.setMessage("Memproses");
+        dialog.setMessage("Memproses...");
+        dialog.setCancelable(false);
 
         sharedPrefManager = new SharedPrefManager(this);
         showLoading(true);
         getData();
-
-        swipeEditProfil.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
-        swipeEditProfil.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getData();
-                swipeEditProfil.setRefreshing(false);
-            }
-        });
         btUploadGambar.setOnClickListener(new View.OnClickListener() {
             private long lastClick = 0;
             @Override
@@ -118,14 +106,18 @@ public class EditProfil extends AppCompatActivity {
                 }
                 lastClick = SystemClock.elapsedRealtime();
 
-                if (!etPasswordBaru.getText().toString().equals(etRePasswordBaru.getText().toString())) {
-                    etRePasswordBaru.setError("Password tidak sama");
+                if (etPasswordBaru.getText().toString().length() < 8) {
+                    etPasswordBaru.setError("Password minimal 8 karakter");
+                }else{
 
-                }else {
-                    showDialog(true);
-                    editProfil();
+                    if (!etPasswordBaru.getText().toString().equals(etRePasswordBaru.getText().toString())) {
+                        etRePasswordBaru.setError("Password tidak sama");
+
+                    }else {
+                        showDialog(true);
+                        editProfil();
+                    }
                 }
-
 
             }
         });

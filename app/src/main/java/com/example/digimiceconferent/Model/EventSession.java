@@ -9,22 +9,16 @@ public class EventSession implements Parcelable {
 
     private String judul;
     private String id;
+    public String startSession;
     private String start;
     private String end;
 
     private ArrayList<SessionAgenda> listAgenda;
 
-    public String getEnd() {
-        return end;
-    }
-
-    public void setEnd(String end) {
-        this.end = end;
-    }
-
     protected EventSession(Parcel in) {
         judul = in.readString();
         id = in.readString();
+        startSession = in.readString();
         start = in.readString();
         end = in.readString();
     }
@@ -33,6 +27,7 @@ public class EventSession implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(judul);
         dest.writeString(id);
+        dest.writeString(startSession);
         dest.writeString(start);
         dest.writeString(end);
     }
@@ -53,6 +48,22 @@ public class EventSession implements Parcelable {
             return new EventSession[size];
         }
     };
+
+    public String getStartSession() {
+        return startSession;
+    }
+
+    public void setStartSession(String startSession) {
+        this.startSession = startSession;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
+    }
 
     public String getStart() {
         return start;

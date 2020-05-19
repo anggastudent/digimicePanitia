@@ -45,6 +45,7 @@ public class AgendaFragment extends Fragment {
     FloatingActionButton btAddAgenda;
     ProgressBar loading;
     LinearLayout noDataPage;
+    MainViewModel mainViewModel;
 
     public AgendaFragment() {
         // Required empty public constructor
@@ -88,6 +89,22 @@ public class AgendaFragment extends Fragment {
         adapter = new RecyclerViewAgendaAdapter();
 
         showLoading(true);
+        mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
+        mainViewModel.getSearchAgenda().observe(this, new Observer<ArrayList<Agenda>>() {
+            @Override
+            public void onChanged(ArrayList<Agenda> agenda) {
+                if (agenda != null) {
+                    adapter.sendDataAgenda(agenda);
+                    showLoading(false);
+                    showEmpty(false);
+                }
+
+                if (agenda.size() == 0) {
+                    showLoading(false);
+                    showEmpty(true);
+                }
+            }
+        });
 
         rvAgenda.setHasFixedSize(true);
         rvAgenda.setAdapter(adapter);
@@ -96,7 +113,6 @@ public class AgendaFragment extends Fragment {
     }
 
     private void showData() {
-        MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         mainViewModel.setListAgenda(queue,getContext(),sharedPrefManager.getSpIdEvent());
         mainViewModel.getAgenda().observe(this, new Observer<ArrayList<Agenda>>() {
             @Override
@@ -114,21 +130,6 @@ public class AgendaFragment extends Fragment {
             }
         });
 
-        mainViewModel.getSearchAgenda().observe(this, new Observer<ArrayList<Agenda>>() {
-            @Override
-            public void onChanged(ArrayList<Agenda> agenda) {
-                if (agenda != null) {
-                    adapter.sendDataAgenda(agenda);
-                    showLoading(false);
-                    showEmpty(false);
-                }
-
-                if (agenda.size() == 0) {
-                    showLoading(false);
-                    showEmpty(true);
-                }
-            }
-        });
     }
 
     private void showLoading(Boolean state) {
@@ -159,7 +160,7 @@ public class AgendaFragment extends Fragment {
         MenuItem item = menu.findItem(R.id.search);
         SearchView searchView = new SearchView(getContext());
         final MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        searchView.setQueryHint("Cari Event");
+        searchView.setQueryHint("Cari Agenda");
         searchView.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

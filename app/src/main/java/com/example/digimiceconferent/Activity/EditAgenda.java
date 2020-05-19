@@ -102,7 +102,8 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
         btEditAgenda.setOnClickListener(this);
 
         dialog = new ProgressDialog(EditAgenda.this);
-        dialog.setMessage("Memproses");
+        dialog.setMessage("Memproses..");
+        dialog.setCancelable(false);
 
         final Agenda agenda = getIntent().getParcelableExtra(EXTRA_EDIT_AGENDA);
         if (agenda != null) {

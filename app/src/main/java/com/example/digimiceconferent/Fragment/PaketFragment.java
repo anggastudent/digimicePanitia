@@ -1,6 +1,10 @@
 package com.example.digimiceconferent.Fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,11 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -87,7 +86,7 @@ public class PaketFragment extends Fragment {
     private void showData() {
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         mainViewModel.setListPacket(queue, getContext());
-        mainViewModel.getEventPacket().observe(this, new Observer<ArrayList<EventPacket>>() {
+        mainViewModel.getEventPacket().observe(getViewLifecycleOwner(), new Observer<ArrayList<EventPacket>>() {
             @Override
             public void onChanged(ArrayList<EventPacket> eventPackets) {
                 if (eventPackets != null) {

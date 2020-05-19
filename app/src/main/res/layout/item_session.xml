@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="8dp"
-    app:cardElevation="8dp"
     app:cardUseCompatPadding="true"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -14,14 +13,37 @@
         android:padding="16dp"
         android:layout_margin="16dp"
         android:background="@drawable/border_form"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/name_session"
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="8dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_access_time_black_24dp"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            tools:text="Nama Sesi"/>
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/name_session"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/colorBlack"
+                android:textSize="20sp"
+                tools:text="Nama Sesi"/>
+
+            <TextView
+                android:id="@+id/start_session"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                tools:text="Tanggal"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

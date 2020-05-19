@@ -23,7 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textSize="21sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:text="@string/name_packet"/>
 
             <TextView
@@ -31,11 +32,13 @@
                 android:layout_width="match_parent"
                 android:textColor="@android:color/white"
                 android:layout_height="wrap_content"
+                android:textSize="12sp"
                 android:text="@string/max_participant"/>
             <TextView
                 android:id="@+id/price_title"
                 android:textColor="@android:color/white"
                 android:layout_width="match_parent"
+                android:textSize="12sp"
                 android:layout_height="wrap_content"
                 android:text="@string/price"/>
         </LinearLayout>
@@ -49,6 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:textSize="12sp"
                 android:text="@string/nama_event"/>
 
             <EditText
@@ -66,6 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:textSize="12sp"
                 android:text="@string/deskripsi"/>
 
             <EditText
@@ -84,6 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:textSize="12sp"
                 android:text="@string/tempat"/>
 
             <EditText
@@ -101,6 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:textSize="12sp"
                 android:text="@string/alamat"/>
 
             <EditText
@@ -124,6 +131,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:paddingRight="8dp"
+                    android:textSize="12sp"
                     android:text="@string/start_event"/>
                 <Button
                     android:id="@+id/bt_start_date"
@@ -154,6 +162,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:paddingRight="8dp"
+                    android:textSize="12sp"
                     android:text="@string/end_event"/>
                 <Button
                     android:id="@+id/bt_end_date"
@@ -179,6 +188,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:paddingRight="8dp"
+                android:textSize="12sp"
                 android:text="@string/jenis_absensi"/>
 
             <Spinner
@@ -193,10 +203,11 @@
                 android:spinnerMode="dropdown" />
 
             <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="@string/nama_sesi"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textSize="12sp"
+                android:text="@string/nama_sesi"/>
 
             <EditText
                 android:id="@+id/session_event_kelola"
@@ -209,11 +220,43 @@
                 android:inputType="text"
                 android:textSize="16sp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:paddingEnd="8dp"
+                    android:textSize="12sp"
+                    android:text="@string/start_session"/>
+                <Button
+                    android:id="@+id/bt_start_session_date"
+                    android:background="@drawable/ic_date_range_black_24dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"/>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/start_session_kelola"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_form"
+                android:paddingStart="16dp"
+                android:hint="@string/start_event"
+                android:inputType="date"
+                android:textSize="16sp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:paddingRight="8dp"
+                android:textSize="12sp"
                 android:text="@string/banner"/>
 
             <LinearLayout
@@ -231,11 +274,13 @@
                 android:id="@+id/add_img_banner_event"
                 android:layout_width="wrap_content"
                 android:text="@string/upload"
+                android:minHeight="0dp"
+                android:padding="14dp"
                 android:layout_gravity="center"
                 android:textSize="12sp"
                 android:textColor="@android:color/white"
-                android:background="@drawable/border_radius"
                 android:backgroundTint="@color/colorButton"
+                android:background="@drawable/button_click"
                 android:layout_height="wrap_content"/>
             </LinearLayout>
 
@@ -243,6 +288,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:textSize="12sp"
                 android:text="@string/harga_tiket"/>
 
             <EditText
@@ -259,8 +305,10 @@
             <Button
                 android:id="@+id/bt_pilih_paket"
                 android:layout_width="match_parent"
+                android:minHeight="0dp"
+                android:padding="14dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_radius"
+                android:background="@drawable/button_click"
                 android:backgroundTint="@color/colorButton"
                 android:textColor="@android:color/white"
                 android:text="@string/choose_packet"/>

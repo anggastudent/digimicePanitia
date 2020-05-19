@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="8dp"
-    app:cardElevation="8dp"
     app:cardUseCompatPadding="true"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -20,17 +19,22 @@
             android:id="@+id/name_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="21sp"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlack"
             tools:text="Nama User"/>
 
         <TextView
             android:id="@+id/email_user"
+            android:textSize="12sp"
+            android:textColor="@color/colorBlack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="Email"/>
 
         <TextView
             android:id="@+id/phone_user"
+            android:textSize="12sp"
+            android:textColor="@color/colorBlack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="Phone"/>
@@ -38,12 +42,15 @@
         <TextView
             android:id="@+id/provinsi_user"
             android:layout_width="match_parent"
+            android:textColor="@color/colorBlack"
+            android:textSize="12sp"
             android:layout_height="wrap_content"
             tools:text="Provinsi"/>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
+            android:textColor="@color/colorBlack"
             android:gravity="end"
             android:layout_height="wrap_content">
 
@@ -52,12 +59,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="8dp"
-            tools:text="Hadir"/>
+                android:textSize="12sp"
+                android:textColor="@color/colorBlack"
+                tools:text="Hadir"/>
 
             <TextView
                 android:id="@+id/pembayaran_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/colorBlack"
                 tools:text="Lunas"/>
 
         </LinearLayout>

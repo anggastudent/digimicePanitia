@@ -38,7 +38,11 @@ public class RecyclerViewPaidAdapter extends RecyclerView.Adapter<RecyclerViewPa
     @Override
     public void onBindViewHolder(@NonNull final PaidViewHolder holder, int position) {
         final Paid paid = list.get(position);
-        holder.noPembayaran.setText(paid.getId());
+
+        if (paid.getId().equals("no invoice")) {
+            holder.noPembayaran.setVisibility(View.GONE);
+        }
+        holder.noPembayaran.setText("No. "+paid.getId());
         holder.namaPaket.setText(paid.getName());
         holder.maksPeserta.setText(paid.getMaxParticipant()+" Maksimal Peserta");
         holder.harga.setText("Rp. "+paid.getPrice());
@@ -89,5 +93,6 @@ public class RecyclerViewPaidAdapter extends RecyclerView.Adapter<RecyclerViewPa
             tanggal = itemView.findViewById(R.id.tanggal_paid);
             namaEvent = itemView.findViewById(R.id.nama_event_paid);
         }
+
     }
 }

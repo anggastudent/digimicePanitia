@@ -5,7 +5,10 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorBabyBlue">#6699FF</color>
     <color name="colorButton">#2e2969</color>
-    <color name="colorBackgroundBiru">#3F51B5</color>
+    <color name="colorBiru">#3F51B5</color>
     <color name="colorGrey">#cecece</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorBlackTransparent">#E6000000</color>
+    <color name="colorBlackDisableTransparent">#40000000</color>
 </resources>

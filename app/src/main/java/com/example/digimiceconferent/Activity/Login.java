@@ -79,6 +79,7 @@ public class Login extends AppCompatActivity {
                     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                     if (email.getText().toString().trim().matches(emailPattern)) {
                         loading.setMessage("Loading..");
+                        loading.setCancelable(false);
                         loading.show();
                         login();
                     }else{

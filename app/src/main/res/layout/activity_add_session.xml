@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:textSize="12sp"
         android:text="@string/nama_sesi"/>
 
     <EditText
@@ -25,13 +26,47 @@
         android:inputType="text"
         android:textSize="16sp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:paddingRight="8dp"
+            android:textSize="12sp"
+            android:text="@string/start_session"/>
+        <Button
+            android:id="@+id/bt_start_date_session"
+            android:background="@drawable/ic_date_range_black_24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"/>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/start_date_session"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/border_form"
+        android:paddingLeft="16dp"
+        android:hint="@string/start_agenda"
+        android:inputType="date"
+        android:textSize="16sp" />
+
     <Button
         android:id="@+id/bt_add_session"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/tambah_sesi"
+        android:textSize="14sp"
+        android:minHeight="0dp"
+        android:padding="14dp"
         android:textColor="@android:color/white"
-        android:background="@drawable/border_radius"
+        android:background="@drawable/button_click"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/colorButton"/>

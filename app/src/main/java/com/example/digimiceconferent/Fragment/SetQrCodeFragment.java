@@ -74,6 +74,7 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
 
         dialog = new ProgressDialog(getContext());
         dialog.setMessage("Memproses...");
+        dialog.setCancelable(false);
 
         if (!flashCamera) {
             flashCamera = true;

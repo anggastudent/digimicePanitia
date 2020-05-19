@@ -81,7 +81,8 @@ public class AddPemateriFragment extends Fragment {
 
         showLoading(true);
         dialog = new ProgressDialog(getContext());
-        dialog.setMessage("Memproses");
+        dialog.setMessage("Memproses...");
+        dialog.setCancelable(false);
 
         btAddPemateri.setOnClickListener(new View.OnClickListener() {
             private long lastClick = 0;
@@ -117,7 +118,11 @@ public class AddPemateriFragment extends Fragment {
                 }
                 if (TextUtils.isEmpty(telp)) {
                     isEmpty = true;
-                    noTelp.setError("No Telp tidak boleh kosong");
+                    noTelp.setError("No telp tidak boleh kosong");
+                }
+                if (pass.length() < 8) {
+                    isEmpty = true;
+                    password.setError("Password minimal 8 karakter");
                 }
                 if (password.getText().toString().equals(repassword.getText().toString())) {
                     if (!isEmpty) {

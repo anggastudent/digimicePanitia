@@ -45,6 +45,7 @@ public class SessionFragment extends Fragment {
     FloatingActionButton addSession;
     ProgressBar loading;
     LinearLayout noDataPage;
+    MainViewModel mainViewModel;
 
     public SessionFragment() {
         // Required empty public constructor
@@ -90,6 +91,22 @@ public class SessionFragment extends Fragment {
             }
         });
         rvSesi.setLayoutManager(new LinearLayoutManager(getContext()));
+        mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
+        mainViewModel.getSearchSession().observe(this, new Observer<ArrayList<EventSession>>() {
+            @Override
+            public void onChanged(ArrayList<EventSession> eventSessions) {
+                if (eventSessions != null) {
+                    adapter.sendData(eventSessions);
+                    showLoading(false);
+                    showEmpty(false);
+                }
+
+                if (eventSessions.size() == 0) {
+                    showEmpty(true);
+                    showLoading(false);
+                }
+            }
+        });
 
         rvSesi.setAdapter(adapter);
         rvSesi.setHasFixedSize(true);
@@ -113,7 +130,6 @@ public class SessionFragment extends Fragment {
         }
     }
     private void showData() {
-        MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         mainViewModel.setListEventSessionPanitia(queue, getContext(),sharedPrefManager.getSpIdEvent());
         mainViewModel.getEventSessionPanitia().observe(this, new Observer<ArrayList<EventSession>>() {
             @Override
@@ -131,21 +147,6 @@ public class SessionFragment extends Fragment {
             }
         });
 
-        mainViewModel.getSearchSession().observe(this, new Observer<ArrayList<EventSession>>() {
-            @Override
-            public void onChanged(ArrayList<EventSession> eventSessions) {
-                if (eventSessions != null) {
-                    adapter.sendData(eventSessions);
-                    showLoading(false);
-                    showEmpty(false);
-                }
-
-                if (eventSessions.size() == 0) {
-                    showEmpty(true);
-                    showLoading(false);
-                }
-            }
-        });
     }
 
 
@@ -162,7 +163,7 @@ public class SessionFragment extends Fragment {
         MenuItem item = menu.findItem(R.id.search);
         SearchView searchView = new SearchView(getContext());
         final MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        searchView.setQueryHint("Cari Event");
+        searchView.setQueryHint("Cari Sesi");
         searchView.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

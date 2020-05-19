@@ -41,7 +41,7 @@ public class PesertaFragment extends Fragment {
     SharedPrefManager sharedPrefManager;
     ProgressBar loading;
     SwipeRefreshLayout swipePeserta;
-    LinearLayout noPageData;
+    LinearLayout noPageData, pesertaPage;
     MainViewModel mainViewModel;
     public PesertaFragment() {
         // Required empty public constructor
@@ -65,6 +65,7 @@ public class PesertaFragment extends Fragment {
         loading = view.findViewById(R.id.loading_peserta);
         swipePeserta = view.findViewById(R.id.swipe_peserta);
         noPageData = view.findViewById(R.id.no_data_peserta);
+        pesertaPage = view.findViewById(R.id.peserta_page);
         swipePeserta.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         adapter = new RecyclerViewEventPresensiAdapter();
         rvPresensi.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -79,14 +80,16 @@ public class PesertaFragment extends Fragment {
             }
         });
 
-        mainViewModel.getSearchEvent().observe(this, new Observer<ArrayList<Event>>() {
+        mainViewModel.getSearchEvent().observe(getViewLifecycleOwner(), new Observer<ArrayList<Event>>() {
             @Override
             public void onChanged(ArrayList<Event> events) {
                 showLoading(false);
+                blueBackground(true);
                 adapter.sendData(events);
                 showEmpty(false);
 
                 if (events.size() == 0) {
+                    blueBackground(true);
                     showLoading(false);
                     showEmpty(true);
                 }
@@ -109,11 +112,13 @@ public class PesertaFragment extends Fragment {
             public void onChanged(ArrayList<Event> events) {
                 if (events != null) {
                     showLoading(false);
+                    blueBackground(true);
                     showEmpty(false);
                     adapter.sendData(events);
                 }
 
                 if (events.size() == 0) {
+                    blueBackground(true);
                     showLoading(false);
                     showEmpty(true);
                 }
@@ -158,6 +163,7 @@ public class PesertaFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 RequestQueue queue = Volley.newRequestQueue(getContext());
+                blueBackground(false);
                 showLoading(true);
                 mainViewModel.setSearchEvent(queue, getContext(), sharedPrefManager.getSPIdUser(),query);
                 return true;
@@ -169,5 +175,13 @@ public class PesertaFragment extends Fragment {
             }
         });
         item.setActionView(searchView);
+    }
+
+    private void blueBackground(Boolean state) {
+        if (state) {
+            pesertaPage.setBackground(getResources().getDrawable(R.color.colorGrey));
+        } else {
+            pesertaPage.setBackground(getResources().getDrawable(R.color.colorWhite));
+        }
     }
 }

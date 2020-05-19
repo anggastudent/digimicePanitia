@@ -37,7 +37,7 @@ public class RecyclerViewExpiredAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public void onBindViewHolder(@NonNull final ExpiredViewHolder holder, int position) {
         final Expired expired = list.get(position);
-        holder.noPembayaran.setText(expired.getId());
+        holder.noPembayaran.setText("No. "+expired.getId());
         holder.namaPaket.setText(expired.getName());
         holder.maksPeserta.setText(expired.getMaxParticipant()+" Maksimal Peserta");
         holder.harga.setText("Rp. "+expired.getPrice());

@@ -41,11 +41,24 @@ public class RecyclerViewEventSessionAdapter extends RecyclerView.Adapter<Recycl
     public void onBindViewHolder(@NonNull final SessionPanitiaViewHolder holder, int position) {
         final EventSession eventSession = listSession.get(position);
         holder.nameSession.setText(eventSession.getJudul());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date dateStart = dateFormat.parse(eventSession.getStart());
+            Date dateEnd = dateFormat.parse(eventSession.getEnd());
             SimpleDateFormat dateFormatNew = new SimpleDateFormat("dd MMMM yyyy");
             holder.dateSession.setText(dateFormatNew.format(dateStart));
+
+            Date date = new Date();
+            String dateNow = dateFormat.format(date);
+            Date getDateNow = dateFormat.parse(dateNow);
+
+            if (getDateNow.after(dateEnd)) {
+                holder.btScan.setEnabled(false);
+            } else {
+                holder.btScan.setEnabled(true);
+            }
+
+
 
         } catch (ParseException e) {
             e.printStackTrace();

@@ -20,18 +20,24 @@ import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.digimiceconferent.Fragment.DatePickerFragment;
 import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-public class AddSession extends AppCompatActivity {
-    EditText etNamaSession;
-    Button btAddSession;
+public class AddSession extends AppCompatActivity implements View.OnClickListener, DatePickerFragment.DialogDateListener {
+    EditText etNamaSession,etStartSession;
+    Button btAddSession,btStartSession;
     SharedPrefManager sharedPrefManager;
     ProgressDialog dialog;
+    final String START_DATE_PICKER = "start date picker";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +49,14 @@ public class AddSession extends AppCompatActivity {
         }
         sharedPrefManager = new SharedPrefManager(this);
         etNamaSession = findViewById(R.id.name_add_session);
+        etStartSession = findViewById(R.id.start_date_session);
         btAddSession = findViewById(R.id.bt_add_session);
+        btStartSession = findViewById(R.id.bt_start_date_session);
+        btStartSession.setOnClickListener(this);
 
         dialog = new ProgressDialog(AddSession.this);
-        dialog.setMessage("Memproses");
+        dialog.setMessage("Memproses...");
+        dialog.setCancelable(false);
         btAddSession.setOnClickListener(new View.OnClickListener() {
             private long lastClick = 0;
             @Override
@@ -58,10 +68,16 @@ public class AddSession extends AppCompatActivity {
 
                 boolean isEmpty = false;
                 String nameSession = etNamaSession.getText().toString().trim();
+                String startSession = etStartSession.getText().toString().trim();
                 if (TextUtils.isEmpty(nameSession)) {
                     isEmpty = true;
                     etNamaSession.setError("Nama sesi tidak boleh kosong");
                 }
+                if (TextUtils.isEmpty(startSession)) {
+                    isEmpty = true;
+                    etStartSession.setError("Start sesi tidak boleh kosong");
+                }
+
 
                 if (!isEmpty) {
                     showDialog(true);
@@ -79,6 +95,7 @@ public class AddSession extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 etNamaSession.setText(null);
+                etStartSession.setText(null);
                 showDialog(false);
                 Toast.makeText(getApplicationContext(), "berhasil", Toast.LENGTH_SHORT).show();
             }
@@ -95,6 +112,7 @@ public class AddSession extends AppCompatActivity {
                 data.put("name", etNamaSession.getText().toString());
                 data.put("event_id", sharedPrefManager.getSpIdEvent());
                 data.put("event_event_type_id", "3");
+                data.put("start", etStartSession.getText().toString());
                 return data;
             }
         };
@@ -118,6 +136,34 @@ public class AddSession extends AppCompatActivity {
             dialog.show();
         } else {
             dialog.dismiss();
+        }
+    }
+    private long lastClick = 0;
+    @Override
+    public void onClick(View v) {
+        if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+            return;
+        }
+        lastClick = SystemClock.elapsedRealtime();
+
+        switch (v.getId()) {
+            case R.id.bt_start_date_session:
+                DatePickerFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(), START_DATE_PICKER);
+                break;
+        }
+    }
+
+    @Override
+    public void onDialogDataSet(String tag, int year, int mount, int dayOfMount) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, mount, dayOfMount);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        switch (tag) {
+            case START_DATE_PICKER:
+                etStartSession.setText(dateFormat.format(calendar.getTime()));
+                break;
         }
     }
 }

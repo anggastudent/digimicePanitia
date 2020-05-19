@@ -7,10 +7,13 @@
 
     <TextView
         android:id="@+id/item_name_session"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/colorBlack"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,22 +23,23 @@
         app:layout_constraintVertical_bias="0.0"
         tools:text="Session" />
 
+
     <Button
         android:id="@+id/bt_scan"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginTop="8dp"
-        android:background="@drawable/border_radius"
+        android:background="@drawable/button_click"
         android:backgroundTint="@color/colorButton"
         android:text="Scan QR"
+        android:minHeight="0dp"
+        android:padding="14dp"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/item_name_session"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.791"
-        app:layout_constraintStart_toEndOf="@+id/item_name_session"
-        app:layout_constraintTop_toTopOf="@+id/item_name_session" />
-
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/item_name_session"
+        app:layout_constraintStart_toStartOf="@+id/item_name_session"
+        app:layout_constraintTop_toBottomOf="@+id/item_name_session" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_session_agenda"
@@ -55,9 +59,12 @@
         android:id="@+id/item_start_session"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/bt_scan"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/item_name_session"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/item_name_session"
         app:layout_constraintTop_toBottomOf="@+id/bt_scan"
         tools:text="@string/start" />

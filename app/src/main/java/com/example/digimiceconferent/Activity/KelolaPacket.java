@@ -47,8 +47,8 @@ import java.util.Map;
 public class KelolaPacket extends AppCompatActivity implements View.OnClickListener, DatePickerFragment.DialogDateListener{
 
     EditText etNameEvent,etDescEvent, etPlaceEvent, etAddressEvent, etStartDateEvent,
-            etEndDateEvent, etPriceEvent, etSessionEvent;
-    Button btStartDate, btEndDate,btPilihPaket, btaddImg;
+            etEndDateEvent, etPriceEvent, etSessionEvent, etStartSession;
+    Button btStartDate, btEndDate,btPilihPaket, btaddImg, btStartSession;
     TextView tvNamePaket, tvMaxParticipant, tvPrice;
     ImageView imgBanner;
     RequestQueue queue;
@@ -56,6 +56,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
     ProgressDialog dialog;
     final String START_DATE_PICKER = "start date picker";
     final String END_DATE_PICKER = "end date picker";
+    final String START_DATE_PICKER_SESSION = "start session";
 
     String paket_id;
     String imageString;
@@ -89,15 +90,18 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
         etStartDateEvent = findViewById(R.id.start_event_kelola);
         etEndDateEvent = findViewById(R.id.end_event_kelola);
         etSessionEvent = findViewById(R.id.session_event_kelola);
+        etStartSession = findViewById(R.id.start_session_kelola);
 
         btPilihPaket = findViewById(R.id.bt_pilih_paket);
         btaddImg = findViewById(R.id.add_img_banner_event);
         btStartDate = findViewById(R.id.bt_start_date);
         btEndDate = findViewById(R.id.bt_end_date);
+        btStartSession = findViewById(R.id.bt_start_session_date);
 
         btStartDate.setOnClickListener(this);
         btEndDate.setOnClickListener(this);
         btaddImg.setOnClickListener(this);
+        btStartSession.setOnClickListener(this);
 
         btPilihPaket.setOnClickListener(new View.OnClickListener() {
             private long lastClick = 0;
@@ -122,7 +126,12 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                         String endDate = etEndDateEvent.getText().toString();
                         String price = etPriceEvent.getText().toString();
                         String session = etSessionEvent.getText().toString();
+                        String startSession = etStartSession.getText().toString();
 
+                        if (TextUtils.isEmpty(startSession)) {
+                            isEmpty = true;
+                            etStartSession.setError("Start sesi tidak boleh kosong");
+                        }
                         if (TextUtils.isEmpty(name)) {
                             isEmpty = true;
                             etNameEvent.setError("Nama tidak boleh kosong");
@@ -156,6 +165,12 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                             isEmpty = true;
                             etSessionEvent.setError("Nama sesi tidak boleh kosong");
                         }
+
+                        if (Integer.parseInt(etPriceEvent.getText().toString()) < 10000 && Integer.parseInt(etPriceEvent.getText().toString()) > 0) {
+                            isEmpty = true;
+                            etPriceEvent.setError("Harga tiket minimal Rp. 10.000");
+                        }
+
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                         String start = etStartDateEvent.getText().toString();
                         String end = etEndDateEvent.getText().toString();
@@ -187,6 +202,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
 
         dialog = new ProgressDialog(KelolaPacket.this);
         dialog.setMessage("Memproses...");
+        dialog.setCancelable(false);
 
         sharedPrefManager = new SharedPrefManager(this);
         tvNamePaket.setText(sharedPrefManager.getSpNamePacket());
@@ -227,6 +243,10 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                 intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(Intent.createChooser(intent, "Select Image"),PICK_IMAGE_REQUEST);
                 break;
+
+            case R.id.bt_start_session_date:
+                DatePickerFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(), START_DATE_PICKER_SESSION);
         }
     }
 
@@ -278,6 +298,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(String response) {
                 etEndDateEvent.setError(null);
+                etPriceEvent.setError(null);
                 Toast.makeText(getApplicationContext(), "Berhasil",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(KelolaPacket.this, HomePanitia.class);
                 startActivity(intent);
@@ -318,6 +339,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                 data.put("name_packet", sharedPrefManager.getSpNamePacket());
                 data.put("email", sharedPrefManager.getSpEmail());
                 data.put("price_packet", String.valueOf(price));
+                data.put("start_session", etStartSession.getText().toString());
 
                 return data;
             }

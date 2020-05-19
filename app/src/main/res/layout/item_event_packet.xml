@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="8dp"
-    app:cardElevation="8dp"
     app:cardUseCompatPadding="true"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -14,29 +13,47 @@
         android:padding="16dp"
         android:layout_margin="16dp"
         android:background="@drawable/border_form"
+        android:orientation="horizontal">
 
-        android:orientation="vertical">
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:padding="8dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/paket_24dp"/>
 
-        <TextView
-            android:id="@+id/name_paket"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            tools:text="Nama Paket"/>
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/name_paket"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"
+                tools:text="Nama Paket"/>
 
-        <TextView
-            android:id="@+id/max_participant"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            tools:text="Maksimal Peserta"/>
+            <TextView
+                android:id="@+id/max_participant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="Maksimal Peserta"/>
 
-        <TextView
-            android:id="@+id/price_packet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            tools:text="Harga Paket"/>
+            <TextView
+                android:id="@+id/price_packet"
+                android:textColor="@color/colorBlack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="Harga Paket"/>
+        </LinearLayout>
 
     </LinearLayout>
 

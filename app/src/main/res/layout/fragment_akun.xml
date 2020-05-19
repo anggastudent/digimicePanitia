@@ -26,15 +26,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_gravity="center"
                 android:padding="16dp"
                 tools:context=".Fragment.AkunFragment">
 
                 <!-- TODO: Update blank fragment layout -->
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/avatar_user_akun"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="16dp"/>
 
@@ -43,35 +42,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:textSize="21sp"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorBlack"
                     android:textAlignment="center"
-                    android:layout_marginBottom="8dp"
                     tools:text="@string/nama_lengkap" />
 
                 <TextView
                     android:id="@+id/email_user_akun"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
                     android:textAlignment="center"
-                    android:layout_marginBottom="8dp"
                     tools:text="@string/email"/>
 
                 <TextView
                     android:id="@+id/status_user_akun"
                     android:layout_width="match_parent"
+                    android:textColor="@color/colorBlack"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
+                    android:textSize="16sp"
                     android:textAlignment="center"
-                    android:layout_marginBottom="8dp"
                     tools:text="@string/name"/>
 
                 <TextView
                     android:id="@+id/team_user_akun"
                     android:layout_width="match_parent"
                     android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textSize="21sp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="14sp"
                     android:layout_marginBottom="8dp"
                     android:layout_height="wrap_content"
                     tools:text="@string/time"/>
@@ -79,9 +77,11 @@
                 <Button
                     android:id="@+id/bt_edit_user_akun"
                     android:layout_width="match_parent"
-                    android:layout_height="25dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
                     android:textSize="12sp"
-                    android:background="@drawable/border_radius"
+                    android:padding="8dp"
+                    android:background="@drawable/button_click"
                     android:backgroundTint="@color/colorGrey"
                     android:text="Edit Profil"/>
 
@@ -91,6 +91,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/logout"
+                    android:minHeight="0dp"
+                    android:padding="14dp"
                     android:layout_marginBottom="16dp"
                     android:textColor="@android:color/white"
                     android:backgroundTint="@color/colorButton"

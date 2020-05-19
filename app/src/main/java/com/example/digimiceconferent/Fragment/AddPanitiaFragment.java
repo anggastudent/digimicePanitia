@@ -60,7 +60,8 @@ public class AddPanitiaFragment extends Fragment {
         btAddPanitia = view.findViewById(R.id.bt_add_panitia);
         etEmail = view.findViewById(R.id.email_add_panitia);
         dialog = new ProgressDialog(getContext());
-        dialog.setMessage("Memproses");
+        dialog.setMessage("Memproses...");
+        dialog.setCancelable(false);
         sharedPrefManager = new SharedPrefManager(getContext());
 
         btAddPanitia.setOnClickListener(new View.OnClickListener() {

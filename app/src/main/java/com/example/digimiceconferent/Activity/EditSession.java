@@ -21,6 +21,7 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonArrayRequest;
 import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.digimiceconferent.Fragment.DatePickerFragment;
 import com.example.digimiceconferent.Model.EventSession;
 import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
@@ -28,15 +29,19 @@ import com.example.digimiceconferent.R;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-public class EditSession extends AppCompatActivity {
+public class EditSession extends AppCompatActivity implements View.OnClickListener, DatePickerFragment.DialogDateListener{
     public final static String EXTRA_EDIT_SESSION = "edit_session";
 
-    EditText etNameSession;
-    Button btEditSession;
+    EditText etNameSession, etStartSession;
+    Button btEditSession, btStartSession;
     ProgressDialog dialog;
+    final String START_DATE_PICKER = "start date picker";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +53,14 @@ public class EditSession extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         etNameSession = findViewById(R.id.name_edit_session);
+        etStartSession = findViewById(R.id.start_date_session_edit);
         btEditSession = findViewById(R.id.bt_edit_session);
+        btStartSession = findViewById(R.id.bt_start_date_session_edit);
+        btStartSession.setOnClickListener(this);
 
         dialog = new ProgressDialog(EditSession.this);
-        dialog.setMessage("Memproses");
+        dialog.setMessage("Memproses...");
+        dialog.setCancelable(false);
 
         final EventSession eventSession = getIntent().getParcelableExtra(EXTRA_EDIT_SESSION);
         if (eventSession != null) {
@@ -67,10 +76,15 @@ public class EditSession extends AppCompatActivity {
                     }
                     lastClick = SystemClock.elapsedRealtime();
                     boolean isEmpty = false;
-                    String nama = etNameSession.getText().toString();
+                    String nama = etNameSession.getText().toString().trim();
+                    String start = etStartSession.getText().toString().trim();
                     if (TextUtils.isEmpty(nama)) {
                         isEmpty = true;
                         etNameSession.setError("Nama tidak boleh kosong");
+                    }
+                    if (TextUtils.isEmpty(start)) {
+                        isEmpty = true;
+                        etStartSession.setError("Start tidak boleh kosong");
                     }
                     if (!isEmpty) {
                         showDialog(true);
@@ -104,6 +118,7 @@ public class EditSession extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> data = new HashMap<>();
                 data.put("name", etNameSession.getText().toString());
+                data.put("start", etStartSession.getText().toString());
                 return data;
             }
         };
@@ -122,6 +137,7 @@ public class EditSession extends AppCompatActivity {
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject data = response.getJSONObject(i);
                         etNameSession.setText(data.getString("name"));
+                        etStartSession.setText(data.getString("start"));
                     }
 
                 } catch (Exception e) {
@@ -154,6 +170,34 @@ public class EditSession extends AppCompatActivity {
             dialog.show();
         } else {
             dialog.dismiss();
+        }
+    }
+    private long lastClick = 0;
+    @Override
+    public void onClick(View v) {
+        if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+            return;
+        }
+        lastClick = SystemClock.elapsedRealtime();
+
+        switch (v.getId()) {
+            case R.id.bt_start_date_session_edit:
+                DatePickerFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(), START_DATE_PICKER);
+                break;
+        }
+    }
+
+    @Override
+    public void onDialogDataSet(String tag, int year, int mount, int dayOfMount) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, mount, dayOfMount);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        switch (tag) {
+            case START_DATE_PICKER:
+                etStartSession.setText(dateFormat.format(calendar.getTime()));
+                break;
         }
     }
 }
