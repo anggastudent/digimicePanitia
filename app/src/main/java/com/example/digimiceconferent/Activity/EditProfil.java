@@ -6,13 +6,13 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -33,6 +33,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
+import com.oginotihiro.cropview.CropView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,11 +44,13 @@ import java.util.Map;
 
 public class EditProfil extends AppCompatActivity {
     EditText etNamaLengkap, etPasswordLama, etPasswordBaru, etRePasswordBaru;
-    Button btUploadGambar, btEditProfil;
+    Button btUploadGambar, btEditProfil, btCrop;
     ImageView avatar;
     SharedPrefManager sharedPrefManager;
     ProgressBar loading;
     ProgressDialog dialog;
+    CropView cropView;
+    LinearLayout cropPage;
 
     int PICK_IMAGE_REQUEST = 22;
     String imageString;
@@ -71,13 +74,15 @@ public class EditProfil extends AppCompatActivity {
         loading = findViewById(R.id.loading_edit_profil);
         btUploadGambar = findViewById(R.id.bt_upload_avatar_user);
         btEditProfil = findViewById(R.id.bt_edit_user);
-
+        cropView = findViewById(R.id.cropViewProfil);
         avatar = findViewById(R.id.avatar_user_edit);
+        cropPage = findViewById(R.id.page_crop_profil);
+        btCrop = findViewById(R.id.bt_crop_profil);
 
         dialog = new ProgressDialog(EditProfil.this);
         dialog.setMessage("Memproses...");
         dialog.setCancelable(false);
-
+        showCrop(false);
         sharedPrefManager = new SharedPrefManager(this);
         showLoading(true);
         getData();
@@ -106,7 +111,7 @@ public class EditProfil extends AppCompatActivity {
                 }
                 lastClick = SystemClock.elapsedRealtime();
 
-                if (etPasswordBaru.getText().toString().length() < 8) {
+                if (etPasswordBaru.getText().toString().length() < 8 && !etPasswordBaru.getText().toString().equals("")) {
                     etPasswordBaru.setError("Password minimal 8 karakter");
                 }else{
 
@@ -127,10 +132,30 @@ public class EditProfil extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri filePath = data.getData();
+            final Uri filePath = data.getData();
+            showCrop(true);
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                avatar.setImageBitmap(bitmap);
+                //bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                cropView.of(filePath)
+                        .withAspect(4,3)
+                        .withOutputSize(400,300)
+                        .initialize(this);
+
+                btCrop.setOnClickListener(new View.OnClickListener() {
+                    private long lastClick = 0;
+                    @Override
+                    public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                            return;
+                        }
+                        lastClick = SystemClock.elapsedRealtime();
+                        bitmap = cropView.getOutput();
+                        avatar.setImageBitmap(bitmap);
+                        showCrop(false);
+                    }
+                });
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -238,4 +263,11 @@ public class EditProfil extends AppCompatActivity {
         }
     }
 
+    private void showCrop(Boolean state) {
+        if (state) {
+            cropPage.setVisibility(View.VISIBLE);
+        } else {
+            cropPage.setVisibility(View.GONE);
+        }
+    }
 }

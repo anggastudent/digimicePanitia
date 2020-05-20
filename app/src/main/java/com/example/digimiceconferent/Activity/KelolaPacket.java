@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.MenuItem;
@@ -16,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +35,7 @@ import com.example.digimiceconferent.Fragment.DatePickerFragment;
 import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
+import com.oginotihiro.cropview.CropView;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -48,12 +49,15 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
 
     EditText etNameEvent,etDescEvent, etPlaceEvent, etAddressEvent, etStartDateEvent,
             etEndDateEvent, etPriceEvent, etSessionEvent, etStartSession;
-    Button btStartDate, btEndDate,btPilihPaket, btaddImg, btStartSession;
+    Button btStartDate, btEndDate,btPilihPaket, btaddImg, btStartSession, btCrop;
     TextView tvNamePaket, tvMaxParticipant, tvPrice;
     ImageView imgBanner;
     RequestQueue queue;
     Spinner spPresensi;
     ProgressDialog dialog;
+    CropView cropView;
+    LinearLayout cropPage;
+
     final String START_DATE_PICKER = "start date picker";
     final String END_DATE_PICKER = "end date picker";
     final String START_DATE_PICKER_SESSION = "start session";
@@ -97,6 +101,10 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
         btStartDate = findViewById(R.id.bt_start_date);
         btEndDate = findViewById(R.id.bt_end_date);
         btStartSession = findViewById(R.id.bt_start_session_date);
+        btCrop = findViewById(R.id.bt_crop_kelola_paket);
+
+        cropPage = findViewById(R.id.page_crop_kelola_paket);
+        cropView = findViewById(R.id.crop_view_kelola_paket);
 
         btStartDate.setOnClickListener(this);
         btEndDate.setOnClickListener(this);
@@ -247,6 +255,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
             case R.id.bt_start_session_date:
                 DatePickerFragment datePicker = new DatePickerFragment();
                 datePicker.show(getSupportFragmentManager(), START_DATE_PICKER_SESSION);
+                break;
         }
     }
 
@@ -262,6 +271,9 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
             case END_DATE_PICKER:
                 etEndDateEvent.setText(dateFormat.format(calendar.getTime()));
                 break;
+            case START_DATE_PICKER_SESSION:
+                etStartSession.setText(dateFormat.format(calendar.getTime()));
+                break;
             default:
                 break;
         }
@@ -273,10 +285,29 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            showCrop(true);
             Uri filePath = data.getData();
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                imgBanner.setImageBitmap(bitmap);
+                //bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                cropView.of(filePath)
+                        .withAspect(4,3)
+                        .withOutputSize(400,300)
+                        .initialize(this);
+
+                btCrop.setOnClickListener(new View.OnClickListener() {
+                    private long lastClick = 0;
+                    @Override
+                    public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                            return;
+                        }
+                        lastClick = SystemClock.elapsedRealtime();
+                        bitmap = cropView.getOutput();
+                        imgBanner.setImageBitmap(bitmap);
+                        showCrop(false);
+                    }
+                });
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -364,6 +395,14 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
             dialog.show();
         }else{
             dialog.dismiss();
+        }
+    }
+
+    private void showCrop(Boolean state) {
+        if (state) {
+            cropPage.setVisibility(View.VISIBLE);
+        } else {
+            cropPage.setVisibility(View.GONE);
         }
     }
 }

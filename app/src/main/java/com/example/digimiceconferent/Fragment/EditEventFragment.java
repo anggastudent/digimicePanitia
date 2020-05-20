@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -18,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -39,6 +39,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
+import com.oginotihiro.cropview.CropView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -57,12 +58,14 @@ import java.util.Map;
 public class EditEventFragment extends Fragment implements View.OnClickListener {
 
     EditText etNameEvent,etDescEvent, etPlaceEvent, etAddressEvent, etPriceEvent;
-    Button btStartDate, btEndDate,btEditPaket, btaddImg;
+    Button btStartDate, btEndDate,btEditPaket, btaddImg, btCrop;
     DatePickerFragment.DialogDateListener listener;
     static EditText etStartDateEvent;
     static EditText etEndDateEvent;
     ProgressBar loading;
     SharedPrefManager sharedPrefManager;
+    CropView cropView;
+    LinearLayout cropPage;
 
     ProgressDialog prosesDialog;
 
@@ -102,6 +105,9 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         etStartDateEvent = view.findViewById(R.id.edit_start_event_kelola);
         etEndDateEvent = view.findViewById(R.id.edit_end_event_kelola);
         loading = view.findViewById(R.id.loading_edit_event);
+        cropPage = view.findViewById(R.id.page_crop_edit_event);
+        cropView = view.findViewById(R.id.crop_view_edit_event);
+        btCrop = view.findViewById(R.id.bt_crop_edit_event);
 
 
         btEditPaket = view.findViewById(R.id.bt_edit_paket);
@@ -229,10 +235,29 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            showCrop(true);
             Uri filePath = data.getData();
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), filePath);
-                imgBanner.setImageBitmap(bitmap);
+                //bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), filePath);
+                cropView.of(filePath)
+                        .withAspect(4,3)
+                        .withOutputSize(400,300)
+                        .initialize(getContext());
+
+                btCrop.setOnClickListener(new View.OnClickListener() {
+                    private long lastClick = 0;
+                    @Override
+                    public void onClick(View v) {
+                        if (SystemClock.elapsedRealtime() - lastClick < 1000) {
+                            return;
+                        }
+                        lastClick = SystemClock.elapsedRealtime();
+                        bitmap = cropView.getOutput();
+                        imgBanner.setImageBitmap(bitmap);
+                        showCrop(false);
+                    }
+                });
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -372,4 +397,11 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         }
     }
 
+    private void showCrop(Boolean state) {
+        if (state) {
+            cropPage.setVisibility(View.VISIBLE);
+        } else {
+            cropPage.setVisibility(View.GONE);
+        }
+    }
 }

@@ -80,6 +80,7 @@
     <string name="tidak_ada_data">Tidak Ada Data</string>
     <string name="search">Search</string>
     <string name="start_session">Start Session</string>
+    <string name="crop">Crop</string>
 
 
     <string-array name="presensi">

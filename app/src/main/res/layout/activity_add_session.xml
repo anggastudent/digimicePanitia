@@ -53,7 +53,7 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/border_form"
         android:paddingLeft="16dp"
-        android:hint="@string/start_agenda"
+        android:hint="@string/start_session"
         android:inputType="date"
         android:textSize="16sp" />
 
