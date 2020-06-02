@@ -182,9 +182,17 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                         String start = etStartDateEvent.getText().toString();
                         String end = etEndDateEvent.getText().toString();
+                        String startDateSession = etStartSession.getText().toString();
                         try {
                             Date dateStart = dateFormat.parse(start);
                             Date dateEnd = dateFormat.parse(end);
+                            Date dateStartSession = dateFormat.parse(startDateSession);
+
+                            if (dateStartSession.before(dateStart) && !dateStartSession.equals(dateStart)) {
+                                isEmpty = true;
+                                etStartSession.setError("Tanggal start sesi harus lebih dari start event");
+                            }
+
                             if (dateEnd.before(dateStart)) {
                                 isEmpty = true;
                                 etEndDateEvent.setError("Tanggal harus lebih dari start");

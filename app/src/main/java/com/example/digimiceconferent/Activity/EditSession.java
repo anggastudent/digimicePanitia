@@ -25,12 +25,14 @@ import com.example.digimiceconferent.Fragment.DatePickerFragment;
 import com.example.digimiceconferent.Model.EventSession;
 import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
+import com.example.digimiceconferent.SharedPrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -41,6 +43,7 @@ public class EditSession extends AppCompatActivity implements View.OnClickListen
     EditText etNameSession, etStartSession;
     Button btEditSession, btStartSession;
     ProgressDialog dialog;
+    SharedPrefManager sharedPrefManager;
     final String START_DATE_PICKER = "start date picker";
 
     @Override
@@ -52,6 +55,8 @@ public class EditSession extends AppCompatActivity implements View.OnClickListen
             getSupportActionBar().setTitle("Edit Sesi");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        sharedPrefManager = new SharedPrefManager(this);
         etNameSession = findViewById(R.id.name_edit_session);
         etStartSession = findViewById(R.id.start_date_session_edit);
         btEditSession = findViewById(R.id.bt_edit_session);
@@ -86,6 +91,23 @@ public class EditSession extends AppCompatActivity implements View.OnClickListen
                         isEmpty = true;
                         etStartSession.setError("Start tidak boleh kosong");
                     }
+
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    String startDateSession = etStartSession.getText().toString();
+                    String startDateEvent = sharedPrefManager.getSpStartEvent();
+
+                    try {
+                        Date dateStartSession = dateFormat.parse(startDateSession);
+                        Date dateStartEvent = dateFormat.parse(startDateEvent);
+
+                        if (dateStartSession.before(dateStartEvent) && !dateStartSession.equals(dateStartEvent)) {
+                            isEmpty = true;
+                            etStartSession.setError("Tanggal start sesi harus lebih dari start event");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                     if (!isEmpty) {
                         showDialog(true);
                         editSession(eventSession.getId());

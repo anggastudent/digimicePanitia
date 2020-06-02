@@ -27,6 +27,7 @@ import com.example.digimiceconferent.SharedPrefManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -76,6 +77,22 @@ public class AddSession extends AppCompatActivity implements View.OnClickListene
                 if (TextUtils.isEmpty(startSession)) {
                     isEmpty = true;
                     etStartSession.setError("Start sesi tidak boleh kosong");
+                }
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String startDateSession = etStartSession.getText().toString();
+                String startDateEvent = sharedPrefManager.getSpStartEvent();
+
+                try {
+                    Date dateStartSession = dateFormat.parse(startDateSession);
+                    Date dateStartEvent = dateFormat.parse(startDateEvent);
+
+                    if (dateStartSession.before(dateStartEvent) && !dateStartSession.equals(dateStartEvent)) {
+                        isEmpty = true;
+                        etStartSession.setError("Tanggal start sesi harus lebih dari start event");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
 

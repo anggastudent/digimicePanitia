@@ -88,7 +88,7 @@ public class RecyclerViewEventAdapter extends RecyclerView.Adapter<RecyclerViewE
                     Date dateEnd = dateFormat.parse(event.getEnd());
                     SimpleDateFormat dateFormatNew = new SimpleDateFormat("dd MMMM yyyy");
                     sharedPrefManager.saveSPString(sharedPrefManager.SP_WAKTU_EVENT, dateFormatNew.format(dateStart)+" - "+dateFormatNew.format(dateEnd));
-
+                    sharedPrefManager.saveSPString(sharedPrefManager.SP_START_EVENT, event.getStart());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

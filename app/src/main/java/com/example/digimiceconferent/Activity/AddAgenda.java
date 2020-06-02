@@ -169,6 +169,23 @@ public class AddAgenda extends AppCompatActivity implements View.OnClickListener
                     isEmpty = true;
                     etStartTimeAgenda.setError("Waktu tidak boleh kosong");
                 }
+
+                SimpleDateFormat dateFormatDateEvent = new SimpleDateFormat("yyyy-MM-dd");
+                String startDateAgenda = etStartDateAgenda.getText().toString();
+                String startDateEvent = sharedPrefManager.getSpStartEvent();
+
+                try {
+                    Date dateStartSession = dateFormatDateEvent.parse(startDateAgenda);
+                    Date dateStartEvent = dateFormatDateEvent.parse(startDateEvent);
+
+                    if (dateStartSession.before(dateStartEvent) && !dateStartSession.equals(dateStartEvent)) {
+                        isEmpty = true;
+                        etStartDateAgenda.setError("Tanggal start agenda harus lebih dari start event");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 if (TextUtils.isEmpty(endTime)) {
                     isEmpty = true;
                     etEndTimeAgenda.setError("Waktu tidak boleh kosong");
