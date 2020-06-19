@@ -181,12 +181,12 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                 try {
                     Date dateStart = dateFormat.parse(start);
                     Date dateEnd = dateFormat.parse(end);
-                    if (dateEnd.before(dateStart)) {
+                    if (dateEnd.before(dateStart) && !dateEnd.equals(dateStart)) {
                         isEmpty = true;
                         etEndDateEvent.setError("Tanggal harus lebih dari start");
                     }
 
-                    if (!isEmpty && dateEnd.equals(dateStart)) {
+                    if (!isEmpty) {
                         prosesDialog.setMessage("Memproses...");
                         prosesDialog.setCancelable(false);
                         prosesDialog.show();

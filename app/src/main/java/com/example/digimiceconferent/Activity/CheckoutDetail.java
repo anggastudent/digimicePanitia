@@ -1,8 +1,14 @@
 package com.example.digimiceconferent.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -20,6 +26,7 @@ public class CheckoutDetail extends AppCompatActivity {
     public static final String EXTRA_PAID = "extra_paid";
     public static final String EXTRA_EXPIRED = "extra_exp";
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,13 +37,15 @@ public class CheckoutDetail extends AppCompatActivity {
             getSupportActionBar().setTitle("Checkout Detail");
         }
 
-        WebView myweb = findViewById(R.id.web_invoice);
+        WebView myweb = findViewById(R.id.webview);
+
         myweb.getSettings().setJavaScriptEnabled(true);
+        myweb.getSettings().setUseWideViewPort(true);
+        myweb.getSettings().setLoadWithOverviewMode(true);
         myweb.setWebViewClient(new WebViewClient(){
             @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                //  Toast.makeText(CheckoutDetail.this, "Web berhasil di load", Toast.LENGTH_SHORT).show();
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                handler.proceed();
             }
         });
 
@@ -46,7 +55,6 @@ public class CheckoutDetail extends AppCompatActivity {
 
         if (pending != null) {
             myweb.loadUrl(pending.getUrl());
-
         }
 
         if (paid != null) {
@@ -63,6 +71,7 @@ public class CheckoutDetail extends AppCompatActivity {
                 builder.show();
             }else{
                 myweb.loadUrl(paid.getUrl());
+
             }
 
         }
@@ -71,7 +80,32 @@ public class CheckoutDetail extends AppCompatActivity {
             myweb.loadUrl(expired.getUrl());
         }
 
+        myweb.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public boolean onJsBeforeUnload(WebView view, String url, String message, JsResult result) {
+                result.confirm();
+                return true;
+            }
 
+            @Override
+            public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+                result.confirm();
+                return true;
+            }
+
+            @Override
+            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+                result.confirm();
+                return true;
+            }
+
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                result.confirm();
+                return true;
+            }
+
+        });
 
     }
 
@@ -82,6 +116,6 @@ public class CheckoutDetail extends AppCompatActivity {
                 onBackPressed();
                 break;
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }

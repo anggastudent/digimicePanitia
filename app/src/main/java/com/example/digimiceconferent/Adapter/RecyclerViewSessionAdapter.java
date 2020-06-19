@@ -82,7 +82,7 @@ public class RecyclerViewSessionAdapter extends RecyclerView.Adapter<RecyclerVie
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
                     builder.setTitle("Peringatan");
-                    builder.setMessage("Hapus sesi " + eventSession.getJudul()+" ?\nMenghapus sesi akan menghapus data agenda sesi");
+                    builder.setMessage("Hapus sesi " + eventSession.getJudul()+" ?\nMenghapus sesi akan menghapus data presensi dan agenda sesi");
                     builder.setPositiveButton("Iya", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

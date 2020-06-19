@@ -111,6 +111,10 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
         btaddImg.setOnClickListener(this);
         btStartSession.setOnClickListener(this);
 
+        dialog = new ProgressDialog(KelolaPacket.this);
+        dialog.setMessage("Memproses...");
+        dialog.setCancelable(false);
+
         btPilihPaket.setOnClickListener(new View.OnClickListener() {
             private long lastClick = 0;
             @Override
@@ -193,12 +197,12 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                                 etStartSession.setError("Tanggal start sesi harus lebih dari start event");
                             }
 
-                            if (dateEnd.before(dateStart)) {
+                            if (dateEnd.before(dateStart) && !dateEnd.equals(dateStart)) {
                                 isEmpty = true;
                                 etEndDateEvent.setError("Tanggal harus lebih dari start");
                             }
 
-                            if (!isEmpty && dateEnd.equals(dateStart)) {
+                            if (!isEmpty) {
                                 showProcess(true);
                                 addEvent();
                             }
@@ -216,9 +220,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        dialog = new ProgressDialog(KelolaPacket.this);
-        dialog.setMessage("Memproses...");
-        dialog.setCancelable(false);
+
 
         sharedPrefManager = new SharedPrefManager(this);
         tvNamePaket.setText(sharedPrefManager.getSpNamePacket());
@@ -230,6 +232,8 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
         if (price == 0) {
             etPriceEvent.setEnabled(false);
             etPriceEvent.setText("0");
+        } else {
+            etPriceEvent.setText("10000");
         }
 
     }

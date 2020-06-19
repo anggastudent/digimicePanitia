@@ -17,7 +17,7 @@
         <com.oginotihiro.cropview.CropView
             android:id="@+id/crop_view_edit_event"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="200dp"
             android:layout_marginBottom="16dp"/>
 
         <Button

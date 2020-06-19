@@ -108,6 +108,8 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
                         }else {
                             Toast.makeText(getContext(), "Scan Qr Code Dahulu", Toast.LENGTH_SHORT).show();
                         }
+                    }else{
+                        etEmail.setError("Email tidak valid");
                     }
 
                 }
