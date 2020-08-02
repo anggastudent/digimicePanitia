@@ -47,9 +47,10 @@ import java.util.Map;
 
 public class KelolaPacket extends AppCompatActivity implements View.OnClickListener, DatePickerFragment.DialogDateListener{
 
-    EditText etNameEvent,etDescEvent, etPlaceEvent, etAddressEvent, etStartDateEvent,
+    EditText etNameEvent, etNameTeam,
+    etDescEvent, etPlaceEvent, etAddressEvent, etStartDateEvent,
             etEndDateEvent, etPriceEvent, etSessionEvent, etStartSession;
-    Button btStartDate, btEndDate,btPilihPaket, btaddImg, btStartSession, btCrop;
+    Button btStartDate, btEndDate,btPilihPaket, btaddImg, btStartSession, btCrop,btCancelCrop;
     TextView tvNamePaket, tvMaxParticipant, tvPrice;
     ImageView imgBanner;
     RequestQueue queue;
@@ -95,6 +96,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
         etEndDateEvent = findViewById(R.id.end_event_kelola);
         etSessionEvent = findViewById(R.id.session_event_kelola);
         etStartSession = findViewById(R.id.start_session_kelola);
+        etNameTeam = findViewById(R.id.name_team_event_kelola);
 
         btPilihPaket = findViewById(R.id.bt_pilih_paket);
         btaddImg = findViewById(R.id.add_img_banner_event);
@@ -102,6 +104,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
         btEndDate = findViewById(R.id.bt_end_date);
         btStartSession = findViewById(R.id.bt_start_session_date);
         btCrop = findViewById(R.id.bt_crop_kelola_paket);
+        btCancelCrop = findViewById(R.id.bt_cancel_crop_kelola_paket);
 
         cropPage = findViewById(R.id.page_crop_kelola_paket);
         cropView = findViewById(R.id.crop_view_kelola_paket);
@@ -110,6 +113,10 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
         btEndDate.setOnClickListener(this);
         btaddImg.setOnClickListener(this);
         btStartSession.setOnClickListener(this);
+
+        etStartDateEvent.setEnabled(false);
+        etEndDateEvent.setEnabled(false);
+        etStartSession.setEnabled(false);
 
         dialog = new ProgressDialog(KelolaPacket.this);
         dialog.setMessage("Memproses...");
@@ -131,6 +138,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                     public void onClick(DialogInterface dialog, int which) {
                         boolean isEmpty = false;
                         String name = etNameEvent.getText().toString();
+                        String nameTema = etNameTeam.getText().toString();
                         String desc = etDescEvent.getText().toString();
                         String place = etPlaceEvent.getText().toString();
                         String address = etAddressEvent.getText().toString();
@@ -143,6 +151,11 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                         if (TextUtils.isEmpty(startSession)) {
                             isEmpty = true;
                             etStartSession.setError("Start sesi tidak boleh kosong");
+                        }
+
+                        if (TextUtils.isEmpty(nameTema)) {
+                            isEmpty = true;
+                            etNameTeam.setError("Nama organisasi tidak boleh kosong");
                         }
                         if (TextUtils.isEmpty(name)) {
                             isEmpty = true;
@@ -194,12 +207,14 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
 
                             if (dateStartSession.before(dateStart) && !dateStartSession.equals(dateStart)) {
                                 isEmpty = true;
-                                etStartSession.setError("Tanggal start sesi harus lebih dari start event");
+                                Toast.makeText(KelolaPacket.this,"Tanggal start sesi harus lebih dari start event", Toast.LENGTH_SHORT).show();
+                                //etStartSession.setError("Tanggal start sesi harus lebih dari start event");
                             }
 
                             if (dateEnd.before(dateStart) && !dateEnd.equals(dateStart)) {
                                 isEmpty = true;
-                                etEndDateEvent.setError("Tanggal harus lebih dari start");
+                                Toast.makeText(KelolaPacket.this,"Tanggal end event harus lebih dari start event", Toast.LENGTH_SHORT).show();
+                                //etEndDateEvent.setError("Tanggal harus lebih dari start");
                             }
 
                             if (!isEmpty) {
@@ -320,6 +335,13 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                     }
                 });
 
+                btCancelCrop.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showCrop(false);
+                    }
+                });
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -341,6 +363,8 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(String response) {
                 etEndDateEvent.setError(null);
+                etStartSession.setError(null);
+                etSessionEvent.setError(null);
                 etPriceEvent.setError(null);
                 Toast.makeText(getApplicationContext(), "Berhasil",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(KelolaPacket.this, HomePanitia.class);
@@ -377,7 +401,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                 data.put("event_ticket_price", etPriceEvent.getText().toString());
                 data.put("user_id", sharedPrefManager.getSPIdUser());
                 data.put("team_role", sharedPrefManager.getSPRole());
-                data.put("name_team", sharedPrefManager.getSpNameTeam());
+                data.put("name_team", etNameTeam.getText().toString());
                 data.put("name_session", etSessionEvent.getText().toString());
                 data.put("name_packet", sharedPrefManager.getSpNamePacket());
                 data.put("email", sharedPrefManager.getSpEmail());

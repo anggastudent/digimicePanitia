@@ -145,6 +145,8 @@ public class MainViewModel extends ViewModel {
                         EventSession eventSession = new EventSession();
                         eventSession.setId(data.getString("id"));
                         eventSession.setJudul(data.getString("name"));
+                        eventSession.setStartSession(data.getString("start"));
+
                         list.add(eventSession);
                     }
                     searchSession.postValue(list);

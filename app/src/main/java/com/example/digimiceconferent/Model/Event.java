@@ -13,6 +13,7 @@ public class Event implements Parcelable {
     String banner;
     String presenceType;
 
+
     public String getPresenceType() {
         return presenceType;
     }

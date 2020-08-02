@@ -57,8 +57,8 @@ import java.util.Map;
  */
 public class EditEventFragment extends Fragment implements View.OnClickListener {
 
-    EditText etNameEvent,etDescEvent, etPlaceEvent, etAddressEvent, etPriceEvent;
-    Button btStartDate, btEndDate,btEditPaket, btaddImg, btCrop;
+    EditText etNameEvent,etDescEvent, etPlaceEvent, etAddressEvent, etPriceEvent, etPanitia;
+    Button btStartDate, btEndDate,btEditPaket, btaddImg, btCrop, btCancelCrop;
     DatePickerFragment.DialogDateListener listener;
     static EditText etStartDateEvent;
     static EditText etEndDateEvent;
@@ -104,10 +104,12 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         etPriceEvent = view.findViewById(R.id.edit_price_event_kelola);
         etStartDateEvent = view.findViewById(R.id.edit_start_event_kelola);
         etEndDateEvent = view.findViewById(R.id.edit_end_event_kelola);
+        etPanitia = view.findViewById(R.id.edit_team_event_kelola);
         loading = view.findViewById(R.id.loading_edit_event);
         cropPage = view.findViewById(R.id.page_crop_edit_event);
         cropView = view.findViewById(R.id.crop_view_edit_event);
         btCrop = view.findViewById(R.id.bt_crop_edit_event);
+        btCancelCrop = view.findViewById(R.id.bt_cancel_crop_edit_event);
 
 
         btEditPaket = view.findViewById(R.id.bt_edit_paket);
@@ -116,7 +118,9 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         btEndDate = view.findViewById(R.id.bt_edit_end_date);
 
         etStartDateEvent.setText(startDate);
+        etStartDateEvent.setEnabled(false);
         etEndDateEvent.setText(endDate);
+        etEndDateEvent.setEnabled(false);
 
         showLoading(true);
         showDataEdit();
@@ -139,10 +143,16 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                 String price = etPriceEvent.getText().toString();
                 String getStart = etStartDateEvent.getText().toString();
                 String getEnd = etEndDateEvent.getText().toString();
+                String panitia = etPanitia.getText().toString();
 
                 if (TextUtils.isEmpty(name)) {
                     isEmpty = true;
                     etNameEvent.setError("Nama tidak boleh kosong");
+                }
+
+                if (TextUtils.isEmpty(panitia)) {
+                    isEmpty = true;
+                    etPanitia.setError("Nama panitia tidak boleh kosong");
                 }
 
                 if (TextUtils.isEmpty(desc)) {
@@ -183,7 +193,9 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                     Date dateEnd = dateFormat.parse(end);
                     if (dateEnd.before(dateStart) && !dateEnd.equals(dateStart)) {
                         isEmpty = true;
-                        etEndDateEvent.setError("Tanggal harus lebih dari start");
+                        //etEndDateEvent.setError("Tanggal harus lebih dari start");
+                        Toast.makeText(getContext(),"Tanggal end event harus lebih dari start event", Toast.LENGTH_SHORT).show();
+
                     }
 
                     if (!isEmpty) {
@@ -258,6 +270,13 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                     }
                 });
 
+                btCancelCrop.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showCrop(false);
+                    }
+                });
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -296,7 +315,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
 
     private void showDataEdit() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = MyUrl.URL+"/edit-event/"+sharedPrefManager.getSpIdEvent();
+        String url = MyUrl.URL+"/edit-event";
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -310,6 +329,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                         etAddressEvent.setText(data.getString("address"));
                         etStartDateEvent.setText(data.getString("start"));
                         etEndDateEvent.setText(data.getString("end"));
+                        etPanitia.setText(data.getString("panitia"));
 
                         Glide.with(getContext())
                                 .load(MyUrl.URL+"/" + data.getString("banner"))
@@ -336,7 +356,15 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> data = new HashMap<>();
+                data.put("event_id", sharedPrefManager.getSpIdEvent());
+                data.put("user_id", sharedPrefManager.getSPIdUser());
+                return data;
+            }
+        };
         queue.getCache().clear();
         queue.add(jsonArrayRequest);
     }
@@ -378,6 +406,8 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                 data.put("address", etAddressEvent.getText().toString());
                 data.put("start", etStartDateEvent.getText().toString());
                 data.put("end", etEndDateEvent.getText().toString());
+                data.put("panitia", etPanitia.getText().toString());
+                data.put("user_id", sharedPrefManager.getSPIdUser());
                 if(imageString != null) {
                     data.put("banner", imageString);
                 }

@@ -44,7 +44,7 @@ import java.util.Map;
 
 public class EditProfil extends AppCompatActivity {
     EditText etNamaLengkap, etPasswordLama, etPasswordBaru, etRePasswordBaru;
-    Button btUploadGambar, btEditProfil, btCrop;
+    Button btUploadGambar, btEditProfil, btCrop, btCancelCrop;
     ImageView avatar;
     SharedPrefManager sharedPrefManager;
     ProgressBar loading;
@@ -78,6 +78,7 @@ public class EditProfil extends AppCompatActivity {
         avatar = findViewById(R.id.avatar_user_edit);
         cropPage = findViewById(R.id.page_crop_profil);
         btCrop = findViewById(R.id.bt_crop_profil);
+        btCancelCrop = findViewById(R.id.bt_cancel_crop_profil);
 
         dialog = new ProgressDialog(EditProfil.this);
         dialog.setMessage("Memproses...");
@@ -151,6 +152,13 @@ public class EditProfil extends AppCompatActivity {
                         lastClick = SystemClock.elapsedRealtime();
                         bitmap = cropView.getOutput();
                         avatar.setImageBitmap(bitmap);
+                        showCrop(false);
+                    }
+                });
+
+                btCancelCrop.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                         showCrop(false);
                     }
                 });

@@ -41,6 +41,11 @@ public class RecyclerViewEventSessionAdapter extends RecyclerView.Adapter<Recycl
     public void onBindViewHolder(@NonNull final SessionPanitiaViewHolder holder, int position) {
         final EventSession eventSession = listSession.get(position);
         holder.nameSession.setText(eventSession.getJudul());
+
+        if (eventSession.getListAgenda().size() == 0) {
+            holder.btScan.setEnabled(false);
+        }
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date dateStart = dateFormat.parse(eventSession.getStart());
@@ -54,8 +59,10 @@ public class RecyclerViewEventSessionAdapter extends RecyclerView.Adapter<Recycl
 
             if (getDateNow.after(dateEnd)) {
                 holder.btScan.setEnabled(false);
+
             } else {
                 holder.btScan.setEnabled(true);
+
             }
 
 
@@ -64,6 +71,7 @@ public class RecyclerViewEventSessionAdapter extends RecyclerView.Adapter<Recycl
             e.printStackTrace();
         }
         holder.agendaPanitiaAdapter.sendDataAgenda(eventSession.getListAgenda());
+
         holder.btScan.setOnClickListener(new View.OnClickListener() {
             private long lastClick = 0;
             @Override

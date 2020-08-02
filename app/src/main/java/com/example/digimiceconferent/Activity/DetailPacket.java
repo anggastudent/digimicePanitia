@@ -1,8 +1,5 @@
 package com.example.digimiceconferent.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -11,7 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.digimiceconferent.Model.EventPacket;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.digimiceconferent.R;
 import com.example.digimiceconferent.SharedPrefManager;
 
@@ -34,13 +33,11 @@ public class DetailPacket extends AppCompatActivity {
         tvNamePacket = findViewById(R.id.name_detail_packet);
         tvNamePanitia = findViewById(R.id.name_user_detail_packet);
         tvMaxParticipant = findViewById(R.id.max_participant_detail_packet);
-        tvTeam = findViewById(R.id.team_detail_packet);
         tvPricePacket = findViewById(R.id.price_detail_packet);
         btKelolaPaket = findViewById(R.id.bt_kelola_paket);
         sharedPrefManager = new SharedPrefManager(this);
 
         tvEmail.setText(sharedPrefManager.getSpEmail());
-        tvTeam.setText("("+sharedPrefManager.getSpNameTeam()+")");
         tvNamePanitia.setText(sharedPrefManager.getSpName());
         tvNamePacket.setText(sharedPrefManager.getSpNamePacket());
         tvMaxParticipant.setText(sharedPrefManager.getSpMaxParticipant()+" Maksimal Peserta");

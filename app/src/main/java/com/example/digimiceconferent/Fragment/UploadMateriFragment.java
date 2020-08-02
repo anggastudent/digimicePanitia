@@ -1,6 +1,15 @@
 package com.example.digimiceconferent.Fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,12 +18,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -33,6 +36,7 @@ public class UploadMateriFragment extends Fragment {
     SharedPrefManager sharedPrefManager;
     RecyclerView rvAgendaMateri;
     RequestQueue queue;
+    MainViewModel mainViewModel;
     RecyclerViewAgendaMateriAdapter adapter;
     ProgressBar loading;
     LinearLayout noDataPage;
@@ -46,6 +50,7 @@ public class UploadMateriFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_upload_materi, container, false);
     }
 
@@ -68,7 +73,7 @@ public class UploadMateriFragment extends Fragment {
     }
 
     private void showData() {
-        MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
+        mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         mainViewModel.setListAgenda(queue, getContext(), sharedPrefManager.getSpIdEvent());
         mainViewModel.getAgenda().observe(this, new Observer<ArrayList<Agenda>>() {
             @Override
@@ -79,6 +84,22 @@ public class UploadMateriFragment extends Fragment {
                     showEmpty(false);
                 }
                 if(agenda.size() == 0){
+                    showLoading(false);
+                    showEmpty(true);
+                }
+            }
+        });
+
+        mainViewModel.getSearchAgenda().observe(getViewLifecycleOwner(), new Observer<ArrayList<Agenda>>() {
+            @Override
+            public void onChanged(ArrayList<Agenda> agenda) {
+                if (agenda != null) {
+                    adapter.sendData(agenda);
+                    showLoading(false);
+                    showEmpty(false);
+                }
+
+                if (agenda.size() == 0) {
                     showLoading(false);
                     showEmpty(true);
                 }
@@ -107,5 +128,30 @@ public class UploadMateriFragment extends Fragment {
         super.onResume();
 
         showData();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_search_event, menu);
+        MenuItem item = menu.findItem(R.id.search);
+        SearchView searchView = new SearchView(getContext());
+        searchView.setQueryHint("Cari Agenda");
+        searchView.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                queue = Volley.newRequestQueue(getContext());
+                showLoading(true);
+                mainViewModel.setSearchAgenda(queue, getContext(), sharedPrefManager.getSpIdEvent(), query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        item.setActionView(searchView);
     }
 }

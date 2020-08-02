@@ -64,16 +64,6 @@
                     android:textAlignment="center"
                     tools:text="@string/name"/>
 
-                <TextView
-                    android:id="@+id/team_user_akun"
-                    android:layout_width="match_parent"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="14sp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_height="wrap_content"
-                    tools:text="@string/time"/>
-
                 <Button
                     android:id="@+id/bt_edit_user_akun"
                     android:layout_width="match_parent"

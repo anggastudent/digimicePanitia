@@ -82,9 +82,14 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
         etNameAgenda = findViewById(R.id.name_edit_agenda);
         etDescAgenda = findViewById(R.id.deskripsi_edit_agenda);
         etStartDateAgenda = findViewById(R.id.start_date_edit_agenda);
+        etStartDateAgenda.setEnabled(false);
         etStartTimeAgenda = findViewById(R.id.start_time_edit_agenda);
+        etStartTimeAgenda.setEnabled(false);
         etEndDateAgenda = findViewById(R.id.end_date_edit_agenda);
+        etEndDateAgenda.setEnabled(false);
         etEndTimeAgenda = findViewById(R.id.end_time_edit_agenda);
+        etEndTimeAgenda.setEnabled(false);
+
 
         spSesi = findViewById(R.id.spinner_session_edit_agenda);
 
@@ -238,14 +243,41 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
                 SimpleDateFormat dateFormatDateEvent = new SimpleDateFormat("yyyy-MM-dd");
                 String startDateAgenda = etStartDateAgenda.getText().toString();
                 String startDateEvent = sharedPrefManager.getSpStartEvent();
+                String endDateAgenda = etEndDateAgenda.getText().toString();
+                String endDateEvent = sharedPrefManager.getSpEndEvent();
 
                 try {
-                    Date dateStartSession = dateFormatDateEvent.parse(startDateAgenda);
+                    Date dateStartAgenda = dateFormatDateEvent.parse(startDateAgenda);
                     Date dateStartEvent = dateFormatDateEvent.parse(startDateEvent);
+                    Date dateEndAgenda = dateFormatDateEvent.parse(endDateAgenda);
+                    Date dateEndEvent = dateFormatDateEvent.parse(endDateEvent);
 
-                    if (dateStartSession.before(dateStartEvent) && !dateStartSession.equals(dateStartEvent)) {
+                    if (dateStartAgenda.before(dateStartEvent) && !dateStartAgenda.equals(dateStartEvent)) {
                         isEmpty = true;
-                        etStartDateAgenda.setError("Tanggal start agenda harus lebih dari start event");
+                        //etStartDateAgenda.setError("Tanggal start agenda harus lebih dari start event");
+                        Toast.makeText(EditAgenda.this,"Tanggal start agenda harus setelah start event", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    if (dateStartAgenda.after(dateEndEvent) && !dateStartAgenda.equals(dateEndEvent)) {
+                        isEmpty = true;
+                        //etStartDateAgenda.setError("Tanggal start agenda harus lebih dari start event");
+                        Toast.makeText(EditAgenda.this,"Tanggal start agenda harus sebelum start event", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    if (dateEndAgenda.before(dateStartEvent) && !dateEndAgenda.equals(dateStartEvent)) {
+                        isEmpty = true;
+                        //etStartDateAgenda.setError("Tanggal start agenda harus lebih dari start event");
+                        Toast.makeText(EditAgenda.this,"Tanggal end harus setelah start event", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    if (dateEndAgenda.after(dateEndEvent) && !dateEndAgenda.equals(dateEndEvent)) {
+                        isEmpty = true;
+                        //etStartDateAgenda.setError("Tanggal start agenda harus lebih dari start event");
+                        Toast.makeText(EditAgenda.this,"Tanggal end agenda harus sebelum start event", Toast.LENGTH_SHORT).show();
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -264,8 +296,10 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
                             showDialog(true);
                             editAgenda();
                         } else {
-                            etEndDateAgenda.setError("Harus sama atau lebih dari start");
-                            etEndTimeAgenda.setError("Harus sama atau lebih dari start");
+//                            etEndDateAgenda.setError("Harus sama atau lebih dari start");
+//                            etEndTimeAgenda.setError("Harus sama atau lebih dari start");
+                            Toast.makeText(EditAgenda.this,"Tanggal end agenda harus setelah tanggal start agenda", Toast.LENGTH_SHORT).show();
+
                         }
                     }
 

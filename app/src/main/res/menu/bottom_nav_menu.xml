@@ -6,7 +6,7 @@
         android:title="Event"/>
 
     <item
-        android:id="@+id/navigation_panitia"
+        android:id="@+id/navigation_paket"
         android:icon="@drawable/ic_card_travel_black_24dp"
         android:title="Paket" />
 

@@ -167,12 +167,10 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
         }
         return super.onOptionsItemSelected(item);
     }
-
     @Override
     public void handleResult(Result rawResult) {
 
         getQrCode = rawResult.getText();
-        scannerView.resumeCameraPreview(this);
         Toast.makeText(getContext(), "QR Code berhasil disimpan", Toast.LENGTH_SHORT).show();
 
     }
@@ -186,11 +184,12 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
                 showDialog(false);
                 Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
                 getQrCode = null;
+                etEmail.setText(null);
+                resumeScan();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                etEmail.setText(null);
                 showDialog(false);
                 Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
@@ -216,6 +215,10 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
         } else {
             dialog.dismiss();
         }
+    }
+
+    private void resumeScan(){
+        scannerView.resumeCameraPreview(this);
     }
 
 }

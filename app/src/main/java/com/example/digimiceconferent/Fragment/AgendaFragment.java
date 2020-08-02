@@ -90,7 +90,7 @@ public class AgendaFragment extends Fragment {
 
         showLoading(true);
         mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.getSearchAgenda().observe(this, new Observer<ArrayList<Agenda>>() {
+        mainViewModel.getSearchAgenda().observe(getViewLifecycleOwner(), new Observer<ArrayList<Agenda>>() {
             @Override
             public void onChanged(ArrayList<Agenda> agenda) {
                 if (agenda != null) {
@@ -124,8 +124,9 @@ public class AgendaFragment extends Fragment {
                 }
 
                 if (agenda.size() == 0) {
-                    showLoading(false);
                     showEmpty(true);
+                    showLoading(false);
+
                 }
             }
         });
@@ -159,13 +160,12 @@ public class AgendaFragment extends Fragment {
         inflater.inflate(R.menu.menu_search_event, menu);
         MenuItem item = menu.findItem(R.id.search);
         SearchView searchView = new SearchView(getContext());
-        final MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         searchView.setQueryHint("Cari Agenda");
         searchView.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                RequestQueue queue = Volley.newRequestQueue(getContext());
+                queue = Volley.newRequestQueue(getContext());
                 showLoading(true);
                 mainViewModel.setSearchAgenda(queue, getContext(), sharedPrefManager.getSpIdEvent(), query);
                 return true;

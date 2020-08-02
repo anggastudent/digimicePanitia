@@ -164,6 +164,7 @@ public class EventFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 queue = Volley.newRequestQueue(getContext());
+                //Toast.makeText(getContext(), query, Toast.LENGTH_SHORT).show();
                 greyBackground(false);
                 showLoading(true);
                 mainViewModel.setSearchEvent(queue, getContext(), sharedPrefManager.getSPIdUser(),query);

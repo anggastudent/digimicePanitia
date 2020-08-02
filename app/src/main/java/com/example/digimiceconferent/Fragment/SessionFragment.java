@@ -92,7 +92,7 @@ public class SessionFragment extends Fragment {
         });
         rvSesi.setLayoutManager(new LinearLayoutManager(getContext()));
         mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.getSearchSession().observe(this, new Observer<ArrayList<EventSession>>() {
+        mainViewModel.getSearchSession().observe(getViewLifecycleOwner(), new Observer<ArrayList<EventSession>>() {
             @Override
             public void onChanged(ArrayList<EventSession> eventSessions) {
                 if (eventSessions != null) {
@@ -102,14 +102,15 @@ public class SessionFragment extends Fragment {
                 }
 
                 if (eventSessions.size() == 0) {
-                    showEmpty(true);
                     showLoading(false);
+                    showEmpty(true);
+
                 }
             }
         });
 
-        rvSesi.setAdapter(adapter);
         rvSesi.setHasFixedSize(true);
+        rvSesi.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
     }
@@ -162,14 +163,14 @@ public class SessionFragment extends Fragment {
         inflater.inflate(R.menu.menu_search_event, menu);
         MenuItem item = menu.findItem(R.id.search);
         SearchView searchView = new SearchView(getContext());
-        final MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
         searchView.setQueryHint("Cari Sesi");
         searchView.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                RequestQueue queue = Volley.newRequestQueue(getContext());
+                queue = Volley.newRequestQueue(getContext());
                 showLoading(true);
+                //Toast.makeText(getContext(), query, Toast.LENGTH_SHORT).show();
                 mainViewModel.setSearchSession(queue,getContext(), sharedPrefManager.getSpIdEvent(),query);
                 return true;
             }

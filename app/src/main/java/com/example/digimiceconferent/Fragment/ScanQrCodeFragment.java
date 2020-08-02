@@ -84,24 +84,6 @@ public class ScanQrCodeFragment extends Fragment implements ZXingScannerView.Res
         //Toast.makeText(getContext(), rawResult.getText(), Toast.LENGTH_SHORT).show();
         showDialog(true);
         scanQr(rawResult.getText());
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Apakah ingin Absen Lagi?");
-        builder.setPositiveButton("Oke", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                resumeScan();
-            }
-        });
-
-        builder.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(getContext(), KelolaPeserta.class);
-                startActivity(intent);
-            }
-        });
-
-        builder.show();
 
     }
 
@@ -164,7 +146,26 @@ public class ScanQrCodeFragment extends Fragment implements ZXingScannerView.Res
             @Override
             public void onResponse(String response) {
                 showDialog(false);
-                Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Apakah ingin Absen Lagi ?");
+                builder.setMessage(response);
+                builder.setPositiveButton("Oke", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        resumeScan();
+                    }
+                });
+
+                builder.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getContext(), KelolaPeserta.class);
+                        startActivity(intent);
+                    }
+                });
+
+                builder.show();
+                //Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override

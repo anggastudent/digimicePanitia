@@ -26,6 +26,7 @@ public class SharedPrefManager {
     public static final String SP_PRESENCE_TYPE = "presence_type";
     public static final String SP_START_SESSION = "start_session";
     public static final String SP_START_EVENT = "start_event";
+    public static final String SP_END_EVENT = "end_event";
 
 
     SharedPreferences sharedPreferences;
@@ -128,5 +129,9 @@ public class SharedPrefManager {
 
     public String getSpStartEvent() {
         return sharedPreferences.getString(SP_START_EVENT, "");
+    }
+
+    public String getSpEndEvent(){
+        return sharedPreferences.getString(SP_END_EVENT, "");
     }
 }

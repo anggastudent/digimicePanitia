@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ import java.util.Map;
 
 public class AddSession extends AppCompatActivity implements View.OnClickListener, DatePickerFragment.DialogDateListener {
     EditText etNamaSession,etStartSession;
+    TextView namaEvent, tempatEvent, alamatEvent, waktuEvent;
     Button btAddSession,btStartSession;
     SharedPrefManager sharedPrefManager;
     ProgressDialog dialog;
@@ -49,12 +51,26 @@ public class AddSession extends AppCompatActivity implements View.OnClickListene
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         sharedPrefManager = new SharedPrefManager(this);
+
+        namaEvent = findViewById(R.id.name_event_sesi);
+        tempatEvent = findViewById(R.id.tempat_event_sesi);
+        alamatEvent = findViewById(R.id.alamat_event_sesi);
+        waktuEvent = findViewById(R.id.tanggal_event_sesi);
+
         etNamaSession = findViewById(R.id.name_add_session);
         etStartSession = findViewById(R.id.start_date_session);
+
         btAddSession = findViewById(R.id.bt_add_session);
         btStartSession = findViewById(R.id.bt_start_date_session);
+
+        namaEvent.setText(sharedPrefManager.getSpNameEvent());
+        tempatEvent.setText(sharedPrefManager.getSpPlaceEvent());
+        alamatEvent.setText(sharedPrefManager.getSpAddressEvent());
+        waktuEvent.setText(sharedPrefManager.getSpWaktuEvent());
+
         btStartSession.setOnClickListener(this);
 
+        etStartSession.setEnabled(false);
         dialog = new ProgressDialog(AddSession.this);
         dialog.setMessage("Memproses...");
         dialog.setCancelable(false);
@@ -79,18 +95,33 @@ public class AddSession extends AppCompatActivity implements View.OnClickListene
                     etStartSession.setError("Start sesi tidak boleh kosong");
                 }
 
+
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String startDateSession = etStartSession.getText().toString();
                 String startDateEvent = sharedPrefManager.getSpStartEvent();
+                String endDateEvent = sharedPrefManager.getSpEndEvent();
 
                 try {
                     Date dateStartSession = dateFormat.parse(startDateSession);
                     Date dateStartEvent = dateFormat.parse(startDateEvent);
+                    Date dateEndEvent = dateFormat.parse(endDateEvent);
+
 
                     if (dateStartSession.before(dateStartEvent) && !dateStartSession.equals(dateStartEvent)) {
                         isEmpty = true;
-                        etStartSession.setError("Tanggal start sesi harus lebih dari start event");
+                        //etStartSession.setError("Tanggal start sesi harus lebih dari start event");
+                        Toast.makeText(AddSession.this,"Tanggal start sesi harus sesudah dari start event", Toast.LENGTH_SHORT).show();
+
                     }
+
+                    if (dateStartSession.after(dateEndEvent) && !dateStartSession.equals(dateEndEvent)) {
+                        isEmpty = true;
+                        //etStartSession.setError("Tanggal start sesi harus lebih dari start event");
+                        Toast.makeText(AddSession.this,"Tanggal start sesi harus sebelum dari end event", Toast.LENGTH_SHORT).show();
+
+                    }
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -113,6 +144,7 @@ public class AddSession extends AppCompatActivity implements View.OnClickListene
             public void onResponse(String response) {
                 etNamaSession.setText(null);
                 etStartSession.setText(null);
+                etStartSession.setError(null);
                 showDialog(false);
                 Toast.makeText(getApplicationContext(), "berhasil", Toast.LENGTH_SHORT).show();
             }
@@ -168,6 +200,7 @@ public class AddSession extends AppCompatActivity implements View.OnClickListene
                 DatePickerFragment datePicker = new DatePickerFragment();
                 datePicker.show(getSupportFragmentManager(), START_DATE_PICKER);
                 break;
+
         }
     }
 
@@ -181,6 +214,7 @@ public class AddSession extends AppCompatActivity implements View.OnClickListene
             case START_DATE_PICKER:
                 etStartSession.setText(dateFormat.format(calendar.getTime()));
                 break;
+
         }
     }
 }

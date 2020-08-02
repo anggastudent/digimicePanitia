@@ -46,6 +46,7 @@ public class EditSession extends AppCompatActivity implements View.OnClickListen
     SharedPrefManager sharedPrefManager;
     final String START_DATE_PICKER = "start date picker";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +63,8 @@ public class EditSession extends AppCompatActivity implements View.OnClickListen
         btEditSession = findViewById(R.id.bt_edit_session);
         btStartSession = findViewById(R.id.bt_start_date_session_edit);
         btStartSession.setOnClickListener(this);
+
+        etStartSession.setEnabled(false);
 
         dialog = new ProgressDialog(EditSession.this);
         dialog.setMessage("Memproses...");
@@ -83,6 +86,7 @@ public class EditSession extends AppCompatActivity implements View.OnClickListen
                     boolean isEmpty = false;
                     String nama = etNameSession.getText().toString().trim();
                     String start = etStartSession.getText().toString().trim();
+
                     if (TextUtils.isEmpty(nama)) {
                         isEmpty = true;
                         etNameSession.setError("Nama tidak boleh kosong");
@@ -92,18 +96,34 @@ public class EditSession extends AppCompatActivity implements View.OnClickListen
                         etStartSession.setError("Start tidak boleh kosong");
                     }
 
+
+
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     String startDateSession = etStartSession.getText().toString();
                     String startDateEvent = sharedPrefManager.getSpStartEvent();
+                    String endDateEvent = sharedPrefManager.getSpEndEvent();
 
                     try {
                         Date dateStartSession = dateFormat.parse(startDateSession);
                         Date dateStartEvent = dateFormat.parse(startDateEvent);
+                        Date dateEndEvent = dateFormat.parse(endDateEvent);
+
+
 
                         if (dateStartSession.before(dateStartEvent) && !dateStartSession.equals(dateStartEvent)) {
                             isEmpty = true;
-                            etStartSession.setError("Tanggal start sesi harus lebih dari start event");
+                            //etStartSession.setError("Tanggal start sesi harus lebih dari start event");
+                            Toast.makeText(EditSession.this,"Tanggal start sesi harus lebih dari start event", Toast.LENGTH_SHORT).show();
+
                         }
+
+                        if (dateStartSession.after(dateEndEvent) && !dateStartSession.equals(dateEndEvent)) {
+                            isEmpty = true;
+                            //etStartSession.setError("Tanggal start sesi harus lebih dari start event");
+                            Toast.makeText(EditSession.this,"Tanggal start sesi harus sebelum dari end event", Toast.LENGTH_SHORT).show();
+
+                        }
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -133,6 +153,7 @@ public class EditSession extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onErrorResponse(VolleyError error) {
                 showDialog(false);
+                etStartSession.setError(null);
                 Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){

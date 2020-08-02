@@ -62,14 +62,14 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="109dp"
-            android:layout_height="119dp"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
             android:layout_marginTop="32dp"
             android:contentDescription="@string/logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/logo" />
+            app:srcCompat="@drawable/logo_panitia" />
 
         <Button
             android:id="@+id/bt_login"
@@ -88,13 +88,13 @@
             app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/bt_register"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_click"
             android:backgroundTint="#29418C"
-            android:text="@string/reset"
+            android:text="@string/register"
             android:minHeight="0dp"
             android:padding="14dp"
             android:textColor="@android:color/white"

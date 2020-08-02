@@ -4,9 +4,9 @@
     <string name="logo">logo</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="no_have_an_account">Reset Password?</string>
+    <string name="no_have_an_account">Belum punya akun?</string>
     <string name="status">Status</string>
-    <string name="reset">reset</string>
+    <string name="register">Register</string>
     <string name="tab_1">Pilih Paket Event</string>
     <string name="tab_2">Tambah Anggota</string>
     <string name="tab_3">Upload Materi</string>
@@ -15,7 +15,7 @@
     <string name="tab_2_event">Daftar Agenda</string>
     <string name="tab_4_event">Daftar Sesi</string>
     <string name="tab_1_peserta">Presensi Peserta</string>
-    <string name="tab_2_peserta">Peserta</string>
+    <string name="tab_2_peserta">Rekap Peserta</string>
     <string name="tab_1_scan">Scan Qr Code</string>
     <string name="tab_2_scan">Set Qr Code</string>
     <string name="tab_1_pembayaran">Belum Lunas</string>
@@ -81,13 +81,14 @@
     <string name="search">Search</string>
     <string name="start_session">Start Sesi</string>
     <string name="crop">Crop</string>
+    <string name="name_team">Nama Organisasi</string>
+    <string name="end_sesi">End Sesi</string>
 
 
     <string-array name="presensi">
         <item>Bebas</item>
         <item>Berdasarkan Sesi</item>
     </string-array>
-
 
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -15,12 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".Activity.CheckoutDetail"
-            android:screenOrientation="locked"></activity>
+        <activity android:name=".Activity.Register"></activity>
+        <activity
+            android:name=".Activity.CheckoutDetail"
+            android:screenOrientation="locked" />
         <activity
             android:name=".Activity.RekapitulasiPeserta"
-            android:screenOrientation="locked"></activity>
+            android:screenOrientation="locked" />
         <activity
             android:name=".Activity.EditProfil"
             android:screenOrientation="locked" />
@@ -68,8 +69,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <uses-library android:name="org.apache.http.legacy"
-            android:required="false"/>
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
 
 </manifest>

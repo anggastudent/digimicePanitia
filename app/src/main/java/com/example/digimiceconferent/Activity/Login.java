@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Login extends AppCompatActivity {
-    Button btnLogin;
+    Button btnLogin, btnRegister;
     EditText email, password;
     SharedPrefManager sharedPrefManager;
     ProgressDialog loading;
@@ -38,6 +38,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         btnLogin = findViewById(R.id.bt_login);
+        btnRegister = findViewById(R.id.bt_register);
         email = findViewById(R.id.et_email);
         password = findViewById(R.id.et_password);
         loading = new ProgressDialog(Login.this);
@@ -90,6 +91,14 @@ public class Login extends AppCompatActivity {
 
             }
         });
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login.this, Register.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void login() {
@@ -106,18 +115,16 @@ public class Login extends AppCompatActivity {
                     JSONObject getData = data.getJSONObject("result");
                     sharedPrefManager.saveSPString(sharedPrefManager.SP_TOKEN, getData.getString("token"));
                     sharedPrefManager.saveSPBoolean(sharedPrefManager.SP_BOOLEAN, true);
-                    String role_team = getData.getString("role_team");
+                    String role_team = getData.getString("role");
                     String id_user = getData.getString("user_id");
                     String email = getData.getString("email");
                     String name = getData.getString("name");
-                    String name_team = getData.getString("name_team");
 
                     if(role_team.equals("lead eo")) {
                         sharedPrefManager.saveSPString(sharedPrefManager.SP_ROLE, role_team);
                         sharedPrefManager.saveSPString(sharedPrefManager.SP_ID_USER, id_user);
                         sharedPrefManager.saveSPString(sharedPrefManager.SP_EMAIL, email);
                         sharedPrefManager.saveSPString(sharedPrefManager.SP_NAME, name);
-                        sharedPrefManager.saveSPString(sharedPrefManager.SP_NAME_TEAM, name_team);
                         Intent intent = new Intent(Login.this, HomePanitia.class);
                         startActivity(intent);
                         finish();
@@ -128,7 +135,6 @@ public class Login extends AppCompatActivity {
                         sharedPrefManager.saveSPString(sharedPrefManager.SP_ID_USER, id_user);
                         sharedPrefManager.saveSPString(sharedPrefManager.SP_EMAIL, email);
                         sharedPrefManager.saveSPString(sharedPrefManager.SP_NAME, name);
-                        sharedPrefManager.saveSPString(sharedPrefManager.SP_NAME_TEAM, name_team);
                         Intent intent = new Intent(Login.this, HomeAnggota.class);
                         startActivity(intent);
                         finish();

@@ -42,7 +42,7 @@ import org.json.JSONObject;
  */
 public class AkunFragment extends Fragment {
 
-    TextView nameUser, emailUser, statusUser, teamUser;
+    TextView nameUser, emailUser, statusUser;
     Button btEditProfil, btLogout;
     ImageView avatar;
     SharedPrefManager sharedPrefManager;
@@ -69,7 +69,6 @@ public class AkunFragment extends Fragment {
         emailUser = view.findViewById(R.id.email_user_akun);
         statusUser = view.findViewById(R.id.status_user_akun);
         btEditProfil = view.findViewById(R.id.bt_edit_user_akun);
-        teamUser = view.findViewById(R.id.team_user_akun);
         btLogout = view.findViewById(R.id.bt_logout_akun);
         avatar = view.findViewById(R.id.avatar_user_akun);
         loading = view.findViewById(R.id.loading_akun);
@@ -148,7 +147,6 @@ public class AkunFragment extends Fragment {
                         nameUser.setText(data.getString("name"));
                         emailUser.setText(data.getString("email"));
                         statusUser.setText(data.getString("role"));
-                        teamUser.setText(data.getString("team"));
 
                         Glide.with(getContext())
                                 .load(MyUrl.URL+"/" + data.getString("avatar"))
