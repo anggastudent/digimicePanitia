@@ -106,7 +106,7 @@ public class PesertaFragment extends Fragment {
     private void showData() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setEventPanitia(queue, getContext(), sharedPrefManager.getSPIdUser());
+        mainViewModel.setEventPanitia(queue, getContext(), sharedPrefManager.getSPIdUser(), sharedPrefManager.getSPToken());
         mainViewModel.getEventPanitia().observe(this, new Observer<ArrayList<Event>>() {
             @Override
             public void onChanged(ArrayList<Event> events) {
@@ -165,7 +165,7 @@ public class PesertaFragment extends Fragment {
                 RequestQueue queue = Volley.newRequestQueue(getContext());
                 blueBackground(false);
                 showLoading(true);
-                mainViewModel.setSearchEvent(queue, getContext(), sharedPrefManager.getSPIdUser(),query);
+                mainViewModel.setSearchEvent(queue, getContext(), sharedPrefManager.getSPIdUser(),query, sharedPrefManager.getSPToken());
                 return true;
             }
 

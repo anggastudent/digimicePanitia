@@ -122,6 +122,7 @@ public class AddPanitiaFragment extends Fragment {
                 data.put("email", etEmail.getText().toString());
                 data.put("event_id", sharedPrefManager.getSpIdEvent());
                 data.put("name_team", sharedPrefManager.getSpNameTeam());
+                data.put("token", sharedPrefManager.getSPToken());
                 return data;
             }
         };

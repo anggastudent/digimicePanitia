@@ -196,7 +196,14 @@ public class EditProfil extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> data = new HashMap<>();
+                data.put("token", sharedPrefManager.getSPToken());
+                return data;
+            }
+        };
         queue.getCache().clear();
         queue.add(arrayRequest);
     }
@@ -236,6 +243,7 @@ public class EditProfil extends AppCompatActivity {
                 if(imageString != null) {
                     data.put("avatar", imageString);
                 }
+                data.put("token", sharedPrefManager.getSPToken());
                 return data;
             }
         };

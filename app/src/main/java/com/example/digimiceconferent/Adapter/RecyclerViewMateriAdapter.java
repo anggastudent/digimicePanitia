@@ -16,14 +16,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.Model.Materi;
 import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
+import com.example.digimiceconferent.SharedPrefManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RecyclerViewMateriAdapter extends RecyclerView.Adapter<RecyclerViewMateriAdapter.MateriViewHolder> {
 
@@ -84,6 +88,7 @@ public class RecyclerViewMateriAdapter extends RecyclerView.Adapter<RecyclerView
         }
 
         private void delete(String id, final Materi materi) {
+            final SharedPrefManager sharedPrefManager = new SharedPrefManager(itemView.getContext());
             RequestQueue queue = Volley.newRequestQueue(itemView.getContext());
             String url = MyUrl.URL+"/delete-materi/"+id;
             StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -99,7 +104,14 @@ public class RecyclerViewMateriAdapter extends RecyclerView.Adapter<RecyclerView
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
                 }
-            });
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> data = new HashMap<>();
+                    data.put("token", sharedPrefManager.getSPToken());
+                    return data;
+                }
+            };
             queue.getCache().clear();
             queue.add(request);
         }

@@ -108,7 +108,7 @@ public class EventFragment extends Fragment {
 
     private void showData() {
 
-        mainViewModel.setEventPanitia(queue, getContext(), sharedPrefManager.getSPIdUser());
+        mainViewModel.setEventPanitia(queue, getContext(), sharedPrefManager.getSPIdUser(), sharedPrefManager.getSPToken());
         mainViewModel.getEventPanitia().observe(this, new Observer<ArrayList<Event>>() {
             @Override
             public void onChanged(ArrayList<Event> events) {
@@ -167,7 +167,7 @@ public class EventFragment extends Fragment {
                 //Toast.makeText(getContext(), query, Toast.LENGTH_SHORT).show();
                 greyBackground(false);
                 showLoading(true);
-                mainViewModel.setSearchEvent(queue, getContext(), sharedPrefManager.getSPIdUser(),query);
+                mainViewModel.setSearchEvent(queue, getContext(), sharedPrefManager.getSPIdUser(),query, sharedPrefManager.getSPToken());
                 return true;
             }
 

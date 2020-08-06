@@ -362,6 +362,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                 Map<String, String> data = new HashMap<>();
                 data.put("event_id", sharedPrefManager.getSpIdEvent());
                 data.put("user_id", sharedPrefManager.getSPIdUser());
+                data.put("token", sharedPrefManager.getSPToken());
                 return data;
             }
         };
@@ -412,6 +413,7 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
                     data.put("banner", imageString);
                 }
                 data.put("event_ticket_price", etPriceEvent.getText().toString());
+                data.put("token", sharedPrefManager.getSPToken());
                 return data;
             }
         };

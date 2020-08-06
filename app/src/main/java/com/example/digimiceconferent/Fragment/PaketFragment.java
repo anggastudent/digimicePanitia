@@ -21,6 +21,7 @@ import com.example.digimiceconferent.Adapter.RecyclerViewEventPacketAdapter;
 import com.example.digimiceconferent.MainViewModel;
 import com.example.digimiceconferent.Model.EventPacket;
 import com.example.digimiceconferent.R;
+import com.example.digimiceconferent.SharedPrefManager;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,7 @@ public class PaketFragment extends Fragment {
     RecyclerViewEventPacketAdapter adapter;
     RequestQueue queue;
     SwipeRefreshLayout swipePaket;
+    SharedPrefManager sharedPrefManager;
 
     public PaketFragment() {
         // Required empty public constructor
@@ -57,6 +59,7 @@ public class PaketFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         queue = Volley.newRequestQueue(getContext());
+        sharedPrefManager = new SharedPrefManager(getContext());
         rvPacket = view.findViewById(R.id.rv_paket);
         rvPacket.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new RecyclerViewEventPacketAdapter();
@@ -85,7 +88,7 @@ public class PaketFragment extends Fragment {
 
     private void showData() {
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setListPacket(queue, getContext());
+        mainViewModel.setListPacket(queue, getContext(), sharedPrefManager.getSPToken());
         mainViewModel.getEventPacket().observe(getViewLifecycleOwner(), new Observer<ArrayList<EventPacket>>() {
             @Override
             public void onChanged(ArrayList<EventPacket> eventPackets) {

@@ -169,7 +169,7 @@ public class DetailUploadMateri extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            mainViewModel.setListMateri(queue, this, agenda.getId());
+            mainViewModel.setListMateri(queue, this, agenda.getId(), sharedPrefManager.getSPToken());
             mainViewModel.getMateri().observe(this, new Observer<ArrayList<Materi>>() {
                 @Override
                 public void onChanged(ArrayList<Materi> materis) {

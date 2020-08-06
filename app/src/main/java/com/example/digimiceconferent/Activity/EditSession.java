@@ -162,6 +162,7 @@ public class EditSession extends AppCompatActivity implements View.OnClickListen
                 Map<String, String> data = new HashMap<>();
                 data.put("name", etNameSession.getText().toString());
                 data.put("start", etStartSession.getText().toString());
+                data.put("token", sharedPrefManager.getSPToken());
                 return data;
             }
         };
@@ -192,7 +193,14 @@ public class EditSession extends AppCompatActivity implements View.OnClickListen
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> data = new HashMap<>();
+                data.put("token", sharedPrefManager.getSPToken());
+                return data;
+            }
+        };
         queue.getCache().clear();
         queue.add(arrayRequest);
     }

@@ -136,7 +136,7 @@ public class RekapitulasiPeserta extends AppCompatActivity {
     private void showData() {
         final EventSession eventSession = getIntent().getParcelableExtra(EXTRA_REKAPUTILASI);
         if (eventSession != null) {
-            mainViewModel.setListRekapitulasi(queue, this, sharedPrefManager.getSpIdEvent(), eventSession.getId());
+            mainViewModel.setListRekapitulasi(queue, this, sharedPrefManager.getSpIdEvent(), eventSession.getId(), sharedPrefManager.getSPToken());
             mainViewModel.getRekapitulasi().observe(this, new Observer<ArrayList<Rekapitulasi>>() {
                 @Override
                 public void onChanged(ArrayList<Rekapitulasi> rekapitulasis) {
@@ -213,7 +213,7 @@ public class RekapitulasiPeserta extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 RequestQueue queue = Volley.newRequestQueue(RekapitulasiPeserta.this);
                 showLoading(true);
-                mainViewModel.setSearchRekapitulasi(queue, RekapitulasiPeserta.this, sharedPrefManager.getSpIdEvent(),eventSession.getId(),query);
+                mainViewModel.setSearchRekapitulasi(queue, RekapitulasiPeserta.this, sharedPrefManager.getSpIdEvent(),eventSession.getId(),query, sharedPrefManager.getSPToken());
                 return true;
             }
 

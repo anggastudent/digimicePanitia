@@ -1,6 +1,11 @@
 package com.example.digimiceconferent.Fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,13 +15,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -84,7 +82,7 @@ public class BatalFragment extends Fragment {
     private void getData() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setListExpired(queue, getContext(), sharedPrefManagar.getSPIdUser());
+        mainViewModel.setListExpired(queue, getContext(), sharedPrefManagar.getSPIdUser(), sharedPrefManagar.getSPToken());
         mainViewModel.getExpired().observe(this, new Observer<ArrayList<Expired>>() {
             @Override
             public void onChanged(ArrayList<Expired> expireds) {

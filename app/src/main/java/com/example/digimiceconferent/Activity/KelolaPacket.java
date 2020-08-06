@@ -407,6 +407,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
                 data.put("email", sharedPrefManager.getSpEmail());
                 data.put("price_packet", String.valueOf(price));
                 data.put("start_session", etStartSession.getText().toString());
+                data.put("token", sharedPrefManager.getSPToken());
 
                 return data;
             }

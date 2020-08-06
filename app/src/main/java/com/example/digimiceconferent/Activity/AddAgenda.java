@@ -324,6 +324,7 @@ public class AddAgenda extends AppCompatActivity implements View.OnClickListener
                 data.put("event_session_id", id_session);
                 data.put("event_session_event_id", sharedPrefManager.getSpIdEvent());
                 data.put("event_session_event_event_type_id", "3");
+                data.put("token", sharedPrefManager.getSPToken());
                 return data;
             }
         };
@@ -353,7 +354,7 @@ public class AddAgenda extends AppCompatActivity implements View.OnClickListener
     private void showData() {
         RequestQueue queue = Volley.newRequestQueue(this);
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setListEventSessionPanitia(queue, this, sharedPrefManager.getSpIdEvent());
+        mainViewModel.setListEventSessionPanitia(queue, this, sharedPrefManager.getSpIdEvent(), sharedPrefManager.getSPToken());
         mainViewModel.getEventSessionPanitia().observe(this, new Observer<ArrayList<EventSession>>() {
             @Override
             public void onChanged(final ArrayList<EventSession> eventSessions) {

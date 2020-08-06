@@ -141,7 +141,7 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
         }
         RequestQueue queue = Volley.newRequestQueue(this);
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setListEventSessionPanitia(queue, this, sharedPrefManager.getSpIdEvent());
+        mainViewModel.setListEventSessionPanitia(queue, this, sharedPrefManager.getSpIdEvent(), sharedPrefManager.getSPToken());
         mainViewModel.getEventSessionPanitia().observe(this, new Observer<ArrayList<EventSession>>() {
             @Override
             public void onChanged(final ArrayList<EventSession> eventSessions) {
@@ -375,6 +375,7 @@ public class EditAgenda extends AppCompatActivity implements View.OnClickListene
                 end = etEndDateAgenda.getText().toString() + " " + etEndTimeAgenda.getText().toString();
                 data.put("start", start);
                 data.put("end", end);
+                data.put("token", sharedPrefManager.getSPToken());
                 return data;
             }
         };

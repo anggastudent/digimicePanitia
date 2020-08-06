@@ -181,6 +181,7 @@ public class ScanQrCodeFragment extends Fragment implements ZXingScannerView.Res
                 data.put("qr_code", qrCode);
                 data.put("session_id", sharedPrefManager.getSpIdSession());
                 data.put("event_id", sharedPrefManager.getSpIdEvent());
+                data.put("token", sharedPrefManager.getSPToken());
                 return data;
             }
         };

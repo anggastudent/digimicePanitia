@@ -24,10 +24,8 @@ import androidx.fragment.app.Fragment;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
-import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.digimiceconferent.FilePath;
 import com.example.digimiceconferent.MyUrl;
@@ -39,8 +37,6 @@ import com.kishan.askpermission.PermissionCallback;
 import com.kishan.askpermission.PermissionInterface;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -114,35 +110,36 @@ public class UploadMateriDialogFragment extends DialogFragment implements Permis
         startActivityForResult(Intent.createChooser(intent, "Select Pdf"), PICK_PDF_REQUEST);
     }
 
-    public void uploadFile() {
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = MyUrl.URL+"/upload-materi";
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> data = new HashMap<>();
-                data.put("pdf", filePdf);
-                data.put("name", etNameFile.getText().toString());
-                data.put("event_id", sharedPrefManager.getSpIdEvent());
-                data.put("event_agenda_id", sharedPrefManager.getSpIdAgenda());
-                return data;
-            }
-
-        };
-        queue.getCache().clear();
-        queue.add(request);
-
-    }
+//    public void uploadFile() {
+//        RequestQueue queue = Volley.newRequestQueue(getContext());
+//        String url = MyUrl.URL+"/upload-materi";
+//        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//
+//            }
+//        }){
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                Map<String, String> data = new HashMap<>();
+//                data.put("pdf", filePdf);
+//                data.put("name", etNameFile.getText().toString());
+//                data.put("event_id", sharedPrefManager.getSpIdEvent());
+//                data.put("event_agenda_id", sharedPrefManager.getSpIdAgenda());
+//                data.put("token", sharedPrefManager.getSPToken());
+//                return data;
+//            }
+//
+//        };
+//        queue.getCache().clear();
+//        queue.add(request);
+//
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -245,6 +242,7 @@ public class UploadMateriDialogFragment extends DialogFragment implements Permis
         request.addStringParam("name", name);
         request.addStringParam("event_id", sharedPrefManager.getSpIdEvent());
         request.addStringParam("event_agenda_id", sharedPrefManager.getSpIdAgenda());
+        request.addStringParam("token", sharedPrefManager.getSPToken());
         queue.add(request);
 
     }

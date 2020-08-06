@@ -1,6 +1,11 @@
 package com.example.digimiceconferent.Fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,13 +15,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -82,7 +80,7 @@ public class LunasFragment extends Fragment {
     private void showData() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
         MainViewModel mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setListPaid(queue, getContext(), sharedPrefManager.getSPIdUser());
+        mainViewModel.setListPaid(queue, getContext(), sharedPrefManager.getSPIdUser(), sharedPrefManager.getSPToken());
         mainViewModel.getPaid().observe(this, new Observer<ArrayList<Paid>>() {
             @Override
             public void onChanged(ArrayList<Paid> paids) {

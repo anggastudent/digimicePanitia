@@ -53,10 +53,10 @@ public class MainViewModel extends ViewModel {
     }
 
 
-    public void setEventPanitia(RequestQueue queue, final Context context, String user_id) {
+    public void setEventPanitia(RequestQueue queue, final Context context, final String user_id, final String token) {
         final ArrayList<Event> listItemEvent = new ArrayList<>();
 
-        String url = MyUrl.URL+"/event?user_id="+user_id;
+        String url = MyUrl.URL+"/event";
        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
            @Override
            public void onResponse(JSONArray response) {
@@ -84,12 +84,20 @@ public class MainViewModel extends ViewModel {
            public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
            }
-       });
+       }){
+           @Override
+           protected Map<String, String> getParams() throws AuthFailureError {
+               Map<String, String> data = new HashMap<>();
+               data.put("token", token);
+               data.put("user_id", user_id);
+               return data;
+           }
+       };
         queue.getCache().clear();
         queue.add(arrayRequest);
     }
 
-    public void setSearchEvent(RequestQueue queue, final Context context, final String userId, final String search) {
+    public void setSearchEvent(RequestQueue queue, final Context context, final String userId, final String search, final String token) {
         final ArrayList<Event> list = new ArrayList<>();
         String url = MyUrl.URL + "/search-event";
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -125,6 +133,7 @@ public class MainViewModel extends ViewModel {
                 Map<String, String> data = new HashMap<>();
                 data.put("user_id", userId);
                 data.put("search", search);
+                data.put("token", token);
                 return data;
 
             }
@@ -133,7 +142,7 @@ public class MainViewModel extends ViewModel {
         queue.add(arrayRequest);
     }
 
-    public void setSearchSession(RequestQueue queue, final Context context, final String eventId, final String search ){
+    public void setSearchSession(RequestQueue queue, final Context context, final String eventId, final String search, final String token ){
         final ArrayList<EventSession> list = new ArrayList<>();
         String url = MyUrl.URL + "/search-session";
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -167,6 +176,7 @@ public class MainViewModel extends ViewModel {
                 Map<String, String> data = new HashMap<>();
                 data.put("event_id", eventId);
                 data.put("search", search);
+                data.put("token", token);
                 return data;
             }
         };
@@ -174,7 +184,7 @@ public class MainViewModel extends ViewModel {
         queue.add(arrayRequest);
     }
 
-    public void setListEventSessionPanitia(final RequestQueue queue, final Context context, String eventId) {
+    public void setListEventSessionPanitia(final RequestQueue queue, final Context context, String eventId, final String token) {
         final ArrayList<EventSession> listItemEventSession = new ArrayList<>();
         String url = MyUrl.URL+"/session/"+eventId;
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -225,13 +235,20 @@ public class MainViewModel extends ViewModel {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.toString(),Toast.LENGTH_SHORT).show();
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> data = new HashMap<>();
+                data.put("token", token);
+                return data;
+            }
+        };
         queue.getCache().clear();
         queue.add(arrayRequest);
     }
 
 
-    public void setListPacket(RequestQueue queue, final Context context) {
+    public void setListPacket(RequestQueue queue, final Context context,  final String token) {
         final ArrayList<EventPacket> list = new ArrayList<>();
         String url = MyUrl.URL+"/paket";
 
@@ -260,12 +277,19 @@ public class MainViewModel extends ViewModel {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.toString(),Toast.LENGTH_SHORT).show();
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> data = new HashMap<>();
+                data.put("token", token);
+                return data;
+            }
+        };
         queue.getCache().clear();
         queue.add(arrayRequest);
     }
 
-    public void setSearchAgenda(RequestQueue queue, final Context context, final String eventId, final String search) {
+    public void setSearchAgenda(RequestQueue queue, final Context context, final String eventId, final String search, final String token) {
         final ArrayList<Agenda> list = new ArrayList<>();
         String url = MyUrl.URL + "/search-agenda";
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -303,16 +327,17 @@ public class MainViewModel extends ViewModel {
                 Map<String, String> data = new HashMap<>();
                 data.put("event_id", eventId);
                 data.put("search", search);
+                data.put("token", token);
                 return data;
             }
         };
         queue.getCache().clear();
         queue.add(arrayRequest);
     }
-    public void setListAgenda(RequestQueue queue, final Context context, String id_event) {
+    public void setListAgenda(RequestQueue queue, final Context context, final String id_event, final String token) {
 
         final ArrayList<Agenda> list = new ArrayList<>();
-        String url = MyUrl.URL+"/agenda?event_id="+id_event;
+        String url = MyUrl.URL+"/agenda";
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -342,12 +367,20 @@ public class MainViewModel extends ViewModel {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> data = new HashMap<>();
+                data.put("token", token);
+                data.put("event_id", id_event);
+                return data;
+            }
+        };
         queue.getCache().clear();
         queue.add(arrayRequest);
     }
 
-    public void setListMateri(final RequestQueue queue, final Context context, String idAgenda) {
+    public void setListMateri(final RequestQueue queue, final Context context, String idAgenda, final String token) {
         final ArrayList<Materi> list = new ArrayList<>();
         String url = MyUrl.URL+"/materi/"+idAgenda;
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -374,7 +407,14 @@ public class MainViewModel extends ViewModel {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> data = new HashMap<>();
+                data.put("token", token);
+                return data;
+            }
+        };
         queue.getCache().clear();
         queue.add(arrayRequest);
 
@@ -421,9 +461,9 @@ public class MainViewModel extends ViewModel {
         queue.add(arrayRequest);
     }
 
-    public void setSearchRekapitulasi(RequestQueue queue, final Context context, final String eventId, final String sessionId, final String search) {
+    public void setSearchRekapitulasi(RequestQueue queue, final Context context, final String eventId, final String sessionId, final String search, final String token) {
         final ArrayList<Rekapitulasi> list = new ArrayList<>();
-        String url = MyUrl.URL + "/search-rekapitulasi?event_id="+eventId+"&search="+search+"&session_id="+sessionId+"";
+        String url = MyUrl.URL + "/search-rekapitulasi";
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -457,15 +497,16 @@ public class MainViewModel extends ViewModel {
                 data.put("event_id", eventId);
                 data.put("session_id", sessionId);
                 data.put("search", search);
+                data.put("token", token);
                 return data;
             }
         };
         queue.getCache().clear();
         queue.add(arrayRequest);
     }
-    public void setListRekapitulasi(RequestQueue queue, final Context context, String eventId, String sessionId) {
+    public void setListRekapitulasi(RequestQueue queue, final Context context, final String eventId, final String sessionId, final String token) {
         final ArrayList<Rekapitulasi> list = new ArrayList<>();
-        String url = MyUrl.URL+"/rekapitulasi?event_id="+eventId+"&session_id="+sessionId;
+        String url = MyUrl.URL+"/rekapitulasi";
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -492,12 +533,21 @@ public class MainViewModel extends ViewModel {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> data = new HashMap<>();
+                data.put("token", token);
+                data.put("event_id", eventId);
+                data.put("session_id", sessionId);
+                return data;
+            }
+        };
         queue.getCache().clear();
         queue.add(arrayRequest);
     }
 
-    public void setListPending(RequestQueue queue, final Context context, String userId) {
+    public void setListPending(RequestQueue queue, final Context context, String userId, final String token) {
         final ArrayList<Pending> list = new ArrayList<>();
         String url = MyUrl.URL+"/pending/" + userId;
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -527,12 +577,19 @@ public class MainViewModel extends ViewModel {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> data = new HashMap<>();
+                data.put("token", token);
+                return data;
+            }
+        };
         queue.getCache().clear();
         queue.add(arrayRequest);
     }
 
-    public void setListExpired(RequestQueue queue, final Context context, String userId) {
+    public void setListExpired(RequestQueue queue, final Context context, String userId, final String token) {
         final ArrayList<Expired> list = new ArrayList<>();
         String url = MyUrl.URL+"/expired/" + userId;
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -563,12 +620,19 @@ public class MainViewModel extends ViewModel {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> data = new HashMap<>();
+                data.put("token", token);
+                return data;
+            }
+        };
         queue.getCache().clear();
         queue.add(arrayRequest);
     }
 
-    public void setListPaid(RequestQueue queue, final Context context, String userId) {
+    public void setListPaid(RequestQueue queue, final Context context, String userId, final String token) {
         final ArrayList<Paid> list = new ArrayList<>();
         String url = MyUrl.URL+"/paid/" + userId;
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -599,7 +663,14 @@ public class MainViewModel extends ViewModel {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> data = new HashMap<>();
+                data.put("token", token);
+                return data;
+            }
+        };
         queue.getCache().clear();
         queue.add(arrayRequest);
 

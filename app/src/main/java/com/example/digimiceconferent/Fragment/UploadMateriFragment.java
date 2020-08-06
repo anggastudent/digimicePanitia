@@ -74,7 +74,7 @@ public class UploadMateriFragment extends Fragment {
 
     private void showData() {
         mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-        mainViewModel.setListAgenda(queue, getContext(), sharedPrefManager.getSpIdEvent());
+        mainViewModel.setListAgenda(queue, getContext(), sharedPrefManager.getSpIdEvent(), sharedPrefManager.getSPToken());
         mainViewModel.getAgenda().observe(this, new Observer<ArrayList<Agenda>>() {
             @Override
             public void onChanged(ArrayList<Agenda> agenda) {
@@ -143,7 +143,7 @@ public class UploadMateriFragment extends Fragment {
             public boolean onQueryTextSubmit(String query) {
                 queue = Volley.newRequestQueue(getContext());
                 showLoading(true);
-                mainViewModel.setSearchAgenda(queue, getContext(), sharedPrefManager.getSpIdEvent(), query);
+                mainViewModel.setSearchAgenda(queue, getContext(), sharedPrefManager.getSpIdEvent(), query, sharedPrefManager.getSPToken());
                 return true;
             }
 

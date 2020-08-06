@@ -162,6 +162,7 @@ public class AddSession extends AppCompatActivity implements View.OnClickListene
                 data.put("event_id", sharedPrefManager.getSpIdEvent());
                 data.put("event_event_type_id", "3");
                 data.put("start", etStartSession.getText().toString());
+                data.put("token", sharedPrefManager.getSPToken());
                 return data;
             }
         };

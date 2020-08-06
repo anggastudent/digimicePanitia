@@ -131,7 +131,7 @@ public class SessionFragment extends Fragment {
         }
     }
     private void showData() {
-        mainViewModel.setListEventSessionPanitia(queue, getContext(),sharedPrefManager.getSpIdEvent());
+        mainViewModel.setListEventSessionPanitia(queue, getContext(),sharedPrefManager.getSpIdEvent(), sharedPrefManager.getSPToken());
         mainViewModel.getEventSessionPanitia().observe(this, new Observer<ArrayList<EventSession>>() {
             @Override
             public void onChanged(ArrayList<EventSession> sessions) {
@@ -171,7 +171,7 @@ public class SessionFragment extends Fragment {
                 queue = Volley.newRequestQueue(getContext());
                 showLoading(true);
                 //Toast.makeText(getContext(), query, Toast.LENGTH_SHORT).show();
-                mainViewModel.setSearchSession(queue,getContext(), sharedPrefManager.getSpIdEvent(),query);
+                mainViewModel.setSearchSession(queue,getContext(), sharedPrefManager.getSpIdEvent(),query, sharedPrefManager.getSPToken());
                 return true;
             }
 

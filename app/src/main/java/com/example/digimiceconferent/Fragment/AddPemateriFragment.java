@@ -174,6 +174,7 @@ public class AddPemateriFragment extends Fragment {
                 data.put("no_telp", noTelp.getText().toString());
                 data.put("regencies_id", kabupaten_id);
                 data.put("event_id", sharedPrefManager.getSpIdEvent());
+                data.put("token", sharedPrefManager.getSPToken());
                 return data;
             }
         };

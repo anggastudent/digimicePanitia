@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -23,11 +24,14 @@ import com.example.digimiceconferent.Activity.EditSession;
 import com.example.digimiceconferent.Model.EventSession;
 import com.example.digimiceconferent.MyUrl;
 import com.example.digimiceconferent.R;
+import com.example.digimiceconferent.SharedPrefManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RecyclerViewSessionAdapter extends RecyclerView.Adapter<RecyclerViewSessionAdapter.SessionViewHolder> {
     ArrayList<EventSession> list = new ArrayList<>();
@@ -112,6 +116,7 @@ public class RecyclerViewSessionAdapter extends RecyclerView.Adapter<RecyclerVie
         }
 
         private void delete(String sessionId, final EventSession eventSession) {
+            final SharedPrefManager sharedPrefManager = new SharedPrefManager(itemView.getContext());
             RequestQueue queue = Volley.newRequestQueue(itemView.getContext());
             String url = MyUrl.URL+"/delete-session/"+sessionId;
             StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -126,7 +131,14 @@ public class RecyclerViewSessionAdapter extends RecyclerView.Adapter<RecyclerVie
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
                 }
-            });
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> data = new HashMap<>();
+                    data.put("token", sharedPrefManager.getSPToken());
+                    return data;
+                }
+            };
 
             queue.getCache().clear();
             queue.add(request);
