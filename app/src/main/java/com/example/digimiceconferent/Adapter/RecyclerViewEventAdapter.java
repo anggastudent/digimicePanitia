@@ -49,12 +49,31 @@ public class RecyclerViewEventAdapter extends RecyclerView.Adapter<RecyclerViewE
         sharedPrefManager = new SharedPrefManager(holder.itemView.getContext());
 
         holder.judul.setText(event.getJudul());
-
+        Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date dateStart = dateFormat.parse(event.getStart());
+            Date dateEnd = dateFormat.parse(event.getEnd());
             SimpleDateFormat dateFormatNew = new SimpleDateFormat("dd MMMM yyyy");
-            holder.start.setText(dateFormatNew.format(dateStart));
+            holder.start.setText(dateFormatNew.format(dateStart)+" - "+dateFormatNew.format(dateEnd));
+
+            String dateNow = dateFormat.format(now);
+            Date getDateNow = dateFormat.parse(dateNow);
+
+            String status = "BERLANGSUNG";
+            int color = R.color.colorGreen;
+            if (getDateNow.before(dateStart)) {
+                status = "SEGERA";
+                color = R.color.colorYellow;
+            }
+
+            if (getDateNow.after(dateEnd)) {
+                status = "SELESAI";
+                color = R.color.colorRed;
+            }
+
+            holder.status.setText(status);
+            holder.status.setBackgroundColor(holder.itemView.getContext().getResources().getColor(color));
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -109,7 +128,7 @@ public class RecyclerViewEventAdapter extends RecyclerView.Adapter<RecyclerViewE
     public class EventPanitiaViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
-        TextView judul,start;
+        TextView judul,start, status;
         Button btnDetail;
 
         public EventPanitiaViewHolder(@NonNull View itemView) {
@@ -117,6 +136,7 @@ public class RecyclerViewEventAdapter extends RecyclerView.Adapter<RecyclerViewE
             imageView = itemView.findViewById(R.id.img_item);
             judul = itemView.findViewById(R.id.judul_item);
             start = itemView.findViewById(R.id.item_start);
+            status = itemView.findViewById(R.id.item_status);
             btnDetail = itemView.findViewById(R.id.bt_detail_item);
         }
     }

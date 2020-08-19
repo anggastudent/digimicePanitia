@@ -64,6 +64,8 @@ public class ScanQrCodeFragment extends Fragment implements ZXingScannerView.Res
         super.onViewCreated(view, savedInstanceState);
         ViewGroup viewGroup = view.findViewById(R.id.camera_smartphone);
         scannerView = new ZXingScannerView(getContext());
+        scannerView.setResultHandler(this);
+
         viewGroup.addView(scannerView);
 
         sharedPrefManager = new SharedPrefManager(getContext());
@@ -149,14 +151,14 @@ public class ScanQrCodeFragment extends Fragment implements ZXingScannerView.Res
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Apakah ingin Absen Lagi ?");
                 builder.setMessage(response);
-                builder.setPositiveButton("Oke", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("Absen Lagi", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         resumeScan();
                     }
                 });
 
-                builder.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("Oke", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getContext(), KelolaPeserta.class);

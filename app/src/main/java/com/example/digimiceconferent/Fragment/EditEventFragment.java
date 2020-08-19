@@ -122,6 +122,10 @@ public class EditEventFragment extends Fragment implements View.OnClickListener 
         etEndDateEvent.setText(endDate);
         etEndDateEvent.setEnabled(false);
 
+        if (sharedPrefManager.getSPRole().equals("eo")) {
+            etPanitia.setEnabled(false);
+        }
+
         showLoading(true);
         showDataEdit();
         btStartDate.setOnClickListener(this);

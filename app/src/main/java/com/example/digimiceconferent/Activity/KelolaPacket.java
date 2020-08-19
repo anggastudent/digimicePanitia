@@ -376,6 +376,7 @@ public class KelolaPacket extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), "Gagal",Toast.LENGTH_SHORT).show();
+                showProcess(false);
 
             }
         }){

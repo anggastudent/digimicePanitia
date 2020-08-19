@@ -81,7 +81,7 @@ public class AkunFragment extends Fragment {
         sharedPrefManager = new SharedPrefManager(getContext());
         swipeAkun.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
 
-        showLoading(true);
+//        showLoading(true);
         swipeAkun.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

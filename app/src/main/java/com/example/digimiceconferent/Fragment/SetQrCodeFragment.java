@@ -69,6 +69,8 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
         etEmail = view.findViewById(R.id.email_set_qr);
         btSetQr = view.findViewById(R.id.bt_set_qr);
         scannerView = new ZXingScannerView(getContext());
+        scannerView.setResultHandler(this);
+
         sharedPrefManager = new SharedPrefManager(getContext());
         viewGroup.addView(scannerView);
 
@@ -220,6 +222,8 @@ public class SetQrCodeFragment extends Fragment implements ZXingScannerView.Resu
 
     private void resumeScan(){
         scannerView.resumeCameraPreview(this);
+        scannerView.startCamera();
+
     }
 
 }
