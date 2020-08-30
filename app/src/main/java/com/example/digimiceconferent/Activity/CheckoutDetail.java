@@ -42,6 +42,7 @@ public class CheckoutDetail extends AppCompatActivity {
         myweb.getSettings().setJavaScriptEnabled(true);
         myweb.getSettings().setUseWideViewPort(true);
         myweb.getSettings().setLoadWithOverviewMode(true);
+        myweb.getSettings().setDomStorageEnabled(true);
         myweb.setWebViewClient(new WebViewClient(){
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
@@ -55,6 +56,9 @@ public class CheckoutDetail extends AppCompatActivity {
 
         if (pending != null) {
             myweb.loadUrl(pending.getUrl());
+//            myweb.loadUrl("https://invoice-staging.xendit.co/web/invoices/5eaece0c1c9cf11118cc354b");
+//                        myweb.loadUrl("https://www.google.com");
+
         }
 
         if (paid != null) {
